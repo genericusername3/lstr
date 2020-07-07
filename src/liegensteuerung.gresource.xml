@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/de/linusmathieu/Liegensteuerung">
+    <file>window.ui</file>
+  </gresource>
+
+  <gresource prefix="/de/linusmathieu/Liegensteuerung">
+    <file>edit_patient_page.ui</file>
+  </gresource>
+
+  <gresource prefix="/de/linusmathieu/Liegensteuerung">
+    <file>edit_program_page.ui</file>
+  </gresource>
+
+  <gresource prefix="/de/linusmathieu/Liegensteuerung">
+    <file>login_page.ui</file>
+  </gresource>
+
+  <gresource prefix="/de/linusmathieu/Liegensteuerung">
+    <file>pain_evaluation_page.ui</file>
+  </gresource>
+
+  <gresource prefix="/de/linusmathieu/Liegensteuerung">
+    <file>select_patient_page.ui</file>
+  </gresource>
+
+  <gresource prefix="/de/linusmathieu/Liegensteuerung">
+    <file>select_program_page.ui</file>
+  </gresource>
+
+  <gresource prefix="/de/linusmathieu/Liegensteuerung">
+    <file>set_up_page.ui</file>
+  </gresource>
+
+  <gresource prefix="/de/linusmathieu/Liegensteuerung">
+    <file>treatment_page.ui</file>
+  </gresource>
+</gresources>
