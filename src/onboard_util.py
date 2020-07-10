@@ -84,7 +84,7 @@ def show_keyboard() -> None:
         (
             "dbus-send",
             "--type=method_call",
-            "--print-reply",
+            # "--print-reply",
             "--dest=org.onboard.Onboard",
             "/org/onboard/Onboard/Keyboard",
             "org.onboard.Onboard.Keyboard.Show",
@@ -105,7 +105,7 @@ def hide_keyboard() -> None:
         (
             "dbus-send",
             "--type=method_call",
-            "--print-reply",
+            # "--print-reply",
             "--dest=org.onboard.Onboard",
             "/org/onboard/Onboard/Keyboard",
             "org.onboard.Onboard.Keyboard.Hide",
