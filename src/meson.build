@@ -32,10 +32,12 @@ liegensteuerung_sources = [
   'login_page.py',
   'main.py',
   'pain_evaluation_page.py',
+  'register_page.py',
   'select_patient_page.py',
   'select_program_page.py',
   'set_up_page.py',
   'treatment_page.py',
+  'users_page.py',
   'window.py',
 
   'auth_util.py',
