@@ -38,7 +38,7 @@ liegensteuerung_sources = [
   'treatment_page.py',
   'window.py',
 
-  'db_util.py',
+  'auth_util.py',
   'log_in_util.py',
   'onboard_util.py',
 ]
