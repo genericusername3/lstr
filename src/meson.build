@@ -41,7 +41,6 @@ liegensteuerung_sources = [
   'window.py',
 
   'auth_util.py',
-  'log_in_util.py',
   'onboard_util.py',
 ]
 
