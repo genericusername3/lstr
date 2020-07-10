@@ -5,6 +5,7 @@ from typing import Union, Optional
 from gi.repository import GObject, Gdk, Gtk  # type: ignore
 
 from . import onboard_util
+from . import auth_util
 
 
 @Gtk.Template(resource_path="/de/linusmathieu/Liegensteuerung/login_page.ui")
@@ -52,6 +53,9 @@ class LoginPage(Gtk.Box):
         self.username_entry.connect("focus-out-event", self.on_unfocus_entry)
         self.password_entry.connect("focus-out-event", self.on_unfocus_entry)
 
+        self.username_entry.connect("changed", self.on_entry_changed)
+        self.password_entry.connect("changed", self.on_entry_changed)
+
         self.log_in_button.connect("clicked", self.on_log_in_clicked)
 
     def on_focus_entry(
@@ -76,6 +80,9 @@ class LoginPage(Gtk.Box):
         """
         onboard_util.unrequest_keyboard()
 
+    def on_entry_changed(self, entry: Gtk.Entry) -> None:
+        entry.get_style_context().remove_class("error")
+
     def on_log_in_clicked(self, button: Gtk.Button) -> None:
         """React to the log in button being clicked.
 
@@ -83,7 +90,21 @@ class LoginPage(Gtk.Box):
             widget (Gtk.Widget): The focused entry.
             event (Gdk.EventFocus): The focus event.
         """
-        onboard_util.unrequest_keyboard()
+        try:
+            if auth_util.authenticate(
+                self.username_entry.get_text(), self.password_entry.get_text()
+            ):
+                onboard_util.unrequest_keyboard()
+                print("LOGGED IN")
+                ...
+
+            else:
+                self.password_entry.get_style_context().add_class("error")
+                self.password_entry.grab_focus_without_selecting()
+        except ValueError as e:
+            print(e)
+            self.username_entry.get_style_context().add_class("error")
+            self.username_entry.grab_focus_without_selecting()
 
 
 # Make LoginPage accessible via .ui files
