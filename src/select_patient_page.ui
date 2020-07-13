@@ -10,13 +10,12 @@
   <template class="SelectPatientPage" parent="GtkBox">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="valign">start</property>
     <property name="hexpand">True</property>
     <property name="vexpand">True</property>
     <property name="orientation">vertical</property>
     <child>
       <object class="GtkSearchEntry" id="patient_search_entry">
-        <property name="height_request">32</property>
+        <property name="height_request">40</property>
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <property name="margin_start">4</property>
@@ -38,7 +37,8 @@
       <object class="GtkScrolledWindow">
         <property name="visible">True</property>
         <property name="can_focus">True</property>
-        <property name="vscrollbar_policy">never</property>
+        <property name="vexpand">True</property>
+        <property name="hscrollbar_policy">never</property>
         <property name="shadow_type">in</property>
         <child>
           <object class="GtkViewport">
@@ -51,7 +51,7 @@
                 <property name="can_focus">False</property>
                 <child type="placeholder">
                   <object class="GtkLabel">
-                    <property name="height_request">32</property>
+                    <property name="height_request">40</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">Keine Patienten gefunden</property>
@@ -63,7 +63,7 @@
         </child>
       </object>
       <packing>
-        <property name="expand">False</property>
+        <property name="expand">True</property>
         <property name="fill">True</property>
         <property name="position">1</property>
       </packing>

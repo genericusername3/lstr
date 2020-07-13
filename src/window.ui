@@ -418,6 +418,7 @@
                 <property name="can_focus">True</property>
                 <property name="focus_on_click">False</property>
                 <property name="receives_default">True</property>
+                <property name="border_width">0</property>
                 <property name="image">back_icon</property>
                 <property name="always_show_image">True</property>
               </object>
@@ -433,6 +434,7 @@
                 <property name="can_focus">True</property>
                 <property name="focus_on_click">False</property>
                 <property name="receives_default">True</property>
+                <property name="border_width">0</property>
                 <property name="image">more_icon</property>
                 <property name="popover">more_popover</property>
               </object>
@@ -449,6 +451,7 @@
                 <property name="can_focus">True</property>
                 <property name="focus_on_click">False</property>
                 <property name="receives_default">True</property>
+                <property name="border_width">0</property>
                 <property name="image">patient_icon</property>
                 <property name="always_show_image">True</property>
               </object>

@@ -6,7 +6,8 @@ from gi.repository import GObject, Gtk  # type: ignore
 
 from .page import Page, PageClass
 
-from . import patient_util
+from .patient_util import Patient
+from .patient_row import PatientRow, header_func
 
 
 @Gtk.Template(
@@ -26,7 +27,9 @@ class SelectPatientPage(Gtk.Box, Page, metaclass=PageClass):
 
     header_visible: bool = True
 
-    # %%WIDGET_NAME%%: Union[Gtk.Widget, Gtk.Template.Child] = Gtk.Template.Child()
+    patient_list_box: Union[
+        Gtk.ListBox, Gtk.Template.Child
+    ] = Gtk.Template.Child()
 
     def __init__(self, **kwargs):
         """Create a new SelectPatientPage.
@@ -38,6 +41,11 @@ class SelectPatientPage(Gtk.Box, Page, metaclass=PageClass):
 
     def prepare(self):
         """Prepare the page to be shown."""
+        self.patient_list_box.bind_model(
+            Patient.iter_to_model(Patient.get_all()),
+            PatientRow
+        )
+
 
     def do_parent_set(self, old_parent: Optional[Gtk.Widget]) -> None:
         """React to the parent being set.
@@ -51,7 +59,7 @@ class SelectPatientPage(Gtk.Box, Page, metaclass=PageClass):
         if self.get_parent() is None:
             return
 
-        # Connect events
+        self.patient_list_box.set_header_func(header_func)
 
 
 # Make RegisterPage accessible via .ui files

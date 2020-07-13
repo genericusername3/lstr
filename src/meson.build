@@ -44,6 +44,8 @@ liegensteuerung_sources = [
   'treatment_page.py',
   'users_page.py',
 
+  'patient_row.py',
+
   'auth_util.py',
   'patient_util.py',
   'onboard_util.py',
