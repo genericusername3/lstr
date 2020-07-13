@@ -1,7 +1,7 @@
 [default]
 name=Default
 runtime=jhbuild
-toolchain=gcc:/usr/bin/x86_64-pc-linux-gnu-gcc
+toolchain=default
 config-opts=
 run-opts=
 prefix=/home/liloneum/jhbuild/install

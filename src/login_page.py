@@ -1,18 +1,23 @@
-"""A page that prompts the user to log in."""
+"""A page that prompts the user to log in.
+"""
 
 from typing import Union, Optional
 
-from gi.repository import GObject, Gdk, Gtk  # type: ignore
+from gi.repository import GObject, Gtk  # type: ignore
 
-from . import onboard_util
+from .page import Page, PageClass
+
 from . import auth_util
 
 
 @Gtk.Template(resource_path="/de/linusmathieu/Liegensteuerung/login_page.ui")
-class LoginPage(Gtk.Box):
+class LoginPage(Gtk.Box, Page, metaclass=PageClass):
     """A page that prompts the user to log in.
 
     Attributes:
+        header_visible (bool): whether a Gtk.HeaderBar should be shown for the
+            page
+        title (str): The page's title
         username_entry (Gtk.Entry or Gtk.Template.Child): The entry for the
             user's username
         password_entry (Gtk.Entry or Gtk.Template.Child): The entry for the
@@ -22,6 +27,9 @@ class LoginPage(Gtk.Box):
     """
 
     __gtype_name__ = "LoginPage"
+
+    header_visible: bool = False
+    title: str = "Anmelden"
 
     username_entry: Union[Gtk.Entry, Gtk.Template.Child] = Gtk.Template.Child()
     password_entry: Union[Gtk.Entry, Gtk.Template.Child] = Gtk.Template.Child()
@@ -35,6 +43,11 @@ class LoginPage(Gtk.Box):
         """
         super().__init__(**kwargs)
 
+    def prepare(self):
+        """Prepare the page to be shown."""
+        self.username_entry.set_text("")
+        self.password_entry.set_text("")
+
     def do_parent_set(self, old_parent: Optional[Gtk.Widget]) -> None:
         """React to the parent being set.
 
@@ -43,6 +56,9 @@ class LoginPage(Gtk.Box):
 
         Args:
             old_parent (Optional[Gtk.Widget]): The old parent
+
+        Returns:
+            None: Description
         """
         if self.get_parent() is None:
             return
@@ -58,35 +74,22 @@ class LoginPage(Gtk.Box):
 
         self.log_in_button.connect("clicked", self.on_log_in_clicked)
 
-    def on_focus_entry(
-        self, widget: Gtk.Widget, event: Gdk.EventFocus
-    ) -> None:
-        """React to an entry being focused. Show an on-screen keyboard.
-
-        Args:
-            widget (Gtk.Widget): The focused entry.
-            event (Gdk.EventFocus): The focus event.
-        """
-        onboard_util.request_keyboard()
-
-    def on_unfocus_entry(
-        self, widget: Gtk.Widget, event: Gdk.EventFocus
-    ) -> None:
-        """React to an entry being unfocused. Hide the on-screen keyboard.
-
-        Args:
-            widget (Gtk.Widget): The focused entry.
-            event (Gdk.EventFocus): The focus event.
-        """
-        onboard_util.unrequest_keyboard()
-
     def on_entry_changed(self, entry: Gtk.Entry) -> None:
+        """React to the text of an entry changing. Removes the 'error' CSS
+            class from the entry.
+
+        Args:
+            entry (Gtk.Entry): The changed entry
+        """
         entry.get_style_context().remove_class("error")
 
     def on_log_in_clicked(self, button: Gtk.Button) -> None:
         """React to the log in button being clicked.
 
         Args:
+            button (Gtk.Button): Description
+
+        Deleted Parameters:
             widget (Gtk.Widget): The focused entry.
             event (Gdk.EventFocus): The focus event.
         """
@@ -94,9 +97,16 @@ class LoginPage(Gtk.Box):
             if auth_util.authenticate(
                 self.username_entry.get_text(), self.password_entry.get_text()
             ):
-                onboard_util.unrequest_keyboard()
-                print("LOGGED IN")
-                ...
+                self.get_toplevel().active_user = (
+                    self.username_entry.get_text()
+                )
+                self.get_toplevel().active_user_password = (
+                    self.password_entry.get_text()
+                )
+
+                self.get_toplevel().switch_page("select_patient")
+
+                self.get_toplevel().clear_history()
 
             else:
                 self.password_entry.get_style_context().add_class("error")

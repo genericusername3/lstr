@@ -2,61 +2,13 @@
 <!-- Generated with glade 3.36.0 -->
 <interface>
   <requires lib="gtk+" version="3.20"/>
-  <template class="LoginPage" parent="GtkBox">
+  <template class="RegisterPage" parent="GtkBox">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="valign">start</property>
     <property name="hexpand">True</property>
     <property name="vexpand">True</property>
     <property name="orientation">vertical</property>
-    <child>
-      <object class="GtkInfoBar" id="warning_bar">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="spacing">12</property>
-        <property name="message_type">warning</property>
-        <child internal-child="content_area">
-          <object class="GtkBox">
-            <property name="can_focus">False</property>
-            <property name="spacing">16</property>
-            <child>
-              <object class="GtkImage">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="icon_name">dialog-warning-symbolic</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Der Patient sollte noch nicht auf der Liege liegen</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">False</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-      </object>
-      <packing>
-        <property name="expand">False</property>
-        <property name="fill">True</property>
-        <property name="position">0</property>
-      </packing>
-    </child>
     <child>
       <object class="GtkGrid">
         <property name="visible">True</property>
@@ -81,7 +33,6 @@
           <packing>
             <property name="left_attach">0</property>
             <property name="top_attach">0</property>
-            <property name="width">2</property>
           </packing>
         </child>
         <child>
@@ -98,20 +49,63 @@
           <packing>
             <property name="left_attach">0</property>
             <property name="top_attach">1</property>
-            <property name="width">2</property>
           </packing>
         </child>
         <child>
-          <object class="GtkButton" id="log_in_button">
-            <property name="label" translatable="yes">Anmelden</property>
+          <object class="GtkEntry" id="password_confirm_entry">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="visibility">False</property>
+            <property name="width_chars">24</property>
+            <property name="progress_pulse_step">0</property>
+            <property name="primary_icon_name">dialog-password-symbolic</property>
+            <property name="placeholder_text" translatable="yes">Passwort</property>
+            <property name="input_purpose">password</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkComboBoxText" id="access_level_combobox">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="button_sensitivity">on</property>
+            <property name="active_id">user</property>
+            <items>
+              <item id="admin" translatable="yes">Administrator</item>
+              <item id="expert" translatable="yes">Experte</item>
+              <item id="user" translatable="yes">Anwender</item>
+            </items>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">3</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="register_button">
+            <property name="label" translatable="yes">Registrieren</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
           </object>
           <packing>
             <property name="left_attach">0</property>
-            <property name="top_attach">2</property>
-            <property name="width">2</property>
+            <property name="top_attach">4</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="accept_button">
+            <property name="label" translatable="yes">Passwort ändern</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">5</property>
           </packing>
         </child>
       </object>

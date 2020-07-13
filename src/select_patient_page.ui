@@ -1,25 +1,89 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.36.0 -->
 <interface>
   <requires lib="gtk+" version="3.20"/>
-    <template class="LiegensteuerungWindow" parent="GtkApplicationWindow">
-      <property name="default-width">600</property>
-    <property name="default-height">300</property>
-    <child type="titlebar">
-      <object class="GtkHeaderBar" id="header_bar">
+  <object class="GtkImage" id="add_icon">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="icon_name">list-add-symbolic</property>
+  </object>
+  <template class="SelectPatientPage" parent="GtkBox">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="valign">start</property>
+    <property name="hexpand">True</property>
+    <property name="vexpand">True</property>
+    <property name="orientation">vertical</property>
+    <child>
+      <object class="GtkSearchEntry" id="patient_search_entry">
+        <property name="height_request">32</property>
         <property name="visible">True</property>
-        <property name="show-close-button">True</property>
-        <property name="title">Hello, World!</property>
+        <property name="can_focus">True</property>
+        <property name="margin_start">4</property>
+        <property name="margin_end">4</property>
+        <property name="margin_top">4</property>
+        <property name="margin_bottom">4</property>
+        <property name="primary_icon_name">edit-find-symbolic</property>
+        <property name="primary_icon_activatable">False</property>
+        <property name="primary_icon_sensitive">False</property>
+        <property name="placeholder_text" translatable="yes">Suche</property>
       </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">0</property>
+      </packing>
     </child>
     <child>
-      <object class="GtkLabel" id="label">
-        <property name="label">Hello, World!</property>
+      <object class="GtkScrolledWindow">
         <property name="visible">True</property>
-        <attributes>
-          <attribute name="weight" value="bold"/>
-          <attribute name="scale" value="2"/>
-        </attributes>
+        <property name="can_focus">True</property>
+        <property name="vscrollbar_policy">never</property>
+        <property name="shadow_type">in</property>
+        <child>
+          <object class="GtkViewport">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="vscroll_policy">natural</property>
+            <child>
+              <object class="GtkListBox" id="patient_list_box">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <child type="placeholder">
+                  <object class="GtkLabel">
+                    <property name="height_request">32</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">Keine Patienten gefunden</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
       </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">1</property>
+      </packing>
     </child>
-    </template>
-  </interface>
+    <child>
+      <object class="GtkButton" id="add_button">
+        <property name="label" translatable="yes">Patient hinzufügen...</property>
+        <property name="height_request">48</property>
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="receives_default">True</property>
+        <property name="border_width">4</property>
+        <property name="image">add_icon</property>
+        <property name="always_show_image">True</property>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">2</property>
+      </packing>
+    </child>
+  </template>
+</interface>

@@ -18,4 +18,7 @@ if not destdir:
     print('Compiling GSettings schemas...')
     call(['glib-compile-schemas', path.join(datadir, 'glib-2.0', 'schemas')])
 
+    print('Installing/upgrading Python modules...')
+    call(['python3', '-m', 'pip', 'install', 'numpy', 'opencv-python'])
+
 

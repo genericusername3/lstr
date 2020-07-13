@@ -6,6 +6,7 @@
 *.plugin
 cscope.out
 *.ui~
+*~
 
 autom4te*.cache
 stamp-h
@@ -54,3 +55,5 @@ po/quot.sed
 po/remove-potcdate.sin
 
 *.db
+
+src/examples

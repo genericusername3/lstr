@@ -1,39 +1,112 @@
-"""A page that prompts the user to log in."""
+"""A page that prompts the user to register."""
 
-from typing import Union, Optional
+from typing import Union, Optional, Iterable, Any, Dict
 
-from gi.repository import GObject, Gdk, Gtk  # type: ignore
+from gi.repository import GObject, Gtk  # type: ignore
 
-from . import onboard_util
+from .page import Page, PageClass
+
 from . import auth_util
 
 
-@Gtk.Template(resource_path="/de/linusmathieu/Liegensteuerung/login_page.ui")
-class LoginPage(Gtk.Box):
-    """A page that prompts the user to log in.
+@Gtk.Template(
+    resource_path="/de/linusmathieu/Liegensteuerung/register_page.ui"
+)
+class RegisterPage(Gtk.Box, Page, metaclass=PageClass):
+    """A page that prompts the user to register.
 
     Attributes:
+        header_visible (bool): whether a Gtk.HeaderBar should be shown for the
+            page
+        title (str): The page's title
         username_entry (Gtk.Entry or Gtk.Template.Child): The entry for the
             user's username
         password_entry (Gtk.Entry or Gtk.Template.Child): The entry for the
-            user's password
-        log_in_button (Gtk.Button or Gtk.Template.Child): The button that is
-            clicked to compolete the log-in
+            user's new password
+        password_confirm_entry (Gtk.Entry or Gtk.Template.Child): The entry for
+            the user's new password (again, to confirm)
+        register_button (Gtk.Button or Gtk.Template.Child): The button that is
+            clicked to compolete the register
+        next_page (str, optional): Page to switch to when done. None to go back
+        next_page_args (Iterable[Any]): Arguments to pass to the next page
+            (if next_page isn't None)
+        next_page_kwargs (Dict[str, Any]): Keyword arguments to pass to the
+            next page (if next_page isn't None)
     """
 
-    __gtype_name__ = "LoginPage"
+    __gtype_name__ = "RegisterPage"
+
+    header_visible: bool = False
+    title: str = "Registrieren"
 
     username_entry: Union[Gtk.Entry, Gtk.Template.Child] = Gtk.Template.Child()
+
     password_entry: Union[Gtk.Entry, Gtk.Template.Child] = Gtk.Template.Child()
-    log_in_button: Union[Gtk.Button, Gtk.Template.Child] = Gtk.Template.Child()
+    password_confirm_entry: Union[
+        Gtk.Entry, Gtk.Template.Child
+    ] = Gtk.Template.Child()
+
+    access_level_combobox: Union[
+        Gtk.ComboBoxText, Gtk.Template.Child
+    ] = Gtk.Template.Child()
+
+    register_button: Union[
+        Gtk.Button, Gtk.Template.Child
+    ] = Gtk.Template.Child()
+    accept_button: Union[Gtk.Button, Gtk.Template.Child] = Gtk.Template.Child()
+
+    next_page: Optional[str] = None
+    next_page_args: Iterable[Any] = ()
+    next_page_kwargs: Dict[str, Any] = {}
 
     def __init__(self, **kwargs):
-        """Create a new LoginPage.
+        """Create a new RegisterPage.
 
         Args:
             **kwargs: Arguments passed on to Gtk.Box
         """
         super().__init__(**kwargs)
+
+    def prepare(
+        self,
+        new_user: bool = True,
+        username: Optional[str] = None,
+        access_level: Optional[str] = "user",
+        next_page: Optional[str] = None,
+        next_page_args: Iterable[Any] = (),
+        next_page_kwargs: Dict[str, Any] = {},
+    ):
+        """Prepare the page to be shown.
+
+        Args:
+            new_user (bool): Whether the RegisterPage is used to create a new
+                user (as opposed to changing the password)
+            username (str, optional): The user whose password is being changed.
+                Ignored if new_user is True. Defaults to None
+            access_level (str, optional): The default access level for a new
+                user. Ignored if new_user is False. See auth_util for valid
+                access level names. Defaults to "user"
+            next_page (str, optional): The page to switch to on completion.
+                None to go back. Defaults to None
+        """
+        self.username_entry.set_visible(new_user)
+        self.username_entry.set_text("")
+
+        self.password_entry.set_text("")
+        self.password_confirm_entry.set_text("")
+
+        self.access_level_combobox.set_visible(new_user)
+
+        if new_user:
+            self.access_level_combobox.set_active_id(access_level)
+            self.title = "Registrieren"
+        else:
+            self.title = "Passwort ändern"
+
+        self.register_button.set_visible(new_user)
+        self.accept_button.set_visible(not new_user)
+
+        self.next_page = next_page
 
     def do_parent_set(self, old_parent: Optional[Gtk.Widget]) -> None:
         """React to the parent being set.
@@ -49,63 +122,78 @@ class LoginPage(Gtk.Box):
 
         self.username_entry.connect("focus-in-event", self.on_focus_entry)
         self.password_entry.connect("focus-in-event", self.on_focus_entry)
+        self.password_confirm_entry.connect(
+            "focus-in-event", self.on_focus_entry
+        )
 
         self.username_entry.connect("focus-out-event", self.on_unfocus_entry)
         self.password_entry.connect("focus-out-event", self.on_unfocus_entry)
+        self.password_confirm_entry.connect(
+            "focus-out-event", self.on_unfocus_entry
+        )
 
         self.username_entry.connect("changed", self.on_entry_changed)
         self.password_entry.connect("changed", self.on_entry_changed)
+        self.password_confirm_entry.connect("changed", self.on_entry_changed)
 
-        self.log_in_button.connect("clicked", self.on_log_in_clicked)
-
-    def on_focus_entry(
-        self, widget: Gtk.Widget, event: Gdk.EventFocus
-    ) -> None:
-        """React to an entry being focused. Show an on-screen keyboard.
-
-        Args:
-            widget (Gtk.Widget): The focused entry.
-            event (Gdk.EventFocus): The focus event.
-        """
-        onboard_util.request_keyboard()
-
-    def on_unfocus_entry(
-        self, widget: Gtk.Widget, event: Gdk.EventFocus
-    ) -> None:
-        """React to an entry being unfocused. Hide the on-screen keyboard.
-
-        Args:
-            widget (Gtk.Widget): The focused entry.
-            event (Gdk.EventFocus): The focus event.
-        """
-        onboard_util.unrequest_keyboard()
+        self.register_button.connect("clicked", self.on_register_clicked)
 
     def on_entry_changed(self, entry: Gtk.Entry) -> None:
-        entry.get_style_context().remove_class("error")
+        """React to an entry being changed.
 
-    def on_log_in_clicked(self, button: Gtk.Button) -> None:
-        """React to the log in button being clicked.
+        Removes the 'error' CSS class from the entry.
 
         Args:
-            widget (Gtk.Widget): The focused entry.
-            event (Gdk.EventFocus): The focus event.
+            entry (Gtk.Entry): The changed entry
         """
-        try:
-            if auth_util.authenticate(
-                self.username_entry.get_text(), self.password_entry.get_text()
-            ):
-                onboard_util.unrequest_keyboard()
-                print("LOGGED IN")
-                ...
-
+        if entry is self.password_confirm_entry:
+            if entry.get_text() == self.password_entry.get_text():
+                entry.get_style_context().remove_class("error")
             else:
-                self.password_entry.get_style_context().add_class("error")
-                self.password_entry.grab_focus_without_selecting()
-        except ValueError as e:
-            print(e)
-            self.username_entry.get_style_context().add_class("error")
-            self.username_entry.grab_focus_without_selecting()
+                entry.get_style_context().add_class("error")
+
+    def on_register_clicked(self, button: Gtk.Button) -> None:
+        """React to the register button being clicked.
+
+        Args:
+            button (Gtk.Button): The register button
+        """
+        if self.password_entry.get_text() != self.password_confirm_entry.get_text():
+            self.password_confirm_entry.grab_focus()
+            self.password_confirm_entry.get_style_context().add_class("error")
+            return
+
+        auth_util.new_user(
+            self.username_entry.get_text(),
+            self.password_entry.get_text(),
+            self.access_level_combobox.get_active_id(),
+            self.get_toplevel().active_user,
+            self.get_toplevel().active_user_password,
+        )
+
+        if self.next_page is None:
+            self.get_toplevel().go_back()
+        else:
+            self.get_toplevel().switch_page(
+                self.next_page, *self.next_page_args, **self.next_page_kwargs
+            )
+
+        if self.get_toplevel().active_user is None:
+            self.get_toplevel().active_user = self.username_entry.get_text()
+            self.get_toplevel().active_user_password = (
+                self.password_entry.get_text()
+            )
+
+            self.get_toplevel().clear_history()
+
+    def on_accept_clicked(self, button: Gtk.Button) -> None:
+        """React to the accept button being clicked.
+
+        Args:
+            button (Gtk.Button): The accept button
+        """
+        raise NotImplementedError()
 
 
-# Make LoginPage accessible via .ui files
-GObject.type_ensure(LoginPage)
+# Make RegisterPage accessible via .ui files
+GObject.type_ensure(RegisterPage)

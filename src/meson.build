@@ -27,10 +27,15 @@ configure_file(
 
 liegensteuerung_sources = [
   '__init__.py',
+
+  'main.py',
+  'window.py',
+
+  'page.py',
+
   'edit_patient_page.py',
   'edit_program_page.py',
   'login_page.py',
-  'main.py',
   'pain_evaluation_page.py',
   'register_page.py',
   'select_patient_page.py',
@@ -38,9 +43,9 @@ liegensteuerung_sources = [
   'set_up_page.py',
   'treatment_page.py',
   'users_page.py',
-  'window.py',
 
   'auth_util.py',
+  'patient_util.py',
   'onboard_util.py',
 ]
 

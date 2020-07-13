@@ -17,7 +17,6 @@ KEYBOARD_REACT_DELAY: float = 0.2
 
 def request_keyboard() -> None:
     """Request the virtual keyboard to be shown."""
-    print("request")
     global keyboard_needed, update_timer
 
     keyboard_needed = True
@@ -34,7 +33,6 @@ def request_keyboard() -> None:
 
 def unrequest_keyboard() -> None:
     """Request the virtual keyboard to be hidden."""
-    print("unrequest")
     global keyboard_needed, update_timer
 
     keyboard_needed = False
@@ -51,7 +49,6 @@ def unrequest_keyboard() -> None:
 
 def toggle_keyboard_request() -> None:
     """Toggle whether the virtual keyboard is requested."""
-    print("toggle_request")
     global keyboard_needed, update_timer
 
     keyboard_needed = not keyboard_shown
@@ -79,7 +76,6 @@ def show_keyboard() -> None:
     """Show the virtual keyboard."""
     global keyboard_shown
 
-    print("show")
     call(
         (
             "dbus-send",
@@ -100,7 +96,6 @@ def hide_keyboard() -> None:
     """Hide the virtual keyboard."""
     global keyboard_shown
 
-    print("hide")
     call(
         (
             "dbus-send",
