@@ -1,16 +1,18 @@
 """The main Liegensteuerung window."""
 
-from typing import Union, Optional, List
+from typing import Union, Optional, List, Dict, Iterable, Any
 
-from gi.repository import Gtk  # type: ignore
+from gi.repository import GLib, Gtk  # type: ignore
 
 from . import auth_util
+from . import patient_util
 from . import page
 from . import (
     register_page,
     login_page,
     select_patient_page,
     edit_patient_page,
+    pain_evaluation_page,
     set_up_page,
 )
 
@@ -23,8 +25,8 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
     Attributes:
         page_stack (Union[Gtk.Template.Child, Gtk.Stack]): The Gtk.Stack
             containing all pages.
-        header_bar_revealer (Union[Gtk.Template.Child, Gtk.Stack]): The Gtk.Stack
-            containing all pages.
+        header_bar_revealer (Union[Gtk.Template.Child, Gtk.Revealer]): A
+            Gtk.Revealer that contains the header bar.
 
         active_user (str, optional): The user that is loghged in or None if no
             user is logged in.
@@ -38,22 +40,36 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
         Gtk.Template.Child, Gtk.Revealer
     ] = Gtk.Template.Child()
 
-    back_button: Union[Gtk.Template.Child, Gtk.Stack] = Gtk.Template.Child()
+    no_patient_info_bar: Union[
+        Gtk.Template.Child, Gtk.InfoBar
+    ] = Gtk.Template.Child()
 
-    patient_button: Union[Gtk.Template.Child, Gtk.Stack] = Gtk.Template.Child()
+    back_button: Union[Gtk.Template.Child, Gtk.Button] = Gtk.Template.Child()
+    back_button_revealer: Union[
+        Gtk.Template.Child, Gtk.Revealer
+    ] = Gtk.Template.Child()
+
+    patient_button: Union[
+        Gtk.Template.Child, Gtk.Button
+    ] = Gtk.Template.Child()
 
     shutdown_button: Union[
-        Gtk.Template.Child, Gtk.Stack
+        Gtk.Template.Child, Gtk.Button
     ] = Gtk.Template.Child()
-    log_out_button: Union[Gtk.Template.Child, Gtk.Stack] = Gtk.Template.Child()
+    log_out_button: Union[
+        Gtk.Template.Child, Gtk.Button
+    ] = Gtk.Template.Child()
 
-    users_button: Union[Gtk.Template.Child, Gtk.Stack] = Gtk.Template.Child()
+    users_button: Union[Gtk.Template.Child, Gtk.Button] = Gtk.Template.Child()
     change_password_button: Union[
-        Gtk.Template.Child, Gtk.Stack
+        Gtk.Template.Child, Gtk.Button
     ] = Gtk.Template.Child()
+
+    title_label: Union[Gtk.Template.Child, Gtk.Label] = Gtk.Template.Child()
 
     active_user: Optional[str] = None
     active_user_password: Optional[str] = None
+    active_patient: Optional[patient_util.Patient] = None
 
     page_history: List[str] = []
 
@@ -78,62 +94,116 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
         self.connect_after("show", self.on_show)
 
     def on_show(self, widget) -> None:
-        """
-        React to being shown.
+        """React to being shown.
 
         At this point, all Gtk.Template.Child objects should have been replaced
             by actual Gtk.Widgets. Therefore, signals are connected here.
         """
         self.back_button.connect("clicked", self.on_back_button_clicked)
+        self.no_patient_info_bar.connect("response", self.on_info_bar_response)
 
-    def switch_page(
-        self,
-        page_name: str,
-        animation_dir: Optional[int] = 1,
-        *args,
-        **kwargs,
-    ) -> None:
+    def switch_page(self, page_name: str, *args, **kwargs,) -> None:
         """Switch the active page.
 
         Args:
-            page_name (str): The page to switch to. Names as in window.ui
-            animation_dir (int, optional): -1 for slide to right,
-                0 for default, 1 for slide to left, None for none.
-                Defaults to 1
+            page_name (str): The Page to switch to. Names as in window.ui
 
-            *args: Arguments to pass to the page
-            **kwargs: Keyword arguments to pass to the page
+            *args: Arguments to pass to Page.prepare()
+            **kwargs: Keyword arguments to pass to Page.prepare()
         """
-        # TODO: Set animation direction
-
-        page = self.page_stack.get_child_by_name(page_name)
-        page.prepare(*args, **kwargs)
-        self.header_bar_revealer.set_reveal_child(page.header_visible)
-
-        self.page_stack.set_visible_child_name(page_name)
 
         self.page_history.append(page_name)
 
-        if len(self.page_history) >= 1:
-            self.back_button.show()
+        self._show_page(
+            page_name, animation_direction=1, args=args, kwargs=kwargs
+        )
 
     def go_back(self) -> None:
-        """Switch the active page to the last visited page."""
+        """Switch to the last visited Page."""
         self.page_stack.set_transition_type(
             Gtk.StackTransitionType.SLIDE_RIGHT
         )
 
         self.page_history.pop()
 
+        self._show_page(
+            self.page_history[-1], animation_direction=-1, prepare=False
+        )
+
+    def _show_page(
+        self,
+        page_name: str,
+        animation_direction: int = 1,
+        prepare: bool = True,
+        args: Iterable[Any] = [],
+        kwargs: Dict[str, Any] = {},
+    ) -> None:
+        """Show a Page and adapt the header bar.
+
+        This will not do any history operations
+
+        Args:
+            page_name (str): The Page to switch to. Names as in window.ui
+            animation_dir (int, optional): -1 for slide to right,
+                0 for none, 1 for slide to left
+                Defaults to 1
+            prepare (bool, optional): Whether to call Page.prepare(). Defaults
+                to True
+            args (Iterable[Any], optional): Arguments to pass to Page.prepare()
+            kwargs (Dict[str, Any], optional): Keyword arguments to pass to
+                Page.prepare()
+        """
+        if animation_direction == -1:
+            self.page_stack.set_transition_type(
+                Gtk.StackTransitionType.SLIDE_RIGHT
+            )
+        elif animation_direction == 0:
+            self.page_stack.set_transition_type(Gtk.StackTransitionType.NONE)
+        elif animation_direction == 1:
+            self.page_stack.set_transition_type(
+                Gtk.StackTransitionType.SLIDE_LEFT
+            )
+        else:
+            raise ValueError("animation_direction must be -1, 0 or 1")
+
+        next_page: page.Page = self.page_stack.get_child_by_name(page_name)
+
+        if next_page is None:
+            raise ValueError(f'"{page_name}" is not a valid Page name')
+
+        if prepare:
+            next_page.prepare(*args, **kwargs)
+
+        # Show Page
         self.page_stack.set_visible_child_name(self.page_history[-1])
 
-        if len(self.page_history) <= 1:
-            self.back_button.hide()
+        # Adapt header bar
+        self.header_bar_revealer.set_reveal_child(next_page.header_visible)
+
+        self.title_label.set_text(next_page.title)
+
+        # Change button visibility
+        self.back_button_revealer.set_reveal_child(len(self.page_history) > 1)
+        print("HISTORY_LENGTH:", len(self.page_history), len(self.page_history) > 1)
+
+        self.log_out_button.set_visible(self.active_user is not None)
+
+        is_admin: bool = (
+            self.active_user is not None
+            and auth_util.get_access_level(self.active_user) == "admin"
+        )
+        self.users_button.set_visible(is_admin)
+        self.change_password_button.set_visible(not is_admin)
+
+        self.patient_button.set_visible(
+            self.active_patient is not None
+            and not next_page.is_patient_info_page
+        )
 
     def clear_history(self) -> None:
         """Clear the page history."""
         self.page_history = [self.page_stack.get_visible_child_name()]
-        self.back_button.hide()
+        self.back_button_revealer.set_reveal_child(len(self.page_history) > 1)
 
     def on_back_button_clicked(self, button: Gtk.Button) -> None:
         """React to the back button being clicked. Go back.
@@ -142,3 +212,15 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
             button (Gtk.Button): The clicked button
         """
         self.go_back()
+
+    def on_info_bar_response(self, info_bar: Gtk.InfoBar, response: int):
+        """React to the user responding to a Gtk.InfoBar.
+
+        Args:
+            info_bar (Gtk.InfoBar): The Gtk.InfoBar that received the response
+            response (int): The response id (Gtk.ResponseType)
+        """
+        if response == Gtk.ResponseType.CLOSE:
+            info_bar.set_revealed(False)
+            GLib.timeout_add(250, info_bar.set_visible, False)
+

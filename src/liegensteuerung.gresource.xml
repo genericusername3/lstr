@@ -43,4 +43,8 @@
   <gresource prefix="/de/linusmathieu/Liegensteuerung">
     <file>users_page.ui</file>
   </gresource>
+
+  <gresource prefix="/de/linusmathieu/Liegensteuerung">
+    <file>liegensteuerung.css</file>
+  </gresource>
 </gresources>

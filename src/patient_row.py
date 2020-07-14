@@ -4,9 +4,10 @@ Ideal for viewing patients in lists, because all columns are added to a
 Gtk.SizeGroup
 """
 
-from typing import Dict, Optional
+from typing import Dict, Optional, List
 
 from datetime import datetime
+from fuzzywuzzy import fuzz
 
 from gi.repository import GLib, Gtk  # type: ignore
 
@@ -43,7 +44,18 @@ class PatientRow(Gtk.Box):
             patient (patient_util.Patient): The patient to represent
 
         """
-        super().__init__(orientation=Gtk.Orientation.HORIZONTAL)
+        super().__init__(orientation=Gtk.Orientation.VERTICAL)
+
+        h_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
+
+        self.pack_start(h_box, expand=True, fill=True, padding=0)
+
+        self.pack_start(
+            Gtk.Separator(orientation=Gtk.Orientation.HORIZONTAL),
+            expand=True,
+            fill=True,
+            padding=0,
+        )
 
         self.patient = patient
 
@@ -69,9 +81,9 @@ class PatientRow(Gtk.Box):
 
             size_groups[column].add_widget(cell_label)
 
-            self.pack_start(cell_label, expand=True, fill=True, padding=4)
+            h_box.pack_start(cell_label, expand=True, fill=True, padding=4)
 
-            self.pack_start(
+            h_box.pack_start(
                 Gtk.Separator(orientation=Gtk.Orientation.VERTICAL),
                 expand=False,
                 fill=False,
@@ -84,14 +96,39 @@ class PatientRow(Gtk.Box):
         info_button: Gtk.Button = Gtk.Button.new_from_icon_name(
             "dialog-information-symbolic", Gtk.IconSize.BUTTON
         )
-        info_button.set_size_request(40, 40)
+        info_button.set_size_request(40, 48)
         info_button.set_border_width(2)
 
         size_groups["INFO_BUTTON"].add_widget(info_button)
 
-        self.pack_start(info_button, expand=False, fill=False, padding=4)
+        h_box.pack_start(info_button, expand=False, fill=False, padding=4)
 
         self.show_all()
+
+    @staticmethod
+    def matches_query(list_box_row: Gtk.ListBoxRow, query: str) -> bool:
+        """Return if a Gtk.ListBoxRow with a PatientRow matches a query.
+
+        Args:
+            list_box_row (Gtk.ListBoxRow): The Gtk.ListboxRow. Must contain a
+                PatientRow
+            query (str): The query
+        """
+        patient: patient_util.Patient = list_box_row.get_child().patient
+
+        ratios: List[int] = []
+        patient_string: str = " ".join(
+            (str(patient.patient_id), patient.first_name, patient.last_name,)
+        )
+
+        words: List[str] = query.split(" ")
+
+        for word in words:
+            ratios.append(fuzz.partial_ratio(query, patient_string))
+
+            print(query, ":", word, ":", patient_string, ":", ratios[-1])
+
+        return max(ratios) > 80
 
 
 class PatientHeader(Gtk.Box):
@@ -110,6 +147,8 @@ class PatientHeader(Gtk.Box):
         self.set_margin_end(2)
 
         for column in patient_util.DISPLAY_COLUMNS:
+            if size_groups.get(column, None) is None:
+                size_groups[column] = Gtk.SizeGroup(Gtk.SizeGroupMode.BOTH)
 
             text = COLUMN_HEADER_TRANSLATIONS[column]
 
@@ -131,6 +170,9 @@ class PatientHeader(Gtk.Box):
                 padding=4,
             )
 
+        if size_groups.get("INFO_BUTTON", None) is None:
+            size_groups["INFO_BUTTON"] = Gtk.SizeGroup(Gtk.SizeGroupMode.BOTH)
+
         info_button_placeholder: Gtk.Button = Gtk.Box()
         info_button_placeholder.set_size_request(40, 40)
         info_button_placeholder.set_border_width(2)
@@ -142,8 +184,3 @@ class PatientHeader(Gtk.Box):
         )
 
         self.show_all()
-
-
-def header_func(row: Gtk.ListBoxRow, before: Optional[Gtk.ListBoxRow]):
-    if before is None:
-        row.set_header(PatientHeader())

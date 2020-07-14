@@ -9,14 +9,16 @@ Attributes:
     SORT_ORDERS (set): Description
 """
 
-from typing import Generator, Optional, Iterable
+from typing import Generator, Optional, Iterable, List
 
 import os
+
+from threading import Thread
 
 import sqlite3
 import atexit
 
-from gi.repository import GObject, Gio  # type: ignore
+from gi.repository import GObject, GLib, Gio  # type: ignore
 
 
 try:
@@ -179,7 +181,6 @@ class Patient(GObject.Object):
         for patient_row in cursor.execute(
             "SELECT " + ", ".join(COLUMNS) + " FROM patients"
         ).fetchall():
-            print(patient_row)
             yield Patient(*patient_row)
 
     @staticmethod
@@ -211,18 +212,44 @@ class Patient(GObject.Object):
         """Convert an iterable of Patient objects into a Gio.ListStore."""
         model: Gio.ListStore = Gio.ListStore()
 
-        for patient in patient_iter:
+        patient_list: List[Patient] = list(patient_iter)
+
+        def add_patients(patient_list: List[Patient]):
+            if len(patient_list):
+                for patient in patient_list[:10]:
+                    model.append(patient)
+                GLib.timeout_add(20, add_patients, patient_list[10:])
+
+        for patient in patient_list[:50]:
             model.append(patient)
+
+        # add_patients(patient_list[50:])
 
         return model
 
 
 if __name__ == "__main__":
-    Patient.add(
-        first_name="AAAA",
-        last_name="EEEE",
-        birthday="1970-01-01",
-        gender="Männlich",
-        weight=85.4,
-        comment="",
-    )
+    import names  # type: ignore
+    import random
+
+    for i in range(500):
+        first_name: str
+        gender: str
+
+        if random.randint(0, 1) == 1:
+            first_name = names.get_first_name(gender='male')
+            gender = "Männlich"
+        else:
+            first_name = names.get_first_name(gender='female')
+            gender = "Weiblich"
+
+        Patient.add(
+            first_name=first_name,
+            last_name=names.get_last_name(),
+            birthday="1970-01-01",
+            gender=gender,
+            weight=65 + (random.randint(0, 200) / 10.0),
+            comment="",
+        )
+
+        print("added " + first_name)

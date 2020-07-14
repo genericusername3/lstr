@@ -59,6 +59,8 @@ class RegisterPage(Gtk.Box, Page, metaclass=PageClass):
     next_page_args: Iterable[Any] = ()
     next_page_kwargs: Dict[str, Any] = {}
 
+    username: Optional[str] = None
+
     def __init__(self, **kwargs):
         """Create a new RegisterPage.
 
@@ -74,20 +76,24 @@ class RegisterPage(Gtk.Box, Page, metaclass=PageClass):
         access_level: Optional[str] = "user",
         next_page: Optional[str] = None,
         next_page_args: Iterable[Any] = (),
-        next_page_kwargs: Dict[str, Any] = {},
-    ):
+        next_page_kwargs: Dict[str, Any] = {}
+    ) -> None:
         """Prepare the page to be shown.
 
         Args:
-            new_user (bool): Whether the RegisterPage is used to create a new
-                user (as opposed to changing the password)
-            username (str, optional): The user whose password is being changed.
-                Ignored if new_user is True. Defaults to None
-            access_level (str, optional): The default access level for a new
-                user. Ignored if new_user is False. See auth_util for valid
-                access level names. Defaults to "user"
-            next_page (str, optional): The page to switch to on completion.
-                None to go back. Defaults to None
+            new_user (bool, optional): Whether the RegisterPage is used to
+                create a new user (as opposed to changing the password)
+            username (Optional[str], optional): The user whose password is
+                being changed. Ignored if new_user is True. Defaults to None
+            access_level (Optional[str], optional): The default access level
+                for a new user. Ignored if new_user is False. See auth_util for
+                valid access level names. Defaults to "user"
+            next_page (Optional[str], optional): The page to switch to on
+                completion. None to go back. Defaults to None
+            next_page_args (Iterable[Any], optional): Arguments to pass to the
+                next page
+            next_page_kwargs (Dict[str, Any], optional): Keyword arguments to
+                pass to the next page
         """
         self.username_entry.set_visible(new_user)
         self.username_entry.set_text("")
@@ -107,6 +113,7 @@ class RegisterPage(Gtk.Box, Page, metaclass=PageClass):
         self.accept_button.set_visible(not new_user)
 
         self.next_page = next_page
+        self.username = username
 
     def do_parent_set(self, old_parent: Optional[Gtk.Widget]) -> None:
         """React to the parent being set.
@@ -158,7 +165,10 @@ class RegisterPage(Gtk.Box, Page, metaclass=PageClass):
         Args:
             button (Gtk.Button): The register button
         """
-        if self.password_entry.get_text() != self.password_confirm_entry.get_text():
+        if (
+            self.password_entry.get_text()
+            != self.password_confirm_entry.get_text()
+        ):
             self.password_confirm_entry.grab_focus()
             self.password_confirm_entry.get_style_context().add_class("error")
             return
@@ -192,7 +202,49 @@ class RegisterPage(Gtk.Box, Page, metaclass=PageClass):
         Args:
             button (Gtk.Button): The accept button
         """
-        raise NotImplementedError()
+        if (
+            self.password_entry.get_text()
+            != self.password_confirm_entry.get_text()
+        ):
+            self.password_confirm_entry.grab_focus()
+            self.password_confirm_entry.get_style_context().add_class("error")
+            return
+
+        if (
+            self.username is not None
+            and self.get_toplevel().active_user is not None
+        ):
+            if self.get_toplevel().active_user == self.username:
+                auth_util.modify_password(
+                    self.username,
+                    self.get_toplevel().active_user_password,
+                    self.password_entry.get_text(),
+                )
+            elif (
+                auth_util.get_access_level(self.get_toplevel().active_user)
+                == "admin"
+            ):
+                auth_util.modify_password_from_admin(
+                    self.username,
+                    self.password_entry.get_text(),
+                    self.get_toplevel().active_user,
+                    self.get_toplevel().active_user_password,
+                )
+            else:
+                auth_util.modify_password(
+                    self.get_toplevel().active_user,
+                    self.get_toplevel().active_user_password,
+                    self.password_entry.get_text(),
+                )
+        else:
+            raise ValueError("A user must be logged in to change a password")
+
+        if self.next_page is None:
+            self.get_toplevel().go_back()
+        else:
+            self.get_toplevel().switch_page(
+                self.next_page, *self.next_page_args, **self.next_page_kwargs
+            )
 
 
 # Make RegisterPage accessible via .ui files

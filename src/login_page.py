@@ -43,7 +43,7 @@ class LoginPage(Gtk.Box, Page, metaclass=PageClass):
         """
         super().__init__(**kwargs)
 
-    def prepare(self):
+    def prepare(self) -> None:
         """Prepare the page to be shown."""
         self.username_entry.set_text("")
         self.password_entry.set_text("")

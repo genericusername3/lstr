@@ -252,7 +252,7 @@
         <property name="can_focus">False</property>
         <property name="orientation">vertical</property>
         <child>
-          <object class="GtkInfoBar" id="patient_should_not_warning_bar">
+          <object class="GtkInfoBar" id="no_patient_info_bar">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="spacing">12</property>
@@ -371,6 +371,15 @@
                 <property name="position">4</property>
               </packing>
             </child>
+            <child>
+              <object class="PainEvaluationPage">
+                <property name="visible">True</property>
+              </object>
+              <packing>
+                <property name="name">pain_evaluation</property>
+                <property name="position">5</property>
+              </packing>
+            </child>
           </object>
           <packing>
             <property name="expand">True</property>
@@ -406,25 +415,6 @@
                   <attribute name="scale" value="1.333"/>
                 </attributes>
               </object>
-              <packing>
-                <property name="position">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="back_button">
-                <property name="width_request">40</property>
-                <property name="height_request">48</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="focus_on_click">False</property>
-                <property name="receives_default">True</property>
-                <property name="border_width">0</property>
-                <property name="image">back_icon</property>
-                <property name="always_show_image">True</property>
-              </object>
-              <packing>
-                <property name="position">1</property>
-              </packing>
             </child>
             <child>
               <object class="GtkMenuButton" id="more_button">
@@ -440,6 +430,28 @@
               </object>
               <packing>
                 <property name="pack_type">end</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkRevealer" id="back_button_revealer">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="transition_type">slide-right</property>
+                <child>
+                  <object class="GtkButton" id="back_button">
+                    <property name="width_request">40</property>
+                    <property name="height_request">48</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="focus_on_click">False</property>
+                    <property name="receives_default">False</property>
+                    <property name="border_width">0</property>
+                    <property name="image">back_icon</property>
+                    <property name="always_show_image">True</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
                 <property name="position">1</property>
               </packing>
             </child>
