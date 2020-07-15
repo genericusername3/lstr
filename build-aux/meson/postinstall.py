@@ -34,5 +34,6 @@ if not destdir:
             "numpy",
             "opencv-python",
             "fuzzywuzzy[speedup]",
+            "passwordmeter",
         ]
     )

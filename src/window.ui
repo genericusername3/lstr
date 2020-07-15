@@ -264,12 +264,6 @@
                 <child>
                   <placeholder/>
                 </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -286,6 +280,7 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="icon_name">dialog-warning-symbolic</property>
+                    <property name="icon_size">1</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -312,9 +307,6 @@
                 <property name="position">0</property>
               </packing>
             </child>
-            <child>
-              <placeholder/>
-            </child>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -323,61 +315,134 @@
           </packing>
         </child>
         <child>
-          <object class="GtkStack" id="page_stack">
+          <object class="GtkInfoBar" id="error_bar">
+            <property name="can_focus">False</property>
+            <property name="message_type">error</property>
+            <property name="show_close_button">True</property>
+            <property name="revealed">False</property>
+            <child internal-child="action_area">
+              <object class="GtkButtonBox">
+                <property name="can_focus">False</property>
+                <property name="spacing">6</property>
+                <property name="layout_style">end</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child internal-child="content_area">
+              <object class="GtkBox">
+                <property name="can_focus">False</property>
+                <property name="spacing">16</property>
+                <child>
+                  <object class="GtkImage">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="icon_name">dialog-error-symbolic</property>
+                    <property name="icon_size">1</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="error_bar_label">
+                    <property name="name">error_bar_label</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkOverlay" id="main_area_overlay">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="transition_type">slide-left-right</property>
             <child>
-              <object class="RegisterPage">
+              <object class="GtkStack" id="page_stack">
                 <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="transition_type">slide-left-right</property>
+                <child>
+                  <object class="RegisterPage">
+                    <property name="visible">True</property>
+                  </object>
+                  <packing>
+                    <property name="name">register</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="LoginPage">
+                    <property name="visible">True</property>
+                  </object>
+                  <packing>
+                    <property name="name">login</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="EditPatientPage">
+                    <property name="visible">True</property>
+                  </object>
+                  <packing>
+                    <property name="name">edit_patient</property>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="SetupPage">
+                    <property name="visible">True</property>
+                  </object>
+                  <packing>
+                    <property name="name">setup</property>
+                    <property name="position">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="SelectPatientPage">
+                    <property name="visible">True</property>
+                  </object>
+                  <packing>
+                    <property name="name">select_patient</property>
+                    <property name="position">4</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="PainEvaluationPage">
+                    <property name="visible">True</property>
+                  </object>
+                  <packing>
+                    <property name="name">pain_evaluation</property>
+                    <property name="position">5</property>
+                  </packing>
+                </child>
               </object>
               <packing>
-                <property name="name">register</property>
-              </packing>
-            </child>
-            <child>
-              <object class="LoginPage">
-                <property name="visible">True</property>
-              </object>
-              <packing>
-                <property name="name">login</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="EditPatientPage">
-                <property name="visible">True</property>
-              </object>
-              <packing>
-                <property name="name">edit_patient</property>
-                <property name="position">2</property>
-              </packing>
-            </child>
-            <child>
-              <object class="SetupPage">
-                <property name="visible">True</property>
-              </object>
-              <packing>
-                <property name="name">setup</property>
-                <property name="position">3</property>
-              </packing>
-            </child>
-            <child>
-              <object class="SelectPatientPage">
-                <property name="visible">True</property>
-              </object>
-              <packing>
-                <property name="name">select_patient</property>
-                <property name="position">4</property>
-              </packing>
-            </child>
-            <child>
-              <object class="PainEvaluationPage">
-                <property name="visible">True</property>
-              </object>
-              <packing>
-                <property name="name">pain_evaluation</property>
-                <property name="position">5</property>
+                <property name="index">-1</property>
               </packing>
             </child>
           </object>
@@ -394,6 +459,7 @@
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="transition_type">none</property>
+        <property name="transition_duration">200</property>
         <child>
           <object class="GtkHeaderBar" id="header_bar">
             <property name="visible">True</property>
@@ -418,7 +484,7 @@
             </child>
             <child>
               <object class="GtkMenuButton" id="more_button">
-                <property name="width_request">40</property>
+                <property name="width_request">48</property>
                 <property name="height_request">48</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -437,9 +503,10 @@
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="transition_type">slide-right</property>
+                <property name="transition_duration">100</property>
                 <child>
                   <object class="GtkButton" id="back_button">
-                    <property name="width_request">40</property>
+                    <property name="width_request">48</property>
                     <property name="height_request">48</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
@@ -456,16 +523,25 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="patient_button">
-                <property name="width_request">40</property>
-                <property name="height_request">48</property>
+              <object class="GtkRevealer" id="patient_button_revealer">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="focus_on_click">False</property>
-                <property name="receives_default">True</property>
-                <property name="border_width">0</property>
-                <property name="image">patient_icon</property>
-                <property name="always_show_image">True</property>
+                <property name="can_focus">False</property>
+                <property name="transition_type">crossfade</property>
+                <property name="transition_duration">100</property>
+                <child>
+                  <object class="GtkButton" id="patient_button">
+                    <property name="label" translatable="yes">Patient...</property>
+                    <property name="width_request">48</property>
+                    <property name="height_request">48</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="focus_on_click">False</property>
+                    <property name="receives_default">True</property>
+                    <property name="border_width">0</property>
+                    <property name="image">patient_icon</property>
+                    <property name="always_show_image">True</property>
+                  </object>
+                </child>
               </object>
               <packing>
                 <property name="pack_type">end</property>
@@ -477,4 +553,34 @@
       </object>
     </child>
   </template>
+  <object class="GtkImage" id="shutdown_icon_compact">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="icon_name">system-shutdown-symbolic</property>
+  </object>
+  <object class="GtkRevealer" id="shutdown_compact_revealer">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="halign">end</property>
+    <property name="valign">start</property>
+    <property name="margin_start">8</property>
+    <property name="margin_end">8</property>
+    <property name="margin_top">8</property>
+    <property name="margin_bottom">8</property>
+    <property name="transition_type">crossfade</property>
+    <property name="transition_duration">100</property>
+    <property name="reveal_child">True</property>
+    <child>
+      <object class="GtkButton" id="shutdown_button_compact">
+        <property name="width_request">40</property>
+        <property name="height_request">40</property>
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="focus_on_click">False</property>
+        <property name="receives_default">True</property>
+        <property name="image">shutdown_icon_compact</property>
+        <property name="always_show_image">True</property>
+      </object>
+    </child>
+  </object>
 </interface>

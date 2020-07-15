@@ -96,8 +96,9 @@ class PatientRow(Gtk.Box):
         info_button: Gtk.Button = Gtk.Button.new_from_icon_name(
             "dialog-information-symbolic", Gtk.IconSize.BUTTON
         )
-        info_button.set_size_request(40, 48)
+        info_button.set_size_request(48, 48)
         info_button.set_border_width(2)
+        info_button.connect("clicked", self.on_info_clicked)
 
         size_groups["INFO_BUTTON"].add_widget(info_button)
 
@@ -129,6 +130,14 @@ class PatientRow(Gtk.Box):
             print(query, ":", word, ":", patient_string, ":", ratios[-1])
 
         return max(ratios) > 80
+
+    def on_info_clicked(self, button: Gtk.Button) -> None:
+        """React to the row's info button being clicked.
+
+        Args:
+            button (Gtk.Button): The clicked button
+        """
+        self.get_toplevel().switch_page("edit_patient", patient=self.patient)
 
 
 class PatientHeader(Gtk.Box):

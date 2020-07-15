@@ -44,6 +44,13 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
         Gtk.Template.Child, Gtk.InfoBar
     ] = Gtk.Template.Child()
 
+    error_bar: Union[
+        Gtk.Template.Child, Gtk.InfoBar
+    ] = Gtk.Template.Child()
+    error_bar_label: Union[
+        Gtk.Template.Child, Gtk.Label
+    ] = Gtk.Template.Child()
+
     back_button: Union[Gtk.Template.Child, Gtk.Button] = Gtk.Template.Child()
     back_button_revealer: Union[
         Gtk.Template.Child, Gtk.Revealer
@@ -51,6 +58,10 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
 
     patient_button: Union[
         Gtk.Template.Child, Gtk.Button
+    ] = Gtk.Template.Child()
+
+    patient_button_revealer: Union[
+        Gtk.Template.Child, Gtk.Revealer
     ] = Gtk.Template.Child()
 
     shutdown_button: Union[
@@ -66,6 +77,16 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
     ] = Gtk.Template.Child()
 
     title_label: Union[Gtk.Template.Child, Gtk.Label] = Gtk.Template.Child()
+
+    main_area_overlay: Union[
+        Gtk.Template.Child, Gtk.Overlay
+    ] = Gtk.Template.Child()
+    shutdown_button_compact: Union[
+        Gtk.Template.Child, Gtk.Button
+    ] = Gtk.Template.Child()
+    shutdown_compact_revealer: Union[
+        Gtk.Template.Child, Gtk.Button
+    ] = Gtk.Template.Child()
 
     active_user: Optional[str] = None
     active_user_password: Optional[str] = None
@@ -99,8 +120,13 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
         At this point, all Gtk.Template.Child objects should have been replaced
             by actual Gtk.Widgets. Therefore, signals are connected here.
         """
-        self.back_button.connect("clicked", self.on_back_button_clicked)
+        self.back_button.connect("clicked", self.on_back_clicked)
+        self.patient_button.connect("clicked", self.on_patient_clicked)
+
         self.no_patient_info_bar.connect("response", self.on_info_bar_response)
+        self.error_bar.connect("response", self.on_info_bar_response)
+
+        self.main_area_overlay.add_overlay(self.shutdown_compact_revealer)
 
     def switch_page(self, page_name: str, *args, **kwargs,) -> None:
         """Switch the active page.
@@ -127,7 +153,10 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
         self.page_history.pop()
 
         self._show_page(
-            self.page_history[-1], animation_direction=-1, prepare=False
+            self.page_history[-1],
+            animation_direction=-1,
+            prepare=False,
+            prepare_return=True,
         )
 
     def _show_page(
@@ -135,6 +164,7 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
         page_name: str,
         animation_direction: int = 1,
         prepare: bool = True,
+        prepare_return: bool = False,
         args: Iterable[Any] = [],
         kwargs: Dict[str, Any] = {},
     ) -> None:
@@ -173,18 +203,25 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
 
         if prepare:
             next_page.prepare(*args, **kwargs)
+        if prepare_return:
+            next_page.prepare_return()
 
         # Show Page
         self.page_stack.set_visible_child_name(self.page_history[-1])
 
+        # Hide previous errors
+        self.error_bar.set_revealed(False)
+
         # Adapt header bar
         self.header_bar_revealer.set_reveal_child(next_page.header_visible)
+        self.shutdown_compact_revealer.set_reveal_child(
+            not next_page.header_visible
+        )
 
         self.title_label.set_text(next_page.title)
 
         # Change button visibility
         self.back_button_revealer.set_reveal_child(len(self.page_history) > 1)
-        print("HISTORY_LENGTH:", len(self.page_history), len(self.page_history) > 1)
 
         self.log_out_button.set_visible(self.active_user is not None)
 
@@ -195,7 +232,7 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
         self.users_button.set_visible(is_admin)
         self.change_password_button.set_visible(not is_admin)
 
-        self.patient_button.set_visible(
+        self.patient_button_revealer.set_reveal_child(
             self.active_patient is not None
             and not next_page.is_patient_info_page
         )
@@ -205,13 +242,32 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
         self.page_history = [self.page_stack.get_visible_child_name()]
         self.back_button_revealer.set_reveal_child(len(self.page_history) > 1)
 
-    def on_back_button_clicked(self, button: Gtk.Button) -> None:
+    def show_error(self, message: str) -> None:
+        """Show an error message to the user.
+
+        Args:
+            message (str): The message to show
+        """
+        self.error_bar_label.set_text(message)
+
+        self.error_bar.set_visible(True)
+        self.error_bar.set_revealed(True)
+
+    def on_back_clicked(self, button: Gtk.Button) -> None:
         """React to the back button being clicked. Go back.
 
         Args:
             button (Gtk.Button): The clicked button
         """
         self.go_back()
+
+    def on_patient_clicked(self, button: Gtk.Button) -> None:
+        """React to the "Patient..." button being clicked.
+
+        Args:
+            button (Gtk.Button): The clicked button
+        """
+        self.switch_page("edit_patient", patient=self.active_patient)
 
     def on_info_bar_response(self, info_bar: Gtk.InfoBar, response: int):
         """React to the user responding to a Gtk.InfoBar.
@@ -223,4 +279,3 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
         if response == Gtk.ResponseType.CLOSE:
             info_bar.set_revealed(False)
             GLib.timeout_add(250, info_bar.set_visible, False)
-

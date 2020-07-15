@@ -49,6 +49,10 @@ class Page(abc.ABC):
         """
         raise NotImplementedError
 
+    def prepare_return(self) -> None:
+        """Prepare the page to be shown when returning from another page."""
+        pass
+
     def on_focus_entry(
         self, widget: Gtk.Widget, event: Gdk.EventFocus
     ) -> None:

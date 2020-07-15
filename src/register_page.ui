@@ -18,7 +18,6 @@
         <property name="margin_top">128</property>
         <property name="row_spacing">5</property>
         <property name="column_spacing">7</property>
-        <property name="row_homogeneous">True</property>
         <property name="column_homogeneous">True</property>
         <child>
           <object class="GtkEntry" id="username_entry">
@@ -59,7 +58,7 @@
             <property name="width_chars">24</property>
             <property name="progress_pulse_step">0</property>
             <property name="primary_icon_name">dialog-password-symbolic</property>
-            <property name="placeholder_text" translatable="yes">Passwort</property>
+            <property name="placeholder_text" translatable="yes">Passwort wiederholen</property>
             <property name="input_purpose">password</property>
           </object>
           <packing>

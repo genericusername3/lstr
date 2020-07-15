@@ -35,6 +35,7 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
     __gtype_name__ = "SetupPage"
 
     header_visible: bool = True
+    title: str = "Einrichten"
 
     camera_drawing_area: Union[
         Gtk.Template.Child, Gtk.DrawingArea
@@ -45,6 +46,11 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
     cam_available: bool = True
 
     def __init__(self, **kwargs):
+        """Create a new SetupPage.
+
+        Args:
+            **kwargs: Arguments passed on to Gtk.Box
+        """
         super().__init__(**kwargs)
 
         read_thread = Thread(target=self.read_camera_input_loop)
@@ -52,7 +58,7 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
 
         self.display_camera_input_loop()
 
-    def prepare(self):
+    def prepare(self) -> None:
         """Prepare the page to be shown."""
         pass
 
@@ -100,13 +106,13 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
         if self.running:
             GLib.timeout_add(1000 / 60, self.display_camera_input_loop)
 
-    def do_destroy(self):
+    def do_destroy(self) -> None:
         """When the window is destroyed, stop all threads and quit."""
         self.running = False
 
     def on_draw_camera_drawing_area(
         self, widget: Gtk.Widget, cr: cairo.Context
-    ):
+    ) -> None:
         if self.camera_frame is not None:
             pixbuf = GdkPixbuf.Pixbuf.new_from_data(
                 self.camera_frame.tobytes(),

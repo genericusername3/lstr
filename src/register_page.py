@@ -4,6 +4,8 @@ from typing import Union, Optional, Iterable, Any, Dict
 
 from gi.repository import GObject, Gtk  # type: ignore
 
+import passwordmeter  # type: ignore
+
 from .page import Page, PageClass
 
 from . import auth_util
@@ -76,7 +78,7 @@ class RegisterPage(Gtk.Box, Page, metaclass=PageClass):
         access_level: Optional[str] = "user",
         next_page: Optional[str] = None,
         next_page_args: Iterable[Any] = (),
-        next_page_kwargs: Dict[str, Any] = {}
+        next_page_kwargs: Dict[str, Any] = {},
     ) -> None:
         """Prepare the page to be shown.
 
@@ -101,7 +103,9 @@ class RegisterPage(Gtk.Box, Page, metaclass=PageClass):
         self.password_entry.set_text("")
         self.password_confirm_entry.set_text("")
 
-        self.access_level_combobox.set_visible(new_user)
+        self.access_level_combobox.set_visible(
+            new_user and access_level is None
+        )
 
         if new_user:
             self.access_level_combobox.set_active_id(access_level)
@@ -153,11 +157,41 @@ class RegisterPage(Gtk.Box, Page, metaclass=PageClass):
         Args:
             entry (Gtk.Entry): The changed entry
         """
-        if entry is self.password_confirm_entry:
+        if entry is self.password_entry:
+            entry.get_style_context().remove_class("error")
+
+            if entry.get_text() == self.password_confirm_entry.get_text():
+                self.password_confirm_entry.get_style_context().remove_class(
+                    "error"
+                )
+
+            if entry.get_text() == "":
+                entry.set_progress_fraction(0)
+            else:
+                strength, improvements = passwordmeter.test(entry.get_text())
+                entry.set_progress_fraction(strength)
+
+                if strength > 2 / 3.0:
+                    entry.get_style_context().remove_class("bad")
+                    entry.get_style_context().remove_class("medium")
+                    entry.get_style_context().add_class("good")
+                elif strength > 1 / 3.0:
+                    entry.get_style_context().remove_class("bad")
+                    entry.get_style_context().add_class("medium")
+                    entry.get_style_context().remove_class("good")
+                else:
+                    entry.get_style_context().add_class("bad")
+                    entry.get_style_context().remove_class("medium")
+                    entry.get_style_context().remove_class("good")
+
+        elif entry is self.password_confirm_entry:
             if entry.get_text() == self.password_entry.get_text():
                 entry.get_style_context().remove_class("error")
             else:
                 entry.get_style_context().add_class("error")
+
+        elif entry is self.username_entry:
+            entry.get_style_context().remove_class("error")
 
     def on_register_clicked(self, button: Gtk.Button) -> None:
         """React to the register button being clicked.
@@ -165,6 +199,16 @@ class RegisterPage(Gtk.Box, Page, metaclass=PageClass):
         Args:
             button (Gtk.Button): The register button
         """
+        for entry in (
+            self.username_entry,
+            self.password_entry,
+            self.password_confirm_entry,
+        ):
+            if entry.get_text() == "":
+                entry.grab_focus()
+                entry.get_style_context().add_class("error")
+                return
+
         if (
             self.password_entry.get_text()
             != self.password_confirm_entry.get_text()
@@ -173,28 +217,36 @@ class RegisterPage(Gtk.Box, Page, metaclass=PageClass):
             self.password_confirm_entry.get_style_context().add_class("error")
             return
 
-        auth_util.new_user(
-            self.username_entry.get_text(),
-            self.password_entry.get_text(),
-            self.access_level_combobox.get_active_id(),
-            self.get_toplevel().active_user,
-            self.get_toplevel().active_user_password,
-        )
-
-        if self.next_page is None:
-            self.get_toplevel().go_back()
-        else:
-            self.get_toplevel().switch_page(
-                self.next_page, *self.next_page_args, **self.next_page_kwargs
+        try:
+            auth_util.new_user(
+                self.username_entry.get_text(),
+                self.password_entry.get_text(),
+                self.access_level_combobox.get_active_id(),
+                self.get_toplevel().active_user,
+                self.get_toplevel().active_user_password,
             )
 
-        if self.get_toplevel().active_user is None:
-            self.get_toplevel().active_user = self.username_entry.get_text()
-            self.get_toplevel().active_user_password = (
-                self.password_entry.get_text()
-            )
+            if self.next_page is None:
+                self.get_toplevel().go_back()
+            else:
+                self.get_toplevel().switch_page(
+                    self.next_page,
+                    *self.next_page_args,
+                    **self.next_page_kwargs
+                )
 
-            self.get_toplevel().clear_history()
+            if self.get_toplevel().active_user is None:
+                self.get_toplevel().active_user = (
+                    self.username_entry.get_text()
+                )
+                self.get_toplevel().active_user_password = (
+                    self.password_entry.get_text()
+                )
+
+                self.get_toplevel().clear_history()
+
+        except ValueError as v_err:
+            self.get_toplevel().show_error(" ".join(v_err.args))
 
     def on_accept_clicked(self, button: Gtk.Button) -> None:
         """React to the accept button being clicked.
@@ -202,49 +254,68 @@ class RegisterPage(Gtk.Box, Page, metaclass=PageClass):
         Args:
             button (Gtk.Button): The accept button
         """
-        if (
-            self.password_entry.get_text()
-            != self.password_confirm_entry.get_text()
-        ):
-            self.password_confirm_entry.grab_focus()
-            self.password_confirm_entry.get_style_context().add_class("error")
-            return
-
-        if (
-            self.username is not None
-            and self.get_toplevel().active_user is not None
-        ):
-            if self.get_toplevel().active_user == self.username:
-                auth_util.modify_password(
-                    self.username,
-                    self.get_toplevel().active_user_password,
-                    self.password_entry.get_text(),
-                )
-            elif (
-                auth_util.get_access_level(self.get_toplevel().active_user)
-                == "admin"
+        try:
+            for entry in (
+                self.password_entry,
+                self.password_confirm_entry,
             ):
-                auth_util.modify_password_from_admin(
-                    self.username,
-                    self.password_entry.get_text(),
-                    self.get_toplevel().active_user,
-                    self.get_toplevel().active_user_password,
-                )
-            else:
-                auth_util.modify_password(
-                    self.get_toplevel().active_user,
-                    self.get_toplevel().active_user_password,
-                    self.password_entry.get_text(),
-                )
-        else:
-            raise ValueError("A user must be logged in to change a password")
+                if entry.get_text() == "":
+                    entry.grab_focus()
+                    entry.get_style_context().add_class("error")
+                    return
 
-        if self.next_page is None:
-            self.get_toplevel().go_back()
-        else:
-            self.get_toplevel().switch_page(
-                self.next_page, *self.next_page_args, **self.next_page_kwargs
-            )
+            if (
+                self.password_entry.get_text()
+                != self.password_confirm_entry.get_text()
+            ):
+                self.password_confirm_entry.grab_focus()
+                self.password_confirm_entry.get_style_context().add_class(
+                    "error"
+                )
+                return
+
+            if (
+                self.username is not None
+                and self.get_toplevel().active_user is not None
+            ):
+                if self.get_toplevel().active_user == self.username:
+                    auth_util.modify_password(
+                        self.username,
+                        self.get_toplevel().active_user_password,
+                        self.password_entry.get_text(),
+                    )
+                elif (
+                    auth_util.get_access_level(self.get_toplevel().active_user)
+                    == "admin"
+                ):
+                    auth_util.modify_password_from_admin(
+                        self.username,
+                        self.password_entry.get_text(),
+                        self.get_toplevel().active_user,
+                        self.get_toplevel().active_user_password,
+                    )
+                else:
+                    auth_util.modify_password(
+                        self.get_toplevel().active_user,
+                        self.get_toplevel().active_user_password,
+                        self.password_entry.get_text(),
+                    )
+            else:
+                raise ValueError(
+                    "A user must be logged in to change a password"
+                )
+
+            if self.next_page is None:
+                self.get_toplevel().go_back()
+            else:
+                self.get_toplevel().switch_page(
+                    self.next_page,
+                    *self.next_page_args,
+                    **self.next_page_kwargs
+                )
+
+        except ValueError as v_err:
+            self.get_toplevel().show_error(" ".join(v_err.args))
 
 
 # Make RegisterPage accessible via .ui files
