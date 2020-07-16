@@ -9,7 +9,7 @@ Attributes:
     SORT_ORDERS (set): Description
 """
 
-from typing import Generator, Optional, Iterable, List, Set
+from typing import Generator, Dict, Iterable, List, Set
 
 import os
 
@@ -20,6 +20,14 @@ import sqlite3
 import atexit
 
 from gi.repository import GObject, GLib, Gio  # type: ignore
+
+
+GENDERS: Dict[str, str] = {
+    "male": "Männlich",
+    "female": "Weiblich",
+    "other": "Divers",
+}
+
 
 try:
     from . import program_util
@@ -50,7 +58,7 @@ DISPLAY_COLUMNS: List[str] = [
     "patient_id",
     "first_name",
     "last_name",
-    "gender",
+    "gender_translated",
     "birthday",
 ]
 
@@ -129,6 +137,7 @@ class Patient(GObject.Object):
     last_name: str
     birthday: str
     gender: str
+    gender_translated: str
     weight: float
     comment: str
 
@@ -164,6 +173,7 @@ class Patient(GObject.Object):
         self.last_name = last_name
         self.birthday = birthday
         self.gender = gender
+        self.gender_translated = GENDERS[gender]
         self.weight = weight
         self.comment = comment
 
@@ -449,10 +459,10 @@ if __name__ == "__main__":
 
         if random.randint(0, 1) == 1:
             first_name = names.get_first_name(gender="male")
-            gender = "Männlich"
+            gender = "male"
         else:
             first_name = names.get_first_name(gender="female")
-            gender = "Weiblich"
+            gender = "female"
 
         p: Patient = Patient.add(
             first_name=first_name,

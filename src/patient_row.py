@@ -20,7 +20,7 @@ COLUMN_HEADER_TRANSLATIONS: Dict[str, str] = {
     "patient_id": "Nr.",
     "first_name": "Vorname",
     "last_name": "Nachname",
-    "gender": "Geschlecht",
+    "gender_translated": "Geschlecht",
     "birthday": "Geburtsdatum",
 }
 

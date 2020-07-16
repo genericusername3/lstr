@@ -104,15 +104,17 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
                 self.gender_combobox_text.set_active_id(None)
 
             (
-                birth_date_day,
-                birth_date_month,
                 birth_date_year,
-            ) = patient.birthday.split("-")
+                birth_date_month,
+                birth_date_day,
+            ) = patient.birthday.split("-")  # Thank god for ISO 8601
 
             self.birth_date_day_entry.set_text(birth_date_day)
             self.birth_date_month_entry.set_text(birth_date_month)
             self.birth_date_year_entry.set_text(birth_date_year)
 
+
+            print(patient.weight)
             self.weight_entry.set_text(str(patient.weight).replace(".", ","))
 
             self.comment_entry.set_text(patient.comment)
@@ -230,14 +232,20 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
         old_text: str = editable.get_text()
         cursor_pos: int = editable.get_position()
 
-        if digits > 0 and cursor_pos > 0:
-            new_text = new_text.replace(",", "")
+        if digits > 0:
+            if cursor_pos > 0:
+                new_text = new_text.replace(",", "")
+            else:
+                new_text = new_text[0] + new_text[1:].replace(",", "")
+
 
         if new_text != "" and not str.isnumeric(new_text):
             GObject.signal_stop_emission_by_name(editable, "insert-text")
+            print("prevented insert of:", new_text)
 
         elif "," in old_text and cursor_pos - old_text.index(",") > digits:
             GObject.signal_stop_emission_by_name(editable, "insert-text")
+            print("prevented insert of:", new_text)
 
     def on_unfocus_num_entry(
         self,
