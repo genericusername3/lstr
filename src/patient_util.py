@@ -9,7 +9,7 @@ Attributes:
     SORT_ORDERS (set): Description
 """
 
-from typing import Generator, Optional, Iterable, List
+from typing import Generator, Optional, Iterable, List, Set
 
 import os
 
@@ -21,6 +21,11 @@ import atexit
 
 from gi.repository import GObject, GLib, Gio  # type: ignore
 
+try:
+    from . import program_util
+except ImportError:
+    import program_util
+
 
 try:
     os.mkdir(os.path.expanduser("~/.liegensteuerung"))
@@ -31,7 +36,7 @@ finally:
 
 DATABASE_NAME = "liegensteuerung.db"
 
-COLUMNS = (
+COLUMNS: List[str] = [
     "id",
     "first_name",
     "last_name",
@@ -39,17 +44,29 @@ COLUMNS = (
     "gender",
     "weight",
     "comment",
-)
+]
 
-DISPLAY_COLUMNS = (
+DISPLAY_COLUMNS: List[str] = [
     "patient_id",
     "first_name",
     "last_name",
     "gender",
     "birthday",
-)
+]
 
-DATE_COLUMNS = {"birthday"}
+DATE_COLUMNS: Set[str] = {"birthday"}
+
+TREATMENT_COLUMNS: List[str] = [
+    "patient_id",
+    "program_id",
+    "timestamp",
+    "vas",
+    "sij_left",
+    "sij_right",
+    "sij_both",
+    "sij_left_right",
+    "sij_right_left",
+]
 
 SORT_ORDERS = {"ASC", "DESC"}
 
@@ -72,6 +89,19 @@ cursor.execute(
          (
             patient_id UNSIGNED BIG INT, timestamp UNSIGNED‌ BIG‌ INT,
             pain_left INT, pain_right INT
+        )
+    """
+)
+cursor.execute(
+    """CREATE TABLE IF NOT EXISTS treatment_entries
+        (
+            patient_id UNSIGNED BIG INT, program_id UNSIGNED BIG INT,
+            timestamp UNSIGNED BIG INT,
+
+            vas INT,
+
+            sij_left INT, sij_right INT, sij_both INT, sij_left_right INT,
+            sij_right_left INT
         )
     """
 )
@@ -145,7 +175,7 @@ class Patient(GObject.Object):
         gender: str,
         weight: float,
         comment: str,
-    ):
+    ) -> "Patient":
         """Create a new Patient and add it to the database.
 
         Args:
@@ -185,6 +215,8 @@ class Patient(GObject.Object):
 
         connection.commit()
 
+        return patient
+
     @staticmethod
     def get_all() -> Generator["Patient", None, None]:
         """Yield all patients in the database."""
@@ -192,30 +224,6 @@ class Patient(GObject.Object):
             "SELECT " + ", ".join(COLUMNS) + " FROM patients"
         ).fetchall():
             yield Patient(*patient_row)
-
-    @staticmethod
-    def get(
-        patient_id: Optional[int] = None,
-        first_name: Optional[str] = None,
-        last_name: Optional[str] = None,
-        birthday: Optional[str] = None,
-        gender: Optional[str] = None,
-        weight: Optional[float] = None,
-        comment: Optional[str] = None,
-    ) -> "Patient":
-        """Search for patients that match the given parameters.
-
-        Args:
-            patient_id (int): An ID to search for
-            first_name (str): A first name to search for
-            last_name (str): A last name to search for
-            birthday (str): A date of birth to search for
-            gender (str): A gender to search for
-            weight (float): A weight in kilograms to search for
-            comment (str): A comment to search for
-        """
-        ...
-        raise NotImplementedError
 
     @staticmethod
     def iter_to_model(patient_iter: Iterable["Patient"]) -> Gio.ListStore:
@@ -274,6 +282,53 @@ class Patient(GObject.Object):
 
         return timestamp
 
+    def add_treatment_entry(
+        self,
+        program: program_util.Program,
+        vas: str,
+        sij_left: str,
+        sij_right: str,
+        sij_both: str,
+        sij_left_right: str,
+        sij_right_left: str,
+    ) -> int:
+        """Add a program entry to the database.
+
+        A program entry with the patient id, the program number and
+            time.time() will be added to the table pain_entries
+
+        Args:
+            program (program_util.Program): The program that was completed
+            vas (str): The value for the vas column
+            sij_left (str): The value for the sij_left column
+            sij_right (str): The value for the sij_right column
+            sij_both (str): The value for the sij_both column
+            sij_left_right (str): The value for the sij_left_right column
+            sij_right_left (str): The value for the sij_right_left column
+
+        Returns:
+            int: The UNIX timestamp used for the entry
+        """
+        timestamp: int = int(time.time())
+
+        cursor.execute(
+            "INSERT INTO treatment_entries VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            (
+                self.patient_id,
+                program.id,
+                timestamp,
+                vas,
+                sij_left,
+                sij_right,
+                sij_both,
+                sij_left_right,
+                sij_right_left,
+            ),
+        )
+        connection.commit()
+
+        return timestamp
+
     def modify_pain_entry(
         self, timestamp: int, pain_left: int, pain_right: int
     ) -> int:
@@ -319,6 +374,70 @@ class Patient(GObject.Object):
 
         return new_timestamp
 
+    def modify_treatment_entry(
+        self,
+        timestamp: int,
+        program: program_util.Program,
+        vas: str,
+        sij_left: str,
+        sij_right: str,
+        sij_both: str,
+        sij_left_right: str,
+        sij_right_left: str,
+    ) -> int:
+        """Modify a treatment entry in the database.
+
+        The treatment entry with the timestamp and program id will be modified
+            to have the new column values.
+
+        If the entry doesn't exist, do nothing.
+
+        Args:
+            timestamp (int): The UNIX timestamp of the entry to modify
+            program (program_util.Program): The new program
+            vas (str): The new value for the vas column
+            sij_left (str): The new value for the sij_left column
+            sij_right (str): The new value for the sij_right column
+            sij_both (str): The new value for the sij_both column
+            sij_left_right (str): The new value for the sij_left_right column
+            sij_right_left (str): The new value for the sij_right_left column
+
+        Returns:
+            int: The new UNIX timestamp used for the entry
+        """
+        new_timestamp: int = int(time.time())
+
+        cursor.execute(
+            """
+                UPDATE treatment_entries
+                SET
+                    vas = ?,
+                    sij_left = ?,
+                    sij_right = ?,
+                    sij_both = ?,
+                    sij_left_right = ?,
+                    sij_right_left = ?,
+                WHERE
+                    patient_id=?
+                    AND‌ program_id=?
+                    AND timestamp=?
+            """,
+            (
+                vas,
+                sij_left,
+                sij_right,
+                sij_both,
+                sij_left_right,
+                sij_right_left,
+                self.patient_id,
+                program.id,
+                timestamp,
+            ),
+        )
+        connection.commit()
+
+        return new_timestamp
+
 
 if __name__ == "__main__":
     import names  # type: ignore
@@ -335,7 +454,7 @@ if __name__ == "__main__":
             first_name = names.get_first_name(gender="female")
             gender = "Weiblich"
 
-        Patient.add(
+        p: Patient = Patient.add(
             first_name=first_name,
             last_name=names.get_last_name(),
             birthday="1970-01-01",
@@ -345,3 +464,13 @@ if __name__ == "__main__":
         )
 
         print("added " + first_name)
+
+        p.add_treatment_entry(
+            program_util.Program.get_all().__next__(),
+            vas="VAS",
+            sij_left="sij_left",
+            sij_right="sij_right",
+            sij_both="sij_both",
+            sij_left_right="sij_left_right",
+            sij_right_left="sij_right_left",
+        )
