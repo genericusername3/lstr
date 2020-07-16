@@ -47,4 +47,8 @@
   <gresource prefix="/de/linusmathieu/Liegensteuerung">
     <file>liegensteuerung.css</file>
   </gresource>
+
+  <gresource prefix="/de/linusmathieu/Liegensteuerung">
+    <file>highcontrast.css</file>
+  </gresource>
 </gresources>

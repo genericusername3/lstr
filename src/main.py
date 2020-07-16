@@ -33,6 +33,17 @@ class LstrgApplication(Gtk.Application):
             Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION,
         )
 
+        if "HighContrast" in Gtk.Settings.get_default().props.gtk_theme_name:
+            css_provider_contrast: Gtk.CssProvider = Gtk.CssProvider()
+            css_provider_contrast.load_from_resource(
+                "/de/linusmathieu/Liegensteuerung/highcontrast.css"
+            )
+            Gtk.StyleContext.add_provider_for_screen(
+                Gdk.Screen.get_default(),
+                css_provider_contrast,
+                Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION,
+            )
+
     def do_activate(self):
         """React to the Application activation ie. opeing a new window."""
         win = self.props.active_window

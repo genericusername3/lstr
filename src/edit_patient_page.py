@@ -18,6 +18,9 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
     Attributes:
         header_visible (bool): Whether a Gtk.HeaderBar should be shown for the
             page
+        is_patient_info_page (bool): whether the Page shows one patient's info,
+            i.e. a Page with this set to True will not have a patient button in
+            the header bar
         title (str): The Page's title
         %%Wigdet_NAME%% (Gtk.Entry or Gtk.Template.Child): The entry for the
             user's username
@@ -27,6 +30,7 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
 
     header_visible: bool = True
     title: str = "Patient hinzufügen"
+    is_patient_info_page: bool = True
 
     patient: Optional[patient_util.Patient] = None
 

@@ -24,6 +24,8 @@ COLUMN_HEADER_TRANSLATIONS: Dict[str, str] = {
     "birthday": "Geburtsdatum",
 }
 
+INFO_ICON = "view-more-horizontal-symbolic"
+
 
 class PatientRow(Gtk.Box):
     """A widget that represents one patient in horizontal orientation.
@@ -94,7 +96,7 @@ class PatientRow(Gtk.Box):
             size_groups["INFO_BUTTON"] = Gtk.SizeGroup(Gtk.SizeGroupMode.BOTH)
 
         info_button: Gtk.Button = Gtk.Button.new_from_icon_name(
-            "dialog-information-symbolic", Gtk.IconSize.BUTTON
+            INFO_ICON, Gtk.IconSize.BUTTON
         )
         info_button.set_size_request(48, 48)
         info_button.set_border_width(2)

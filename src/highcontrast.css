@@ -1,0 +1,63 @@
+@define-color accent royalblue;
+
+@define-color error red;
+@define-color warning gold;
+
+@define-color good lime;
+@define-color medium gold;
+@define-color bad red;
+
+entry, button {
+    border-radius: 10px;
+    border: solid 2px mix(@accent, #888, 0.7);
+}
+
+entry:not(.error):hover, button:hover {
+    background: alpha(mix(@accent, #888, 0.7), 0.1);
+}
+
+entry:not(.error):focus, button:active {
+    background: alpha(mix(@accent, #888, 0.7), 0.3);
+}
+
+entry.error {
+    background-color: mix(@error, #888, 0.4);
+    border: solid 2px #000;
+}
+entry.error, entry.error * {
+    color: #fff;
+}
+
+entry.error:focus {
+    background-color: shade(@error, 1.6);
+    border: solid 2px #000;
+}
+entry.error:focus, entry.error:focus * {
+    color: #000;
+}
+
+
+headerbar {
+    background: #222;
+    color: #fff;
+}
+
+headerbar button {
+    border: solid 2px alpha(#fff, 0.5);
+    color: #fff;
+}
+
+headerbar button:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+headerbar button:active {
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+}
+
+
+infobar button {
+    border-color: alpha(#000, 0.5);
+}

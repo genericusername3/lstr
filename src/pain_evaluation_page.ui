@@ -15,7 +15,7 @@
   <object class="GtkImage" id="save_icon">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="icon_name">document-save-symbolic</property>
+    <property name="icon_name">emblem-ok-symbolic</property>
   </object>
   <template class="PainEvaluationPage" parent="GtkBox">
     <property name="visible">True</property>
