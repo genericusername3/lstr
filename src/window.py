@@ -137,7 +137,6 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
             *args: Arguments to pass to Page.prepare()
             **kwargs: Keyword arguments to pass to Page.prepare()
         """
-
         self.page_history.append(page_name)
 
         self._show_page(

@@ -30,13 +30,13 @@ row:active {
     background: alpha(mix(@accent, #bbb, 0.5), 0.3);
 }
 
-entry, button {
+entry, button, textview, textview text {
     border-radius: 5px;
     min-height: 32px;
     min-width: 28px;
     margin: 2px;
     border: solid 2px alpha(mix(@accent, #bbb, 0.6), 0.3);
-    background: transparent;
+    background: none;
 }
 
 entry:hover, button:hover {
@@ -102,7 +102,7 @@ headerbar {
 }
 
 headerbar button {
-    background: transparent;
+    background: none;
     color: #222;
     border: solid 2px alpha(black, 0.1);
     margin: 4px 2px;
@@ -143,7 +143,7 @@ infobar.error {
     color: #222;
 }
 infobar * {
-    background: transparent;
+    background: none;
     color: #222;
     border: none;
     outline: none;
@@ -169,7 +169,7 @@ scale trough {
     margin-left: 8px;
     min-height: 32px;
     border-radius: 4px;
-    background-color: transparent;
+    background: none;
     border: none;
     outline: none;
 }
@@ -198,4 +198,78 @@ scale highlight {
     margin-bottom: 12px;
     border: none;
     outline: none;
+}
+
+
+combobox cellview {
+    margin-right: 0px;
+}
+combobox>box>button {
+    padding: 0px 8px;
+}
+combobox arrow {
+    -gtk-icon-source: -gtk-icontheme("pan-down-symbolic");
+    background: none;
+    margin: 0px;
+    border: none;
+    outline: none;
+    box-shadow: none;
+}
+
+
+stackswitcher {
+    background-color: rgba(128, 128, 128, 0.3);
+    padding: 4px
+}
+
+stackswitcher button {
+    padding-top: 0px;
+    padding-bottom: 0px;
+    border-color: @accent;
+}
+
+stackswitcher button:not(:first-child):not(:last-child) {
+    border-radius: 0px;
+    border-left-width: 1px;
+    border-right-width: 1px;
+}
+
+stackswitcher button:first-child {
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    margin-right: 0px;
+    border-left-width: 2px;
+}
+
+stackswitcher button:last-child {
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    margin-left: 0px;
+    border-right-width: 2px;
+}
+
+stackswitcher button:checked {
+    background-color: @accent;
+    border-color: @accent;
+    color: #222;
+}
+
+spinbutton entry {
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    margin-right: 0;
+}
+
+spinbutton button {
+    border-left: none;
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    margin-left: 0;
+    padding: 2px;
+}
+
+spinbutton button:not(:last-child) {
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    margin-right: 0;
 }
