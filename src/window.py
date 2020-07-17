@@ -102,6 +102,8 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
         """
         super().__init__(**kwargs)
 
+        self.maximize()
+
         if auth_util.does_admin_exist():
             self.switch_page("login")
         else:
