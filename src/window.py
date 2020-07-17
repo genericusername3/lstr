@@ -184,6 +184,8 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
             kwargs (Dict[str, Any], optional): Keyword arguments to pass to
                 Page.prepare()
         """
+        self.page_stack.get_visible_child().unprepare()
+
         if animation_direction == -1:
             self.page_stack.set_transition_type(
                 Gtk.StackTransitionType.SLIDE_RIGHT
