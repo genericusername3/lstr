@@ -107,12 +107,13 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
                 birth_date_year,
                 birth_date_month,
                 birth_date_day,
-            ) = patient.birthday.split("-")  # Thank god for ISO 8601
+            ) = patient.birthday.split(
+                "-"
+            )  # Thank god for ISO 8601
 
             self.birth_date_day_entry.set_text(birth_date_day)
             self.birth_date_month_entry.set_text(birth_date_month)
             self.birth_date_year_entry.set_text(birth_date_year)
-
 
             print(patient.weight)
             self.weight_entry.set_text(str(patient.weight).replace(".", ","))
@@ -183,7 +184,7 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
             "focus-out-event",
             self.on_unfocus_num_entry,
             4,
-            today_year - 100,
+            today_year - 150,
             today_year,
             True,
         )
@@ -238,7 +239,6 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
             else:
                 new_text = new_text[0] + new_text[1:].replace(",", "")
 
-
         if new_text != "" and not str.isnumeric(new_text):
             GObject.signal_stop_emission_by_name(editable, "insert-text")
             print("prevented insert of:", new_text)
@@ -277,6 +277,40 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
         """
         self.on_unfocus_entry(entry, event)
 
+        self.check_input(
+            entry, leading_zeroes, minimum, maximum, year,
+        )
+        
+        if entry in self.date_entries:
+            self.on_date_changed(entry)
+
+    def check_input(
+        self,
+        entry: Gtk.Entry,
+        leading_zeroes: int = 0,
+        minimum: Optional[Union[Callable[..., Number], Number]] = None,
+        maximum: Optional[Union[Callable[..., Number], Number]] = None,
+        year: bool = False,
+    ):
+        """Validate the entry text.
+
+        This inserts leading zeroes, ensures the number is within a given
+            range and inserts omitted year digits.
+
+        Args:
+            entry (Gtk.Entry): The focused entry.
+            event (Gdk.EventFocus): The focus event.
+            leading_zeroes (int, optional): Up to which length to insert
+                leading zeroes.
+                E.g. leading_zeroes=4, entry_text="75" -> "0075"
+            minimum (Union[Callable[..., Number], Number], optional): The
+                minimum value of the text or a function that returns the
+                minimum/maximum value. Defaults to None
+            maximum (Union[Callable[..., Number], Number], optional): The
+                maximum value of the text or a function that returns the
+                minimum/maximum value. Defaults to None
+            year (bool, optional): Whether the number is a year
+        """
         if callable(minimum):
             minimum = minimum()
         if callable(maximum):
@@ -325,20 +359,22 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
 
             entry.set_text(format(int(value), f"0{leading_zeroes}d"))
 
-        if entry in self.date_entries:
-            self.on_date_changed()
-
-    def on_date_changed(self):
+    def on_date_changed(self, entry: Gtk.Entry):
         """React to the user editing the date.
 
         This exists to account for the user changing between months
             or leap and non-leap years
+
+        Args:
+            entry (Gtk.Entry): The changed entry.
         """
-        day_text: str = self.birth_date_day_entry.get_text()
-        if day_text != "":
-            self.birth_date_day_entry.set_text(
-                str(min(int(day_text), self.max_day()))
-            )
+        self.check_input(
+            self.birth_date_year_entry, 4, today_year - 150, today_year, True,
+        )
+
+        self.check_input(self.birth_date_month_entry, 2, 1, 12)
+
+        self.check_input(self.birth_date_day_entry, 2, 1, self.max_day())
 
     def max_day(self) -> int:
         """Return the most fitting maximum day number.
