@@ -16,6 +16,7 @@ from . import (
     select_patient_page,
     select_program_page,
     set_up_page,
+    treatment_page,
 )
 
 
@@ -158,7 +159,7 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
         self.maximize()
 
         if auth_util.does_admin_exist():
-            self.switch_page("login")
+            self.switch_page("treatment")
         else:
             self.switch_page(
                 "register",
