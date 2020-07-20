@@ -157,6 +157,7 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
         super().__init__(**kwargs)
 
         self.maximize()
+        self.set_decorated(False)
 
         if auth_util.does_admin_exist():
             self.switch_page("treatment")
@@ -183,8 +184,6 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
         self.error_bar.connect("response", self.on_info_bar_response)
 
         self.main_area_overlay.add_overlay(self.shutdown_compact_revealer)
-
-        self.get_window().set_decorations(0)
 
     def switch_page(self, page_name: str, *args, **kwargs,) -> None:
         """Switch the active page.
