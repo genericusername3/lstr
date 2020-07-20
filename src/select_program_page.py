@@ -72,7 +72,7 @@ class SelectProgramPage(Gtk.Box, Page, metaclass=PageClass):
 
         is_admin: bool = (
             self.get_toplevel().active_user is not None
-            and auth_util.get_access_level(self.active_user) == "admin"
+            and auth_util.get_access_level(self.get_toplevel().active_user) == "admin"
         )
 
         self.add_button.set_visible(is_admin)
