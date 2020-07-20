@@ -184,6 +184,8 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
 
         self.main_area_overlay.add_overlay(self.shutdown_compact_revealer)
 
+        self.get_window().set_decorations(0)
+
     def switch_page(self, page_name: str, *args, **kwargs,) -> None:
         """Switch the active page.
 
