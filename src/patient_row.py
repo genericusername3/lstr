@@ -4,10 +4,10 @@ Ideal for viewing patients in lists, because all columns are added to a
 Gtk.SizeGroup
 """
 
-from typing import Dict, Optional, List
+from typing import Dict, List
 
 from datetime import datetime
-from fuzzywuzzy import fuzz
+from fuzzywuzzy import fuzz  # type: ignore
 
 from gi.repository import GLib, Gtk  # type: ignore
 
