@@ -171,7 +171,7 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
         Args:
             button (Gtk.Button): The button that was clicked
         """
-        self.get_toplevel().switch_page("select_program")
+        self.get_toplevel().switch_page("select_program", 90, 90)  # TODO: Use actual values
 
 
 
