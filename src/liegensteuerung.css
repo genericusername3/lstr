@@ -43,7 +43,7 @@ entry, button, textview, textview text {
     min-height: 32px;
     min-width: 28px;
     margin: 2px;
-    border: solid 2px alpha(mix(@accent, #bbb, 0.6), 0.5);
+    border: solid 2px alpha(mix(@accent, #888, 0.6), 0.6);
     background: none;
 }
 

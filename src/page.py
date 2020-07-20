@@ -49,6 +49,10 @@ class Page(abc.ABC):
         """
         raise NotImplementedError
 
+    def unprepare(self) -> None:
+        """Prepare the page to be hidden."""
+        pass
+
     def prepare_return(self) -> None:
         """Prepare the page to be shown when returning from another page."""
         pass

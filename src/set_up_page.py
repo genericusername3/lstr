@@ -58,14 +58,18 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
         """
         super().__init__(**kwargs)
 
+    def prepare(self) -> None:
+        """Prepare the page to be shown."""
+        self.running = True
+
         read_thread = Thread(target=self.read_camera_input_loop)
         read_thread.start()
 
         self.display_camera_input_loop()
 
-    def prepare(self) -> None:
-        """Prepare the page to be shown."""
-        pass
+    def unprepare(self):
+        """Prepare the page to be hidden."""
+        self.running = False
 
     def read_camera_input_loop(self) -> None:
         """Try to store an image from the webcam in camera_frame.
@@ -78,7 +82,10 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
             while self.running:
                 return_value, new_camera_frame = video_capture.read()
 
-                # Some operations like de-noising or color correction could go here
+                # Some operations like color correction
+                new_camera_frame = cv2.cvtColor(
+                    new_camera_frame, cv2.COLOR_BGR2RGB
+                )
 
                 self.camera_frame = new_camera_frame
         else:
