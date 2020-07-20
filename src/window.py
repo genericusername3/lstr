@@ -6,13 +6,15 @@ from gi.repository import GLib, Gtk  # type: ignore
 
 from . import auth_util
 from . import patient_util
+from . import program_util
 from . import page
 from . import (
-    register_page,
-    login_page,
-    select_patient_page,
     edit_patient_page,
+    login_page,
     pain_evaluation_page,
+    register_page,
+    select_patient_page,
+    select_program_page,
     set_up_page,
 )
 
@@ -141,6 +143,7 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
     active_user: Optional[str] = None
     active_user_password: Optional[str] = None
     active_patient: Optional[patient_util.Patient] = None
+    active_program: Optional[program_util.Program] = None
 
     page_history: List[str] = []
 

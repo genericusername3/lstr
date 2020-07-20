@@ -82,8 +82,8 @@ class SelectPatientPage(Gtk.Box, Page, metaclass=PageClass):
         This will switch to the page 'pain_evaluation'.
 
         Args:
-            list_box (Gtk.ListBox): Description
-            row (Gtk.ListBoxRow): Description
+            list_box (Gtk.ListBox): The Gtk.ListBox that is the row's parent
+            row (Gtk.ListBoxRow): The Gtk.ListBoxRow that was selected
         """
         if row is not None:
             self.get_toplevel().active_patient = row.get_child().patient
