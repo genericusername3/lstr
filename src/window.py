@@ -28,8 +28,59 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
         header_bar_revealer (Union[Gtk.Template.Child, Gtk.Revealer]): A
             Gtk.Revealer that contains the header bar.
 
-        active_user (str, optional): The user that is loghged in or None if no
+        no_patient_info_bar (Union[Gtk.Template.Child, Gtk.MessageBar]): A
+            Gtk.MessageBar that tells the user that the patient should not be
+            on the treatment couch yet (due to initialisation)
+        error_bar (Union[Gtk.Template.Child, Gtk.MessageBar]): A Gtk.Message
+            bar used to inform the user about occurring errors
+        error_bar_label (Union[Gtk.Template.Child, Gtk.Label]): The Gtk.Label
+            that contains the error message of self.error_bar
+
+        back_button (Union[Gtk.Template.Child, Gtk.Button]): A button that
+            offers the user to go back to the previous page
+        back_button_revealer (Union[Gtk.Template.Child, Gtk.Revealer]): A
+            Gtk.Revealer that reveals self.back_button based on whether going
+            back is possible (history length > 1)
+
+        patient_button (Union[Gtk.Template.Child, Gtk.Button]): A button that
+            offers the user to view and edit the active patient
+        patient_button_revealer (Union[Gtk.Template.Child, Gtk.Revealer]): A
+            Gtk.Revealer that reveals self.patient_button based on whether a
+            patient is selected (self.active_patient is not None)
+
+        shutdown_button (Union[Gtk.Template.Child, Gtk.Button]): A button that
+            offers the user to shut down
+        log_out_button (Union[Gtk.Template.Child, Gtk.Button]): A button that
+            offers the user to log out
+
+        users_button (Union[Gtk.Template.Child, Gtk.Button]): A button that
+            offers an administrator or doctor to view and edit users with lower
+            access levels
+        change_password_button (Union[Gtk.Template.Child, Gtk.Button]): A
+            button that offers the user to change their own password
+
+        title_label (Union[Gtk.Template.Child, Gtk.Label]): A label that
+            displays the title of the active page
+
+        main_area_overlay (Union[Gtk.Template.Child, Gtk.Overlay]): A
+            Gtk.Overlay over the Gtk.Stack that displays the pages
+        shutdown_button_compact (Union[Gtk.Template.Child, Gtk.Button]): A
+            button that offers the user to shut down on pages that do not
+            display the title bar
+        shutdown_compact_revealer (Union[Gtk.Template.Child, Gtk.Revealer]): A
+            Gtk.Revealer that reveals self.shutdown_button_compact based on
+            whether the title bar is shown
+
+        active_user (str, optional): The user that is logged in or None if no
             user is logged in.
+        active_user_password (str, optional): The active user's password
+        active_patient (patient_util.Patient, optional): The selected patient
+            or None
+        active_program (program_util.Program, optional): The selected program
+            or None
+
+        page_history (List[str]): A list of previous page IDs that the user can
+            go back to
     """
 
     __gtype_name__ = "LiegensteuerungWindow"
@@ -59,7 +110,6 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
     patient_button: Union[
         Gtk.Template.Child, Gtk.Button
     ] = Gtk.Template.Child()
-
     patient_button_revealer: Union[
         Gtk.Template.Child, Gtk.Revealer
     ] = Gtk.Template.Child()
@@ -228,8 +278,11 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
             self.active_user is not None
             and auth_util.get_access_level(self.active_user) == "admin"
         )
-        self.users_button.set_visible(is_admin)
-        self.change_password_button.set_visible(not is_admin)
+        is_doctor: bool = (
+            self.active_user is not None
+            and auth_util.get_access_level(self.active_user) == "doctor"
+        )
+        self.users_button.set_visible(is_admin or is_doctor)
 
         self.patient_button_revealer.set_reveal_child(
             self.active_patient is not None

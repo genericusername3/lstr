@@ -21,7 +21,7 @@ finally:
 
 DATABASE_NAME = "liegensteuerung.db"
 
-ACCESS_LEVELS = {"admin": 2, "expert": 1, "user": 0}
+ACCESS_LEVELS = {"admin": 2, "doctor": 1, "helper": 0}
 
 
 connection = sqlite3.connect(DATABASE_NAME)
