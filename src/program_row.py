@@ -1,49 +1,50 @@
-"""A widget that represents one patient in horizontal orientation.
+"""A widget that represents one program in horizontal orientation.
 
-Ideal for viewing patients in lists, because all columns are added to a
+Ideal for viewing programs in lists, because all columns are added to a
 Gtk.SizeGroup
 """
 
-from typing import Dict, List
-
-from datetime import datetime
-from fuzzywuzzy import fuzz  # type: ignore
+from typing import Dict, Union
 
 from gi.repository import GLib, Gtk  # type: ignore
 
-from . import patient_util
+from . import program_util
 
 
 size_groups: Dict[str, Gtk.SizeGroup] = {}
 
 COLUMN_HEADER_TRANSLATIONS: Dict[str, str] = {
-    "patient_id": "Nr.",
-    "first_name": "Vorname",
-    "last_name": "Nachname",
-    "gender_translated": "Geschlecht",
-    "birthday": "Geburtsdatum",
+    "id": "Nr.",
+    "pusher_left_distance_max": "Pusherstrecke L",
+    "pusher_right_distance_max": "Pusherstrecke R",
+    "push_count_sum": "Anzahl Vorschübe",
+    "pass_count_sum": "Anzahl Durchläufe",
 }
 
 INFO_ICON = "view-more-horizontal-symbolic"
+WARNING_ICON = "dialog-warning-symbolic"
 
 
-class PatientRow(Gtk.Box):
-    """A widget that represents one patient in horizontal orientation.
+class ProgramRow(Gtk.Box):
+    """A widget that represents one program in horizontal orientation.
 
-    Ideal for viewing patients in lists, because all columns are added to a
+    Ideal for viewing programs in lists, because all columns are added to a
         Gtk.SizeGroup
 
     This widget contains a button that offers the user to view more information
-        about the patient and edit patient data.
+        about the program and edit program data.
     """
 
-    patient: patient_util.Patient
+    program: program_util.Program
 
-    def __init__(self, patient: patient_util.Patient):
-        """Create a new PatientRow.
+    def __init__(
+        self,
+        program: program_util.Program,
+    ):
+        """Create a new ProgramRow.
 
         Args:
-            patient (patient_util.Patient): The patient to represent
+            program (program_util.Program): The program to represent
 
         """
         super().__init__(orientation=Gtk.Orientation.VERTICAL)
@@ -59,22 +60,18 @@ class PatientRow(Gtk.Box):
             padding=0,
         )
 
-        self.patient = patient
+        self.program = program
 
-        for column in patient_util.DISPLAY_COLUMNS:
+        for column in program_util.DISPLAY_COLUMNS:
             if size_groups.get(column, None) is None:
                 size_groups[column] = Gtk.SizeGroup(Gtk.SizeGroupMode.BOTH)
 
-            text = GLib.markup_escape_text(str(patient.__dict__.get(column)))
+            text = GLib.markup_escape_text(str(program[column]))
 
-            if column in patient_util.DATE_COLUMNS:
-                text = (
-                    "<tt>"
-                    + datetime.fromisoformat(text).strftime("%d.%m.%Y")
-                    + "</tt>"
-                )
+            if column in program_util.UNIT_COLUMNS:
+                text = text + " " + program_util.UNIT_COLUMNS[column]
 
-            cell_label = Gtk.Label(label=text, use_markup=True)
+            cell_label = Gtk.Label(label=text)
 
             cell_label.set_size_request(-1, 32)
             cell_label.set_halign(Gtk.Align.START)
@@ -92,6 +89,7 @@ class PatientRow(Gtk.Box):
                 padding=4,
             )
 
+        # Info button
         if size_groups.get("INFO_BUTTON", None) is None:
             size_groups["INFO_BUTTON"] = Gtk.SizeGroup(Gtk.SizeGroupMode.BOTH)
 
@@ -108,48 +106,23 @@ class PatientRow(Gtk.Box):
 
         self.show_all()
 
-    @staticmethod
-    def matches_query(list_box_row: Gtk.ListBoxRow, query: str) -> bool:
-        """Return if a Gtk.ListBoxRow with a PatientRow matches a query.
-
-        Args:
-            list_box_row (Gtk.ListBoxRow): The Gtk.ListboxRow. Must contain a
-                PatientRow
-            query (str): The query
-        """
-        patient: patient_util.Patient = list_box_row.get_child().patient
-
-        ratios: List[int] = []
-        patient_string: str = " ".join(
-            (str(patient.patient_id), patient.first_name, patient.last_name,)
-        )
-
-        words: List[str] = query.split(" ")
-
-        for word in words:
-            ratios.append(fuzz.partial_ratio(query, patient_string))
-
-            print(query, ":", word, ":", patient_string, ":", ratios[-1])
-
-        return max(ratios) > 80
-
     def on_info_clicked(self, button: Gtk.Button) -> None:
         """React to the row's info button being clicked.
 
         Args:
             button (Gtk.Button): The clicked button
         """
-        self.get_toplevel().switch_page("edit_patient", patient=self.patient)
+        self.get_toplevel().switch_page("edit_program", program=self.program)
 
 
-class PatientHeader(Gtk.Box):
-    """A widget that acts as a header for PatientRow widgets."""
+class ProgramHeader(Gtk.Box):
+    """A widget that acts as a header for ProgramRow widgets."""
 
     def __init__(self):
-        """Create a new PatientRow.
+        """Create a new ProgramRow.
 
         Args:
-            patient (patient_util.Patient): The patient to represent
+            program (program_util.Program): The program to represent
 
         """
         super().__init__(orientation=Gtk.Orientation.HORIZONTAL)
@@ -157,7 +130,7 @@ class PatientHeader(Gtk.Box):
         self.set_margin_start(2)
         self.set_margin_end(2)
 
-        for column in patient_util.DISPLAY_COLUMNS:
+        for column in program_util.DISPLAY_COLUMNS:
             if size_groups.get(column, None) is None:
                 size_groups[column] = Gtk.SizeGroup(Gtk.SizeGroupMode.BOTH)
 
@@ -181,6 +154,7 @@ class PatientHeader(Gtk.Box):
                 padding=4,
             )
 
+        # Info button
         if size_groups.get("INFO_BUTTON", None) is None:
             size_groups["INFO_BUTTON"] = Gtk.SizeGroup(Gtk.SizeGroupMode.BOTH)
 

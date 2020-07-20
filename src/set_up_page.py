@@ -41,9 +41,14 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
         Gtk.Template.Child, Gtk.DrawingArea
     ] = Gtk.Template.Child()
 
+    ok_button: Union[Gtk.Template.Child, Gtk.Button] = Gtk.Template.Child()
+
     camera_frame: numpy.ndarray = None
     running: bool = True
     cam_available: bool = True
+
+    end_value_left: int = 0
+    end_value_right: int = 0
 
     def __init__(self, **kwargs):
         """Create a new SetupPage.
@@ -105,6 +110,10 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
             "draw", self.on_draw_camera_drawing_area
         )
 
+        self.ok_button.connect(
+            "clicked", self.on_ok_clicked
+        )
+
     def display_camera_input_loop(self) -> None:
         """Read from camera_frame to display the most recent webcam image."""
         if self.camera_frame is not None:
@@ -155,6 +164,15 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
                 available_height / 2 - height * scale / 2,
             )
             cr.paint()
+
+    def on_ok_clicked(self, button: Gtk.Button) -> None:
+        """React to the "OK" button being clicked.
+
+        Args:
+            button (Gtk.Button): The button that was clicked
+        """
+        self.get_toplevel().switch_page("select_program")
+
 
 
 GObject.type_ensure(SetupPage)

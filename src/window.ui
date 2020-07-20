@@ -548,6 +548,15 @@
                     <property name="position">5</property>
                   </packing>
                 </child>
+                <child>
+                  <object class="SelectProgramPage">
+                    <property name="visible">True</property>
+                  </object>
+                  <packing>
+                    <property name="name">select_program</property>
+                    <property name="position">6</property>
+                  </packing>
+                </child>
               </object>
               <packing>
                 <property name="index">-1</property>

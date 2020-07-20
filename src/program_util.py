@@ -61,6 +61,50 @@ PROGRAM_COLUMNS: Dict[str, Tuple[type, str]] = {
     "pass_count_down": (int, "INT"),
 }
 
+CALC_PROGRAM_COLUMNS: Tuple[str, ...] = (
+    "pusher_left_distance_max",
+    "pusher_right_distance_max",
+    "push_count_sum",
+    "pass_count_sum",
+)
+
+UNIT_COLUMNS: Dict[str, str] = {
+    "pusher_left_distance_up": "mm",
+    "pusher_left_distance_down": "mm",
+    "pusher_left_distance_max": "mm",
+    "pusher_right_distance_up": "mm",
+    "pusher_right_distance_down": "mm",
+    "pusher_right_distance_max": "mm",
+    "pusher_left_speed_up": "mm/s",  # mm / s
+    "pusher_left_speed_down": "mm/s",
+    "pusher_right_speed_up": "mm/s",
+    "pusher_right_speed_down": "mm/s",
+    "pusher_left_delay_up": "s",  # s
+    "pusher_left_delay_down": "s",
+    "pusher_right_delay_up": "s",
+    "pusher_right_delay_down": "s",
+    "pusher_left_stay_duration_up": "s",  # s
+    "pusher_left_stay_duration_down": "s",
+    "pusher_right_stay_duration_up": "s",
+    "pusher_right_stay_duration_down": "s",
+    "pusher_left_distance_correction_up": "mm/7°",  # mm / 7 deg
+    "pusher_left_distance_correction_down": "mm/7°",
+    "pusher_right_distance_correction_up": "mm/7°",
+    "pusher_right_distance_correction_down": "mm/7°",
+    "angle_change_up": "°",  # deg
+    "angle_change_down": "°",
+    "push_distance_up": "mm",  # mm
+    "push_distance_down": "mm",
+}
+
+DISPLAY_COLUMNS: Tuple[str, ...] = (
+    "id",
+    "pusher_left_distance_max",  # mm
+    "pusher_right_distance_max",
+    "push_count_sum",
+    "pass_count_sum",
+)
+
 
 connection = sqlite3.connect(DATABASE_NAME)
 
@@ -86,7 +130,7 @@ atexit.register(connection.close)
 class Program(GObject.Object):
     """A Program represents a database entry for a treatment program."""
 
-    __dict: Dict[str, Any] = {}
+    __dict: Dict[str, Any]
 
     def __init__(self, program_dict: Dict[str, Any], **kwargs):
         """Create a new Program.
@@ -102,6 +146,8 @@ class Program(GObject.Object):
             **kwargs: Keyword arguments are added to program_dict
         """
         super().__init__()
+
+        self.__dict = dict()
 
         for key in PROGRAM_COLUMNS:
             if key in program_dict:
@@ -119,6 +165,21 @@ class Program(GObject.Object):
                     + f"(type: {PROGRAM_COLUMNS[key][0].__name__})"
                 )
 
+        self.__dict["pusher_left_distance_max"] = max(
+            self.__dict["pusher_left_distance_up"],
+            self.__dict["pusher_left_distance_down"],
+        )
+        self.__dict["pusher_right_distance_max"] = max(
+            self.__dict["pusher_right_distance_up"],
+            self.__dict["pusher_right_distance_down"],
+        )
+        self.__dict["push_count_sum"] = (
+            self.__dict["push_count_up"] + self.__dict["push_count_down"]
+        )
+        self.__dict["pass_count_sum"] = (
+            self.__dict["pass_count_up"] + self.__dict["pass_count_down"]
+        )
+
     @staticmethod
     def add(program_dict: Dict[str, Any], **kwargs) -> "Program":
         """Create a new Program and add it to the database.
@@ -131,9 +192,13 @@ class Program(GObject.Object):
         """
         program_dict = program_dict.copy()
 
-        program_dict["id"] = int(
-            cursor.execute("SELECT MAX(id) FROM programs").fetchone()[0] or 0
-        ) + 1
+        program_dict["id"] = (
+            int(
+                cursor.execute("SELECT MAX(id) FROM programs").fetchone()[0]
+                or 0
+            )
+            + 1
+        )
 
         program: Program = Program(program_dict)
 
@@ -157,6 +222,26 @@ class Program(GObject.Object):
                 program_dict[list(PROGRAM_COLUMNS.keys())[index]] = value
 
             yield Program(program_dict)
+
+    @staticmethod
+    def get_fitting(
+        max_left_distance: int, max_right_distance: int
+    ) -> Generator["Program", None, None]:
+        """Yield all programs in the database."""
+        for program_row in cursor.execute(
+            "SELECT " + ", ".join(PROGRAM_COLUMNS) + " FROM programs"
+        ).fetchall():
+            program_dict = {}
+            for index, value in enumerate(program_row):
+                program_dict[list(PROGRAM_COLUMNS.keys())[index]] = value
+
+            program: Program = Program(program_dict)
+
+            if (
+                program.pusher_left_distance_max <= max_left_distance
+                and program.pusher_right_distance_max <= max_right_distance
+            ):
+                yield program
 
     @staticmethod
     def iter_to_model(program_iter: Iterable["Program"]) -> Gio.ListStore:

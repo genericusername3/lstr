@@ -22,12 +22,20 @@ row:nth-child(even) {
     background-color: alpha(mix(@accent, #888, 0.5), 0.1);
 }
 
-row:hover {
-    background: alpha(mix(@accent, #bbb, 0.5), 0.15);
+row:not(:selected):hover {
+    background: alpha(mix(@accent, #bbb, 0.4), 0.2);
 }
 
-row:active {
-    background: alpha(mix(@accent, #bbb, 0.5), 0.3);
+row:not(:selected):nth-child(even):hover {
+    background: alpha(mix(@accent, #bbb, 0.3), 0.2);
+}
+
+row:not(:selected):active {
+    background: alpha(mix(@accent, #bbb, 0.4), 0.3);
+}
+
+row:not(:selected):nth-child(even):active {
+    background: alpha(mix(@accent, #bbb, 0.3), 0.3);
 }
 
 entry, button, textview, textview text {
@@ -51,7 +59,7 @@ entry:focus {
     border-color: mix(@accent, #999, 0.7);
 }
 
-*:selected, selection {
+*:selected, selection, row:nth-child(even):selected {
     background: alpha(mix(@accent, #bbb, 0.6), 0.8);
     color: white;
 }
