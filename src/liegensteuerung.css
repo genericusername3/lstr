@@ -47,6 +47,67 @@ entry, button, textview, textview text {
     background: none;
 }
 
+entry.smaller, button.smaller, textview.smaller, textview.smaller text {
+    min-height: 24px;
+    min-width: 24px;
+}
+
+button:disabled {
+    border: none;
+    background: #888;
+    color: #fff;
+    opacity: 0.4;
+}
+button:disabled * {
+    color: #fff;
+}
+
+button.suggested-action:disabled {
+    border: none;
+    background: mix(@good, #222, 0.2);
+    color: #222;
+    opacity: 0.4;
+}
+button.suggested-action:disabled * {
+    color: #222;
+}
+
+button.suggested-action {
+    background: mix(@good, #222, 0.2);
+    color: #222;
+}
+button.suggested-action * {
+    color: #222;
+}
+
+button.suggested-action:hover {
+    background: @good;
+    color: #222;
+}
+
+button.suggested-action:active {
+    background: mix(@good, #fff, 0.2);
+    color: #222;
+}
+
+button.destructive-action {
+    background: mix(@bad, #222, 0.2);
+    color: #fff;
+}
+button.destructive-action * {
+    color: #fff;
+}
+
+button.destructive-action:hover {
+    background: @bad;
+    color: #fff;
+}
+
+button.destructive-action:active {
+    background: mix(@bad, #fff, 0.2);
+    color: #fff;
+}
+
 entry:hover, button:hover {
     background: alpha(mix(@accent, #bbb, 0.6), 0.1);
 }
