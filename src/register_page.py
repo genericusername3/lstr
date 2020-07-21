@@ -75,7 +75,7 @@ class RegisterPage(Gtk.Box, Page, metaclass=PageClass):
         self,
         new_user: bool = True,
         username: Optional[str] = None,
-        access_level: Optional[str] = "user",
+        access_level: Optional[str] = "helper",
         next_page: Optional[str] = None,
         next_page_args: Iterable[Any] = (),
         next_page_kwargs: Dict[str, Any] = {},
@@ -110,8 +110,11 @@ class RegisterPage(Gtk.Box, Page, metaclass=PageClass):
         if new_user:
             self.access_level_combobox.set_active_id(access_level)
             self.title = "Registrieren"
+            self.header_visible = False
         else:
             self.title = "Passwort ändern"
+            self.header_visible = True
+
 
         self.register_button.set_visible(new_user)
         self.accept_button.set_visible(not new_user)
@@ -148,6 +151,7 @@ class RegisterPage(Gtk.Box, Page, metaclass=PageClass):
         self.password_confirm_entry.connect("changed", self.on_entry_changed)
 
         self.register_button.connect("clicked", self.on_register_clicked)
+        self.accept_button.connect("clicked", self.on_accept_clicked)
 
     def on_entry_changed(self, entry: Gtk.Entry) -> None:
         """React to an entry being changed.
@@ -284,9 +288,17 @@ class RegisterPage(Gtk.Box, Page, metaclass=PageClass):
                         self.get_toplevel().active_user_password,
                         self.password_entry.get_text(),
                     )
-                elif (
-                    auth_util.get_access_level(self.get_toplevel().active_user)
-                    == "admin"
+                    self.get_toplevel().active_user_password = (
+                        self.password_entry.get_text()
+                    )
+                elif auth_util.get_access_level(
+                    self.get_toplevel().active_user
+                ) == "admin" or (
+                    auth_util.get_access_level(self.username) == "helper"
+                    and auth_util.get_access_level(
+                        self.get_toplevel().active_user
+                    )
+                    == "doctor"
                 ):
                     auth_util.modify_password_from_admin(
                         self.username,
@@ -299,6 +311,9 @@ class RegisterPage(Gtk.Box, Page, metaclass=PageClass):
                         self.get_toplevel().active_user,
                         self.get_toplevel().active_user_password,
                         self.password_entry.get_text(),
+                    )
+                    self.get_toplevel().active_user_password = (
+                        self.password_entry.get_text()
                     )
             else:
                 raise ValueError(
