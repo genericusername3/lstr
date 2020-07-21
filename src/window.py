@@ -10,6 +10,7 @@ from . import program_util
 from . import page
 from . import (
     edit_patient_page,
+    edit_program_page,
     login_page,
     pain_evaluation_page,
     register_page,
@@ -160,7 +161,7 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
         self.set_decorated(False)
 
         if auth_util.does_admin_exist():
-            self.switch_page("treatment")
+            self.switch_page("login")
         else:
             self.switch_page(
                 "register",
@@ -184,6 +185,10 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
         self.error_bar.connect("response", self.on_info_bar_response)
 
         self.main_area_overlay.add_overlay(self.shutdown_compact_revealer)
+
+        self.change_password_button.connect("clicked", self.on_change_password_clicked)
+
+        self.log_out_button.connect("clicked", self.on_log_out_clicked)
 
     def switch_page(self, page_name: str, *args, **kwargs,) -> None:
         """Switch the active page.

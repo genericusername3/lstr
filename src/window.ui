@@ -566,6 +566,15 @@
                     <property name="position">7</property>
                   </packing>
                 </child>
+                <child>
+                  <object class="EditProgramPage">
+                    <property name="visible">True</property>
+                  </object>
+                  <packing>
+                    <property name="name">edit_program</property>
+                    <property name="position">8</property>
+                  </packing>
+                </child>
               </object>
               <packing>
                 <property name="index">-1</property>
