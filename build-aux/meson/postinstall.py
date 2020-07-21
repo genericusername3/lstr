@@ -33,7 +33,6 @@ if not destdir:
             "install",
             "numpy",
             "opencv-python",
-            "fuzzywuzzy[speedup]",
             "passwordmeter",
         ]
     )
