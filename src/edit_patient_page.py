@@ -1,6 +1,6 @@
 """A page that prompts the user to select a patient."""
 
-from typing import Union, Optional, Callable, List
+from typing import Union, Optional, Callable, List, Tuple
 from numbers import Number
 
 from math import modf
@@ -45,8 +45,30 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
             i.e. a Page with this set to True will not have a patient button in
             the header bar
         title (str): The Page's title
-        %%Wigdet_NAME%% (Gtk.Entry or Gtk.Template.Child): The entry for the
-            user's username
+
+        first_name_entry (Union[Gtk.Entry, Gtk.Template.Child]) A Gtk.Entry for
+            the patient's first name
+        last_name_entry (Union[Gtk.Entry, Gtk.Template.Child]) A Gtk.Entry for
+            the patient's last name
+
+        gender_combobox_text (Union[Gtk.ComboBoxText, Gtk.Template.Child]) A
+            Gtk.ComboBoxText for the patient's gender
+
+        birth_date_day_entry (Union[Gtk.Entry, Gtk.Template.Child]) A Gtk.Entry
+            for the patient's birth date day
+        birth_date_month_entry (Union[Gtk.Entry, Gtk.Template.Child]) A
+            Gtk.Entry for the patient's birth date month
+        birth_date_year_entry (Union[Gtk.Entry, Gtk.Template.Child]) A
+            Gtk.Entry for the patient's birth date year
+
+        weight_entry (Union[Gtk.Entry, Gtk.Template.Child]) A Gtk.Entry for
+            the patient's weight
+
+        comment_entry (Union[Gtk.Entry, Gtk.Template.Child]) A Gtk.Entry for
+            a comment on the patient
+
+        editable: bool = Whether the page has set all values and is ready to
+            receive and save input
     """
 
     __gtype_name__ = "EditPatientPage"
@@ -54,8 +76,6 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
     header_visible: bool = True
     title: str = "Patient hinzufügen"
     is_patient_info_page: bool = True
-
-    patient: Optional[patient_util.Patient] = None
 
     first_name_entry: Union[
         Gtk.Entry, Gtk.Template.Child
@@ -82,6 +102,8 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
 
     comment_entry: Union[Gtk.Entry, Gtk.Template.Child] = Gtk.Template.Child()
 
+    editable: bool = False
+
     def __init__(self, **kwargs):
         """Create a new EditPatientPage.
 
@@ -103,19 +125,17 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
             if not self.gender_combobox_text.set_active_id(patient.gender):
                 self.gender_combobox_text.set_active_id(None)
 
+            # Thank god for ISO 8601
             (
                 birth_date_year,
                 birth_date_month,
                 birth_date_day,
-            ) = patient.birthday.split(
-                "-"
-            )  # Thank god for ISO 8601
+            ) = patient.birthday.split("-")
 
             self.birth_date_day_entry.set_text(birth_date_day)
             self.birth_date_month_entry.set_text(birth_date_month)
             self.birth_date_year_entry.set_text(birth_date_year)
 
-            print(patient.weight)
             self.weight_entry.set_text(str(patient.weight).replace(".", ","))
 
             self.comment_entry.set_text(patient.comment)
@@ -135,6 +155,12 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
             self.weight_entry.set_text("")
 
             self.comment_entry.set_text("")
+
+        self.editable = True
+
+    def unprepare(self) -> None:
+        """Prepare the page to be hidden."""
+        self.editable = False
 
     def do_parent_set(self, old_parent: Optional[Gtk.Widget]) -> None:
         """React to the parent being set.
@@ -210,6 +236,20 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
             self.birth_date_year_entry,
         ]
 
+        self.all_fields: Tuple[Gtk.Entry, ...] = (
+            self.first_name_entry,
+            self.last_name_entry,
+            self.gender_combobox_text,
+            self.birth_date_day_entry,
+            self.birth_date_month_entry,
+            self.birth_date_year_entry,
+            self.weight_entry,
+            self.comment_entry,
+        )
+
+        for field in self.all_fields:
+            field.connect_after("changed", self.on_values_changed)
+
     def on_num_entry_insert(
         self,
         editable: Gtk.Editable,
@@ -232,20 +272,18 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
         """
         old_text: str = editable.get_text()
         cursor_pos: int = editable.get_position()
+        if self.editable:
+            if digits > 0:
+                if cursor_pos > 0:
+                    new_text = new_text.replace(",", "")
+                else:
+                    new_text = new_text[0] + new_text[1:].replace(",", "")
 
-        if digits > 0:
-            if cursor_pos > 0:
-                new_text = new_text.replace(",", "")
-            else:
-                new_text = new_text[0] + new_text[1:].replace(",", "")
+            if new_text != "" and not str.isnumeric(new_text):
+                GObject.signal_stop_emission_by_name(editable, "insert-text")
 
-        if new_text != "" and not str.isnumeric(new_text):
-            GObject.signal_stop_emission_by_name(editable, "insert-text")
-            print("prevented insert of:", new_text)
-
-        elif "," in old_text and cursor_pos - old_text.index(",") > digits:
-            GObject.signal_stop_emission_by_name(editable, "insert-text")
-            print("prevented insert of:", new_text)
+            elif "," in old_text and cursor_pos - old_text.index(",") > digits:
+                GObject.signal_stop_emission_by_name(editable, "insert-text")
 
     def on_unfocus_num_entry(
         self,
@@ -275,14 +313,15 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
                 minimum/maximum value. Defaults to None
             year (bool, optional): Whether the number is a year
         """
-        self.on_unfocus_entry(entry, event)
+        if self.editable:
+            self.on_unfocus_entry(entry, event)
 
-        self.check_input(
-            entry, leading_zeroes, minimum, maximum, year,
-        )
-        
-        if entry in self.date_entries:
-            self.on_date_changed(entry)
+            self.check_input(
+                entry, leading_zeroes, minimum, maximum, year,
+            )
+
+            if entry in self.date_entries:
+                self.on_date_changed(entry)
 
     def check_input(
         self,
@@ -311,53 +350,52 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
                 minimum/maximum value. Defaults to None
             year (bool, optional): Whether the number is a year
         """
-        if callable(minimum):
-            minimum = minimum()
-        if callable(maximum):
-            maximum = maximum()
+        if self.editable:
+            if callable(minimum):
+                minimum = minimum()
+            if callable(maximum):
+                maximum = maximum()
 
-        text: str = entry.get_text()
+            text: str = entry.get_text()
 
-        if text == "":
-            return
+            if text == "":
+                return
 
-        text = "0" + text.replace(",", ".")
+            text = "0" + text.replace(",", ".")
 
-        value: Union[int, float]
+            value: Union[int, float]
 
-        print(text, leading_zeroes, year)
+            if "." in text:  # Float
+                value = float(text)
 
-        if "." in text:  # Float
-            value = float(text)
+                if minimum is not None:
+                    value = max(value, minimum)
+                if maximum is not None:
+                    value = min(value, maximum)
 
-            if minimum is not None:
-                value = max(value, minimum)
-            if maximum is not None:
-                value = min(value, maximum)
+                frac, whole = modf(value)
+                entry.set_text(
+                    format(int(whole), f"0{leading_zeroes}d")
+                    + str(frac).replace("0", "", 1)
+                )
 
-            frac, whole = modf(value)
-            entry.set_text(
-                format(int(whole), f"0{leading_zeroes}d")
-                + str(frac).replace("0", "", 1)
-            )
+            else:  # Int
+                value = int(text)
 
-        else:  # Int
-            value = int(text)
+                if year:
+                    # Re-include digits of the year e.g. (19)73
+                    if value < 100 and leading_zeroes > 2:
+                        if today_century + value > today_year:
+                            value += today_century - 150
+                        else:
+                            value += today_century
 
-            if year:
-                # Re-include digits of the year e.g. (19)73
-                if value < 100 and leading_zeroes > 2:
-                    if today_century + value > today_year:
-                        value += today_century - 150
-                    else:
-                        value += today_century
+                if minimum is not None:
+                    value = int(max(value, minimum))
+                if maximum is not None:
+                    value = int(min(value, maximum))
 
-            if minimum is not None:
-                value = int(max(value, minimum))
-            if maximum is not None:
-                value = int(min(value, maximum))
-
-            entry.set_text(format(int(value), f"0{leading_zeroes}d"))
+                entry.set_text(format(int(value), f"0{leading_zeroes}d"))
 
     def on_date_changed(self, entry: Gtk.Entry):
         """React to the user editing the date.
@@ -368,13 +406,14 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
         Args:
             entry (Gtk.Entry): The changed entry.
         """
-        self.check_input(
-            self.birth_date_year_entry, 4, today_year - 150, today_year, True,
-        )
+        if self.editable:
+            self.check_input(
+                self.birth_date_year_entry, 4, today_year - 150, today_year, True,
+            )
 
-        self.check_input(self.birth_date_month_entry, 2, 1, 12)
+            self.check_input(self.birth_date_month_entry, 2, 1, 12)
 
-        self.check_input(self.birth_date_day_entry, 2, 1, self.max_day())
+            self.check_input(self.birth_date_day_entry, 2, 1, self.max_day())
 
     def max_day(self) -> int:
         """Return the most fitting maximum day number.
@@ -387,14 +426,37 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
 
         if month != 2:
             return MONTHS[month]
-        elif year % 400:
+        elif year % 400 == 0:
             return MONTHS[month] + 1  # Leap year
-        elif year % 100:
+        elif year % 100 == 0:
             return MONTHS[month]  # No leap year
-        elif year % 4:
+        elif year % 4 == 0:
             return MONTHS[month] + 1  # Leap year
         else:
             return MONTHS[month]  # No leap year
+
+    def on_values_changed(self, *args):
+        """React to patient data being changed.
+
+        Args:
+            *args: Arguments that Gtk passes to the ::connect handler
+        """
+        if self.editable:
+            self.patient.modify(
+                first_name=self.first_name_entry.get_text(),
+                last_name=self.last_name_entry.get_text(),
+                birthday=self.birth_date_year_entry.get_text()
+                + "-"
+                + self.birth_date_month_entry.get_text()
+                + "-"
+                + self.birth_date_day_entry.get_text(),
+                gender=self.gender_combobox_text.get_active_id(),
+                weight=self.weight_entry.get_text(),
+                comment=self.comment_entry.get_text(),
+            )
+            self.title = f"{self.patient.first_name} {self.patient.last_name}"
+
+            self.get_toplevel().update_title()
 
 
 # Make EditPatientPage accessible via .ui files
