@@ -9,7 +9,17 @@ Attributes:
     SORT_ORDERS (set): Description
 """
 
-from typing import Generator, Dict, Iterable, List, Set
+from typing import (
+    Generator,
+    Dict,
+    Iterable,
+    List,
+    Set,
+    Optional,
+    Tuple,
+    Any,
+    Callable,
+)
 
 import os
 
@@ -56,8 +66,8 @@ COLUMNS: List[str] = [
 
 DISPLAY_COLUMNS: List[str] = [
     "patient_id",
-    "first_name",
     "last_name",
+    "first_name",
     "gender_translated",
     "birthday",
 ]
@@ -211,13 +221,174 @@ class Patient(GObject.Object):
 
         return patient
 
+    def modify(
+        self,
+        first_name: Optional[str] = None,
+        last_name: Optional[str] = None,
+        birthday: Optional[str] = None,
+        gender: Optional[str] = None,
+        weight: Optional[float] = None,
+        comment: Optional[str] = None,
+    ):
+        """Modify the patient and save to the database.
+
+        Args:
+            first_name (str, optional): The patient's first name or
+                None (default) to not change
+            last_name (str, optional): The patient's last name or
+                None (default) to not change
+            birthday (str, optional): The patient's date of birth or
+                None (default) to not change
+            gender (str, optional): The patient's gender or None (default) to
+                not change
+            weight (float, optional): The patient's weight in kilograms o
+                None (default) to not change
+            comment (str, optional): A comment or None (default) to not change
+        """
+        if first_name is not None:
+            self.first_name = first_name
+        if last_name is not None:
+            self.last_name = last_name
+        if birthday is not None:
+            self.birthday = birthday
+        if gender is not None:
+            self.gender = gender
+        if weight is not None:
+            self.weight = weight
+        if comment is not None:
+            self.comment = comment
+
+        cursor.execute(
+            """
+                UPDATE patients
+                SET first_name = ?,
+                    last_name = ?,
+                    birthday = ?,
+                    gender = ?,
+                    weight = ?,
+                    comment = ?
+                WHERE id=?
+            """,
+            (
+                self.first_name,
+                self.last_name,
+                self.birthday,
+                self.gender,
+                self.weight,
+                self.comment,
+                self.patient_id,
+            ),
+        )
+
+        connection.commit()
+
     @staticmethod
-    def get_all() -> Generator["Patient", None, None]:
-        """Yield all patients in the database."""
-        for patient_row in cursor.execute(
-            "SELECT " + ", ".join(COLUMNS) + " FROM patients"
-        ).fetchall():
+    def sort(
+        patient_rows: Iterable[Tuple[Any, ...]],
+        sort_key_func: Optional[Callable] = None,
+        reverse: Optional[bool] = False,
+    ) -> List[Tuple[Any, ...]]:
+        """Sort an iterable of patient rows.
+
+        If sort_key_func is None, order is retained (if reverse is True,
+            return patient_rows[::-1]).
+
+        Args:
+            patient_rows (Iterable[Tuple[Any, ...]]): Rows to sort
+            sort_key_func (Optional[Callable]): A callable that
+                returns a value by which to sort the rows
+            reverse (Optional[bool]): Whether to reverse the sorted
+                iterable
+
+        Returns:
+            Iterable[Tuple[Any, ...]]: The sorted iterable
+        """
+        sorted_patient_rows: List[Tuple[Any, ...]]
+
+        if sort_key_func is None:
+            sorted_patient_rows = list(patient_rows)
+        else:
+            sorted_patient_rows = sorted(patient_rows, key=sort_key_func)
+
+        if reverse:
+            return sorted_patient_rows[::-1]
+        return sorted_patient_rows
+
+    @staticmethod
+    def get_all(
+        sort_key_func: Optional[Callable] = None, reverse: bool = False
+    ) -> Generator["Patient", None, None]:
+        """Yield all patients in the database.
+
+        Args:
+            sort_key_func (Optional[Callable]): A callable that
+                returns a value by which to sort the rows
+            reverse (Optional[bool]): Whether to reverse the sorted
+                iterable
+        """
+        for patient_row in Patient.sort(
+            cursor.execute(
+                "SELECT " + ", ".join(COLUMNS) + " FROM patients"
+            ).fetchall(),
+            sort_key_func,
+            reverse,
+        ):
             yield Patient(*patient_row)
+
+    @staticmethod
+    def get_for_query(
+        query: str,
+        sort_key_func: Optional[Callable] = None,
+        reverse: bool = False,
+    ) -> Generator["Patient", None, None]:
+        """Yield all patients in the database.
+
+        Args:
+            query (str): A query to match
+            sort_key_func (Optional[Callable]): A callable that
+                returns a value by which to sort the rows
+            reverse (Optional[bool]): Whether to reverse the sorted
+                iterable
+        """
+        patient_rows: Set[Tuple[Any, ...]] = set()
+
+        for word in query.split(" "):
+            for patient_row in Patient.get_for_query_word(word):
+                patient_rows.add(patient_row)
+
+        for patient_row in Patient.sort(patient_rows, sort_key_func, reverse):
+            yield Patient(*patient_row)
+
+    @staticmethod
+    def get_for_query_word(
+        query_word: str,
+        sort_key_func: Optional[Callable] = None,
+        reverse: bool = False,
+    ) -> Generator[Tuple[Any, ...], None, None]:
+        """Yield all patients in the database.
+
+        Args:
+            query_word (str): The word to match
+            sort_key_func (Optional[Callable]): A callable that
+                returns a value by which to sort the rows
+            reverse (Optional[bool]): Whether to reverse the sorted
+                iterable
+        """
+        for patient_row in Patient.sort(
+            cursor.execute(
+                f"""
+                SELECT {", ".join(COLUMNS)}
+                FROM patients
+                WHERE last_name LIKE ("%" || ? || "%")
+                OR first_name LIKE ("%" || ? || "%")
+                OR id LIKE ("%" || ? || "%")
+            """,
+                (query_word.lower(), query_word.lower(), query_word.lower()),
+            ).fetchall(),
+            sort_key_func,
+            reverse,
+        ):
+            yield tuple(patient_row)
 
     @staticmethod
     def iter_to_model(patient_iter: Iterable["Patient"]) -> Gio.ListStore:
@@ -241,10 +412,7 @@ class Patient(GObject.Object):
         return model
 
     def add_pain_entry(
-        self,
-        username: str,
-        pain_intensity: int,
-        pain_location: str,
+        self, username: str, pain_intensity: int, pain_location: str,
     ) -> int:
         """Add a pain entry to the database.
 
@@ -286,10 +454,7 @@ class Patient(GObject.Object):
         return timestamp
 
     def add_treatment_entry(
-        self,
-        timestamp: int,
-        username: str,
-        program: program_util.Program,
+        self, timestamp: int, username: str, program: program_util.Program,
     ) -> int:
         """Add a program entry to the database.
 

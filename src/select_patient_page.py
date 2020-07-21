@@ -1,12 +1,13 @@
 """A page that prompts the user to select a patient."""
 
-from typing import Union, Optional
+from typing import Union, Optional, Any, Tuple
 
 from gi.repository import GObject, Gtk  # type: ignore
 
 from .page import Page, PageClass
 
 from .patient_util import Patient
+from .patient_util import COLUMNS as PATIENT_COLUMNS
 from .patient_row import PatientRow, PatientHeader
 
 
@@ -36,6 +37,13 @@ class SelectPatientPage(Gtk.Box, Page, metaclass=PageClass):
 
     add_button: Union[Gtk.Button, Gtk.Template.Child] = Gtk.Template.Child()
 
+    patient_search_entry: Union[
+        Gtk.SearchEntry, Gtk.Template.Child
+    ] = Gtk.Template.Child()
+
+    sort_column: int = PATIENT_COLUMNS.index("last_name")
+    sort_reverse: bool = False
+
     def __init__(self, **kwargs):
         """Create a new SelectPatientPage.
 
@@ -46,14 +54,20 @@ class SelectPatientPage(Gtk.Box, Page, metaclass=PageClass):
 
     def prepare(self) -> None:
         """Prepare the page to be shown."""
-        self.patient_list_box.bind_model(
-            Patient.iter_to_model(Patient.get_all()), PatientRow
-        )
-        self.patient_list_box.show_all()
+        self.sort_column = PATIENT_COLUMNS.index("last_name")
+        self.sort_reverse = False
+
+        self.header_box.get_children()[1].update_sort_icons()
+
+        self.patient_search_entry.set_text("")
+        self.update_patients()
 
     def prepare_return(self) -> None:
         """Prepare the page to be shown when returning from another page."""
         self.get_toplevel().active_patient = None
+
+        # Inefficient to re-load all patients, but everything else is more work
+        self.update_patients()
 
     def do_parent_set(self, old_parent: Optional[Gtk.Widget]) -> None:
         """React to the parent being set.
@@ -68,13 +82,17 @@ class SelectPatientPage(Gtk.Box, Page, metaclass=PageClass):
             return
 
         self.header_box.pack_start(
-            PatientHeader(), fill=True, expand=True, padding=0
+            PatientHeader(self), fill=True, expand=True, padding=0
         )
         self.header_box.show_all()
 
         self.patient_list_box.connect("row-selected", self.on_patient_selected)
 
         self.add_button.connect("clicked", self.on_add_clicked)
+
+        self.patient_search_entry.connect(
+            "search-changed", self.on_search_changed
+        )
 
     def on_patient_selected(self, list_box: Gtk.ListBox, row: Gtk.ListBoxRow):
         """React to the user selecting a patient.
@@ -98,6 +116,63 @@ class SelectPatientPage(Gtk.Box, Page, metaclass=PageClass):
             button (Gtk.Button): The clicked button
         """
         self.get_toplevel().switch_page("edit_patient")
+
+    def update_patients(self) -> None:
+        """Re-query and re-sort all patients."""
+        if self.patient_search_entry.get_text() == "":
+            self.patient_list_box.bind_model(
+                Patient.iter_to_model(
+                    Patient.get_all(
+                        sort_key_func=self.sort_key, reverse=self.sort_reverse
+                    )
+                ),
+                PatientRow,
+            )
+        else:
+            self.patient_list_box.bind_model(
+                Patient.iter_to_model(
+                    Patient.get_for_query(
+                        self.patient_search_entry.get_text(),
+                        sort_key_func=self.sort_key,
+                        reverse=self.sort_reverse,
+                    )
+                ),
+                PatientRow,
+            )
+
+        self.patient_list_box.show_all()
+
+    def on_search_changed(self, search_entry: Gtk.SearchEntry) -> None:
+        """React to the search query being changed by the user.
+
+        Args:
+            search_entry (Gtk.SearchEntry): The search entry that the user
+                entered the query into
+        """
+        self.update_patients()
+
+    def sort_key(self, patient_row: Tuple[Any, ...]) -> Any:
+        """Return a sort key for a patient row.
+
+        Args:
+            patient_row (Tuple[Any, ...]): The patient row
+
+        Returns:
+            Any: An object by which patient_row can be sorted
+        """
+        return patient_row[self.sort_column]
+
+    def set_sort(self, column_index: int, reverse: bool) -> None:
+        """Set the sort parameters and sort the patients if necessary.
+
+        Args:
+            column_index (int): The index of the column by which to sort
+            reverse (bool): Whether to reverse the sorted rows
+        """
+        if reverse != self.sort_reverse or column_index != self.sort_column:
+            self.sort_column = column_index
+            self.sort_reverse = reverse
+            self.update_patients()
 
 
 # Make SelectPatientPage accessible via .ui files

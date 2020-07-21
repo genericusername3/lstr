@@ -9,7 +9,7 @@ from typing import Dict, List
 from datetime import datetime
 from fuzzywuzzy import fuzz  # type: ignore
 
-from gi.repository import GLib, Gtk  # type: ignore
+from gi.repository import GLib, Gdk, Gtk  # type: ignore
 
 from . import patient_util
 
@@ -76,7 +76,7 @@ class PatientRow(Gtk.Box):
 
             cell_label = Gtk.Label(label=text, use_markup=True)
 
-            cell_label.set_size_request(-1, 32)
+            cell_label.set_size_request(128, 32)
             cell_label.set_halign(Gtk.Align.START)
             cell_label.set_margin_start(4)
             cell_label.set_xalign(0)
@@ -145,23 +145,43 @@ class PatientRow(Gtk.Box):
 class PatientHeader(Gtk.Box):
     """A widget that acts as a header for PatientRow widgets."""
 
-    def __init__(self):
+    sort_icons: List[Gtk.Image]
+
+    def __init__(self, page):
         """Create a new PatientRow.
 
         Args:
-            patient (patient_util.Patient): The patient to represent
-
+            page (select_patient_page.SelectPatientPage): The page to act as a
+                header for
         """
         super().__init__(orientation=Gtk.Orientation.HORIZONTAL)
+
+        self.page = page
+        self.sort_icons = []
 
         self.set_margin_start(2)
         self.set_margin_end(2)
 
-        for column in patient_util.DISPLAY_COLUMNS:
+        for col_index, column in enumerate(patient_util.DISPLAY_COLUMNS):
             if size_groups.get(column, None) is None:
                 size_groups[column] = Gtk.SizeGroup(Gtk.SizeGroupMode.BOTH)
 
             text = COLUMN_HEADER_TRANSLATIONS[column]
+
+            event_box = Gtk.EventBox()
+
+            event_box.connect(
+                "button-press-event",
+                self.on_column_header_clicked,
+                patient_util.COLUMNS.index(
+                    column.replace("patient_", "").replace("_translated", "")
+                ),
+                col_index,
+            )
+
+            cell_box = Gtk.Box(
+                orientation=Gtk.Orientation.HORIZONTAL, spacing=8
+            )
 
             cell_label = Gtk.Label(label=text)
 
@@ -170,9 +190,22 @@ class PatientHeader(Gtk.Box):
             cell_label.set_margin_start(4)
             cell_label.set_xalign(0)
 
-            size_groups[column].add_widget(cell_label)
+            cell_box.pack_start(
+                cell_label, expand=False, fill=False, padding=0
+            )
 
-            self.pack_start(cell_label, expand=True, fill=True, padding=4)
+            cell_sort_icon = Gtk.Image()
+            self.sort_icons.append(cell_sort_icon)
+            # cell_sort_icon.set_no_show_all(True)
+
+            cell_box.pack_end(
+                cell_sort_icon, expand=False, fill=False, padding=0
+            )
+
+            size_groups[column].add_widget(cell_box)
+
+            event_box.add(cell_box)
+            self.pack_start(event_box, expand=True, fill=True, padding=4)
 
             self.pack_start(
                 Gtk.Separator(orientation=Gtk.Orientation.VERTICAL),
@@ -195,3 +228,50 @@ class PatientHeader(Gtk.Box):
         )
 
         self.show_all()
+
+        self.update_sort_icons()
+
+    def on_column_header_clicked(
+        self,
+        event_box: Gtk.EventBox,
+        event: Gdk.EventButton,
+        column_index: int,
+        display_column_index: int,
+    ) -> None:
+        """React to the user clicking on a column header.
+
+        Sort the listbox by the clicked column and revert if that sort order is
+            already being used.
+
+        Args:
+            event_box (Gtk.EventBox): The Gtk.EventBox that was clicked
+                (pressed) on
+            event (Gdk.EventButton): The event that the button press caused
+            column_index (int): The column index of the column header
+        """
+        self.page.set_sort(
+            column_index,
+            self.page.sort_column == column_index
+            and not self.page.sort_reverse,
+        )
+
+        self.update_sort_icons()
+
+    def update_sort_icons(self) -> None:
+        """Update the sort icons. Hide unnecessary ones, adapt the icons."""
+        for image in self.sort_icons:
+            image.set_opacity(0.3)
+            image.set_from_icon_name("go-down-symbolic", Gtk.IconSize.BUTTON)
+
+        display_column_index: int = patient_util.DISPLAY_COLUMNS.index(
+            patient_util.COLUMNS[self.page.sort_column]
+            .replace("id", "patient_id")
+            .replace("gender", "gender_translated")
+        )
+
+        if self.page.sort_reverse:
+            self.sort_icons[display_column_index].set_from_icon_name(
+                "go-up-symbolic", Gtk.IconSize.BUTTON
+            )
+
+        self.sort_icons[display_column_index].set_opacity(0.9)

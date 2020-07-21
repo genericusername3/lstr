@@ -281,7 +281,7 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
             not next_page.header_visible
         )
 
-        self.title_label.set_text(next_page.title)
+        self.update_title()
 
         # Change button visibility
         self.back_button_revealer.set_reveal_child(len(self.page_history) > 1)
@@ -307,6 +307,10 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
         """Clear the page history."""
         self.page_history = [self.page_stack.get_visible_child_name()]
         self.back_button_revealer.set_reveal_child(len(self.page_history) > 1)
+
+    def update_title(self) -> None:
+        """Update the displayed title according to the current page's title."""
+        self.title_label.set_text(self.page_stack.get_visible_child().title)
 
     def show_error(self, message: str) -> None:
         """Show an error message to the user.
