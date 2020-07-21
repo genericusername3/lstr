@@ -43,6 +43,10 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
 
     ok_button: Union[Gtk.Template.Child, Gtk.Button] = Gtk.Template.Child()
 
+    reset_axes_button: Union[Gtk.Template.Child, Gtk.Button] = Gtk.Template.Child()
+
+    save_position_button: Union[Gtk.Template.Child, Gtk.Button] = Gtk.Template.Child()
+
     camera_frame: numpy.ndarray = None
     running: bool = True
     cam_available: bool = True
@@ -65,6 +69,8 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
         read_thread = Thread(target=self.read_camera_input_loop)
         read_thread.start()
 
+        self.ok_button.set_sensitive(False)
+
         self.display_camera_input_loop()
 
     def unprepare(self):
@@ -82,12 +88,15 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
             while self.running:
                 return_value, new_camera_frame = video_capture.read()
 
-                # Some operations like color correction
-                new_camera_frame = cv2.cvtColor(
-                    new_camera_frame, cv2.COLOR_BGR2RGB
-                )
+                try:
+                    # Some operations like color correction
+                    new_camera_frame = cv2.cvtColor(
+                        new_camera_frame, cv2.COLOR_BGR2RGB
+                    )
 
-                self.camera_frame = new_camera_frame
+                    self.camera_frame = new_camera_frame
+                except cv2.error:
+                    pass
         else:
             print("No cam found.")
             self.cam_available = False
@@ -113,6 +122,8 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
         self.ok_button.connect(
             "clicked", self.on_ok_clicked
         )
+
+        self.save_position_button.connect("clicked", self.on_save_pos_clicked)
 
     def display_camera_input_loop(self) -> None:
         """Read from camera_frame to display the most recent webcam image."""
@@ -172,6 +183,14 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
             button (Gtk.Button): The button that was clicked
         """
         self.get_toplevel().switch_page("select_program", 90, 90)  # TODO: Use actual values
+
+    def on_save_pos_clicked(self, button: Gtk.Button) -> None:
+        """React to the "Save position" button being clicked.
+
+        Args:
+            button (Gtk.Button): The button that was clicked
+        """
+        self.ok_button.set_sensitive(True)
 
 
 
