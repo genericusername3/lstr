@@ -67,13 +67,10 @@ DATE_COLUMNS: Set[str] = {"birthday"}
 TREATMENT_COLUMNS: List[str] = [
     "patient_id",
     "program_id",
+    "username",
     "timestamp",
-    "vas",
-    "sij_left",
-    "sij_right",
-    "sij_both",
-    "sij_left_right",
-    "sij_right_left",
+    "pain_intensity",
+    "pain_location",
 ]
 
 SORT_ORDERS = {"ASC", "DESC"}
@@ -93,23 +90,10 @@ cursor.execute(
     """
 )
 cursor.execute(
-    """CREATE TABLE IF NOT EXISTS pain_entries
-         (
-            patient_id UNSIGNED BIG INT, timestamp UNSIGNED‌ BIG‌ INT,
-            pain_left INT, pain_right INT
-        )
-    """
-)
-cursor.execute(
     """CREATE TABLE IF NOT EXISTS treatment_entries
         (
             patient_id UNSIGNED BIG INT, program_id UNSIGNED BIG INT,
-            timestamp UNSIGNED BIG INT,
-
-            vas INT,
-
-            sij_left INT, sij_right INT, sij_both INT, sij_left_right INT,
-            sij_right_left INT
+            timestamp UNSIGNED BIG INT, pain_intensity INT, pain_location TEXT
         )
     """
 )
@@ -256,15 +240,22 @@ class Patient(GObject.Object):
 
         return model
 
-    def add_pain_entry(self, pain_left: int, pain_right: int) -> int:
+    def add_pain_entry(
+        self,
+        username: str,
+        pain_intensity: int,
+        pain_location: str,
+    ) -> int:
         """Add a pain entry to the database.
 
         A pain entry with the patient id, the two pain values and
-            time.time() will be added to the table pain_entries
+            time.time() will be added to the table treatment_entries
 
         Args:
-            pain_left (int): The pain value for the left side
-            pain_right (int): The pain value for the right side
+            username (str): The treating user's username
+            pain_intensity (int): The pain intensity
+            pain_location (str): Where the pain is; one of "left",
+                "left-right", "both", "right-left", "right"
 
         Returns:
             int: The UNIX timestamp used for the entry
@@ -272,21 +263,23 @@ class Patient(GObject.Object):
         Raises:
             ValueError: If the pain values provided are invalid
         """
-        if pain_left not in range(11):
-            raise ValueError("pain_left must be between 0 and 10 (inclusive)")
-        if int(pain_left) != pain_left:
-            raise ValueError("pain_left must be an int")
-
-        if pain_right not in range(11):
-            raise ValueError("pain_right must be between 0 and 10 (inclusive)")
-        if int(pain_right) != pain_right:
-            raise ValueError("pain_right must be an int")
+        if pain_intensity not in range(11):
+            raise ValueError(
+                "pain_intensity must be between 0 and 10 (inclusive)"
+            )
+        if int(pain_intensity) != pain_intensity:
+            raise ValueError("pain_intensity must be an int")
 
         timestamp: int = int(time.time())
 
         cursor.execute(
-            "INSERT INTO pain_entries VALUES (?, ?, ?, ?)",
-            (self.patient_id, timestamp, pain_left, pain_right),
+            """
+                INSERT INTO treatment_entries
+                    (patient_id, timestamp, pain_intensity, pain_location)
+                VALUES
+                    (?, ?, ?, ?)
+            """,
+            (self.patient_id, timestamp, pain_intensity, pain_location),
         )
         connection.commit()
 
@@ -294,65 +287,58 @@ class Patient(GObject.Object):
 
     def add_treatment_entry(
         self,
+        timestamp: int,
+        username: str,
         program: program_util.Program,
-        vas: str,
-        sij_left: str,
-        sij_right: str,
-        sij_both: str,
-        sij_left_right: str,
-        sij_right_left: str,
     ) -> int:
         """Add a program entry to the database.
 
         A program entry with the patient id, the program number and
-            time.time() will be added to the table pain_entries
+            time.time() will be added to the table treatment_entries
 
         Args:
+            timestamp (int): The UNIX timestamp of an existing treatment entry
+                (with pain values)
+            username (str): The treating user's username
             program (program_util.Program): The program that was completed
-            vas (str): The value for the vas column
-            sij_left (str): The value for the sij_left column
-            sij_right (str): The value for the sij_right column
-            sij_both (str): The value for the sij_both column
-            sij_left_right (str): The value for the sij_left_right column
-            sij_right_left (str): The value for the sij_right_left column
 
         Returns:
             int: The UNIX timestamp used for the entry
         """
-        timestamp: int = int(time.time())
+        new_timestamp: int = int(time.time())
 
         cursor.execute(
-            "INSERT INTO treatment_entries VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
-            (
-                self.patient_id,
-                program.id,
-                timestamp,
-                vas,
-                sij_left,
-                sij_right,
-                sij_both,
-                sij_left_right,
-                sij_right_left,
-            ),
+            """
+            UPDATE treatment_entries
+            SET program_id = ?, timestamp = ?
+            WHERE patient_id=? AND timestamp=?
+            """,
+            (program.id, new_timestamp, self.patient_id, timestamp,),
         )
         connection.commit()
 
-        return timestamp
+        return new_timestamp
 
     def modify_pain_entry(
-        self, timestamp: int, pain_left: int, pain_right: int
+        self,
+        timestamp: int,
+        username: str,
+        pain_intensity: int,
+        pain_location: str,
     ) -> int:
         """Modify a pain entry in the database.
 
-        The pain entry with the timestamp will be modified to have pain_left
-            and pain_right instead of its old values.
+        The pain entry with the timestamp will be modified to have
+            pain_intensity and pain_location instead of its old values.
 
         If the entry doesn't exist, do nothing.
 
         Args:
             timestamp (int): The UNIX timestamp of the entry to modify
-            pain_left (int): The pain value for the left side
-            pain_right (int): The pain value for the right side
+            username (str): The treating user's username
+            pain_intensity (int): The pain intensity
+            pain_location (str): Where the pain is; one of "left",
+                "left-right", "both", "right-left", "right"
 
         Returns:
             int: The new UNIX timestamp used for the entry
@@ -360,87 +346,24 @@ class Patient(GObject.Object):
         Raises:
             ValueError: If the pain values provided are invalid
         """
-        if pain_left not in range(11):
+        if pain_intensity not in range(11):
             raise ValueError("pain_left must be between 0 and 10 (inclusive)")
-        if int(pain_left) != pain_left:
+        if int(pain_intensity) != pain_intensity:
             raise ValueError("pain_left must be an int")
 
-        if pain_right not in range(11):
-            raise ValueError("pain_right must be between 0 and 10 (inclusive)")
-        if int(pain_right) != pain_right:
-            raise ValueError("pain_right must be an int")
-
-        new_timestamp: int = int(time.time())
-
-        cursor.execute(
-            """
-                UPDATE pain_entries
-                SET pain_left = ?, pain_right = ?, timestamp = ?
-                WHERE patient_id=? AND timestamp=?
-            """,
-            (pain_left, pain_right, new_timestamp, self.patient_id, timestamp),
-        )
-        connection.commit()
-
-        return new_timestamp
-
-    def modify_treatment_entry(
-        self,
-        timestamp: int,
-        program: program_util.Program,
-        vas: str,
-        sij_left: str,
-        sij_right: str,
-        sij_both: str,
-        sij_left_right: str,
-        sij_right_left: str,
-    ) -> int:
-        """Modify a treatment entry in the database.
-
-        The treatment entry with the timestamp and program id will be modified
-            to have the new column values.
-
-        If the entry doesn't exist, do nothing.
-
-        Args:
-            timestamp (int): The UNIX timestamp of the entry to modify
-            program (program_util.Program): The new program
-            vas (str): The new value for the vas column
-            sij_left (str): The new value for the sij_left column
-            sij_right (str): The new value for the sij_right column
-            sij_both (str): The new value for the sij_both column
-            sij_left_right (str): The new value for the sij_left_right column
-            sij_right_left (str): The new value for the sij_right_left column
-
-        Returns:
-            int: The new UNIX timestamp used for the entry
-        """
         new_timestamp: int = int(time.time())
 
         cursor.execute(
             """
                 UPDATE treatment_entries
-                SET
-                    vas = ?,
-                    sij_left = ?,
-                    sij_right = ?,
-                    sij_both = ?,
-                    sij_left_right = ?,
-                    sij_right_left = ?,
-                WHERE
-                    patient_id=?
-                    AND‌ program_id=?
-                    AND timestamp=?
+                SET pain_intensity = ?, pain_location = ?, timestamp = ?
+                WHERE patient_id=? AND timestamp=?
             """,
             (
-                vas,
-                sij_left,
-                sij_right,
-                sij_both,
-                sij_left_right,
-                sij_right_left,
+                pain_intensity,
+                pain_location,
+                new_timestamp,
                 self.patient_id,
-                program.id,
                 timestamp,
             ),
         )
@@ -475,12 +398,13 @@ if __name__ == "__main__":
 
         print("added " + first_name)
 
+        timestamp = p.add_pain_entry(
+            random.randint(0, 10),
+            random.choice(
+                ("left", "left-right", "both", "right-left", "right")
+            ),
+        )
+
         p.add_treatment_entry(
-            program_util.Program.get_all().__next__(),
-            vas="VAS",
-            sij_left="sij_left",
-            sij_right="sij_right",
-            sij_both="sij_both",
-            sij_left_right="sij_left_right",
-            sij_right_left="sij_right_left",
+            timestamp, program_util.Program.get_all().__next__(),
         )
