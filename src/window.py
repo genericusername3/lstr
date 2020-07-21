@@ -265,7 +265,7 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
             next_page.prepare_return()
 
         # Show Page
-        self.page_stack.set_visible_child_name(self.page_history[-1])
+        self.page_stack.set_visible_child_name(page_name)
 
         # Hide previous errors
         self.error_bar.set_revealed(False)
@@ -329,6 +329,29 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
             button (Gtk.Button): The clicked button
         """
         self.switch_page("edit_patient", patient=self.active_patient)
+
+    def on_change_password_clicked(self, button: Gtk.Button) -> None:
+        """React to the "Change password" button being clicked.
+
+        Args:
+            button (Gtk.Button): The clicked button
+        """
+        self.switch_page(
+            "register",
+            new_user=False,
+            username=self.active_user,
+            access_level=auth_util.get_access_level(self.active_user),
+        )
+
+    def on_log_out_clicked(self, button: Gtk.Button) -> None:
+        """React to the "Log out" button being clicked.
+
+        Args:
+            button (Gtk.Button): The clicked button
+        """
+
+        self._show_page("login", animation_direction=-1)
+        self.clear_history()
 
     def on_info_bar_response(self, info_bar: Gtk.InfoBar, response: int):
         """React to the user responding to a Gtk.InfoBar.
