@@ -47,10 +47,7 @@
                 <property name="margin_start">4</property>
                 <property name="margin_end">4</property>
                 <property name="margin_top">4</property>
-                <property name="label" translatable="yes">Ort der Schmerzen</property>
-                <attributes>
-                  <attribute name="scale" value="1.333"/>
-                </attributes>
+                <property name="label" translatable="yes">Verteilung der Schmerzen</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -99,9 +96,6 @@
                 <property name="margin_end">4</property>
                 <property name="margin_top">4</property>
                 <property name="label" translatable="yes">VAS</property>
-                <attributes>
-                  <attribute name="scale" value="1.333"/>
-                </attributes>
               </object>
               <packing>
                 <property name="expand">False</property>
