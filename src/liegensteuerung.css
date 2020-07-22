@@ -23,19 +23,19 @@ row:nth-child(even) {
     background-color: alpha(mix(@accent, #888, 0.5), 0.1);
 }
 
-row:activatable:not(:selected):hover {
+row.activatable:not(:selected):hover {
     background: alpha(mix(@accent, #bbb, 0.4), 0.2);
 }
 
-row:activatable:not(:selected):nth-child(even):hover {
+row.activatable:not(:selected):nth-child(even):hover {
     background: alpha(mix(@accent, #bbb, 0.3), 0.2);
 }
 
-row:activatable:not(:selected):active {
+row.activatable:not(:selected):active {
     background: alpha(mix(@accent, #bbb, 0.4), 0.3);
 }
 
-row:activatable:not(:selected):nth-child(even):active {
+row.activatable:not(:selected):nth-child(even):active {
     background: alpha(mix(@accent, #bbb, 0.3), 0.3);
 }
 
