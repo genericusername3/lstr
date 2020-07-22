@@ -9,7 +9,7 @@ import random
 import base64
 
 from hashlib import sha512
-from typing import Optional, Tuple
+from typing import Optional, Tuple, Dict
 
 
 try:
@@ -19,9 +19,15 @@ except FileExistsError:
 finally:
     os.chdir(os.path.expanduser("~/.liegensteuerung"))
 
-DATABASE_NAME = "liegensteuerung.db"
+DATABASE_NAME: str = "liegensteuerung.db"
 
-ACCESS_LEVELS = {"admin": 2, "doctor": 1, "helper": 0}
+ACCESS_LEVELS: Dict[str, int] = {"admin": 2, "doctor": 1, "helper": 0}
+ACCESS_LEVEL_NAMES: Dict[int, str] = {2: "admin", 1: "doctor", 0: "helper"}
+ACCESS_LEVEL_TRANSLATIONS: Dict[str, str] = {
+    "admin": "Administrator",
+    "doctor": "Arzt",
+    "helper": "Aushilfe",
+}
 
 
 connection = sqlite3.connect(DATABASE_NAME)
@@ -65,6 +71,18 @@ def does_admin_exist() -> bool:
     ).fetchone()[0]
 
 
+def does_doctor_exist() -> bool:
+    """Return whether a doctor account exists.
+
+    Returns:
+        bool: Whether a doctor account exists.
+    """
+    return cursor.execute(
+        "SELECT COUNT(*) FROM users WHERE access_level = ?",
+        (ACCESS_LEVELS["doctor"],),
+    ).fetchone()[0]
+
+
 def new_user(
     username: str,
     password: str,
@@ -86,15 +104,19 @@ def new_user(
     Raises:
         ValueError: if admin credentials are wrong or missing.
     """
-    if does_admin_exist():
+    if does_admin_exist() and not (access_level == "doctor" and not does_doctor_exist()):
         if admin_username is None or admin_password is None:
             raise ValueError(
-                "Admin credentials may not be None if an admin exists."
+                "When creating an admin account, "
+                "admin credentials may not be None if an admin exists."
             )
         elif not authenticate(admin_username, admin_password):
             raise ValueError("Admin password invalid")
 
-        elif get_access_level(admin_username) != "admin":
+        elif (
+            ACCESS_LEVELS[access_level]
+            > ACCESS_LEVELS[get_access_level(admin_username)]
+        ):
             raise ValueError(
                 "Given admin does not have sufficient permissions"
             )
@@ -115,6 +137,33 @@ def new_user(
         (username, password_hash, salt, ACCESS_LEVELS[access_level]),
     )
     connection.commit()
+
+
+def delete_user(
+    username: str, admin_username: str, admin_password: str,
+) -> None:
+    """Delete a user from the database.
+
+    Args:
+        username (str): The user's username
+        admin_username (str, optional): An administrator's username
+        admin_password (str, optional): An administrator's password
+
+    Raises:
+        ValueError: if admin credentials are wrong
+    """
+    if not authenticate(admin_username, admin_password):
+        raise ValueError("Admin password invalid")
+
+    elif (
+        ACCESS_LEVELS[access_level]
+        > ACCESS_LEVELS[get_access_level(admin_username)]
+    ):
+        raise ValueError("Given admin does not have sufficient permissions")
+
+    else:
+        cursor.execute("DELETE FROM users WHERE username = ?", (username,))
+        connection.commit()
 
 
 def authenticate(username: str, password: str) -> bool:
@@ -220,7 +269,13 @@ def modify_access_level(
     """
     if not authenticate(admin_username, admin_password):
         raise ValueError("Admin password invalid")
-    if get_access_level(admin_username) != "admin":
+    if (
+        ACCESS_LEVELS[access_level]
+        > ACCESS_LEVELS[get_access_level(admin_username)]
+    ) or (
+        ACCESS_LEVELS[get_access_level(username)]
+        > ACCESS_LEVELS[get_access_level(admin_username)]
+    ):
         raise ValueError("Given admin does not have sufficient permissions")
 
     cursor.execute(
@@ -242,13 +297,13 @@ def modify_password_from_admin(
             or None if no admin exists. Defaults to None
         admin_password (str): An administrator's password
             or None if no admin exists. Defaults to None
-
-    Deleted Parameters:
-        old_password (str): The user's old password
     """
     if not authenticate(admin_username, admin_password):
         raise ValueError("Admin password invalid")
-    if get_access_level(admin_username) != "admin":
+    if (
+        ACCESS_LEVELS[get_access_level(username)]
+        > ACCESS_LEVELS[get_access_level(admin_username)]
+    ):
         raise ValueError("Given admin does not have sufficient permissions")
 
     new_salt: str = generate_salt()

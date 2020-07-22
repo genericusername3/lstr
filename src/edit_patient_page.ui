@@ -165,6 +165,7 @@
                     <property name="width_chars">6</property>
                     <property name="max_width_chars">4</property>
                     <property name="placeholder_text" translatable="yes">1973</property>
+                    <property name="input_purpose">number</property>
                   </object>
                   <packing>
                     <property name="left_attach">3</property>
@@ -179,6 +180,7 @@
                     <property name="width_chars">6</property>
                     <property name="max_width_chars">2</property>
                     <property name="placeholder_text" translatable="yes">10</property>
+                    <property name="input_purpose">number</property>
                   </object>
                   <packing>
                     <property name="left_attach">2</property>
@@ -193,6 +195,7 @@
                     <property name="width_chars">6</property>
                     <property name="max_width_chars">2</property>
                     <property name="placeholder_text" translatable="yes">17</property>
+                    <property name="input_purpose">number</property>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>

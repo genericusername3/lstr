@@ -1,9 +1,9 @@
-"""A page that prompts the user to select a patient."""
+"""A page that prompts the user to view, edit or create a patient."""
 
 from typing import Union, Optional, Callable, List, Tuple
 from numbers import Number
+from decimal import Decimal
 
-from math import modf
 from datetime import date
 
 from gi.repository import GObject, Gdk, Gtk  # type: ignore
@@ -132,9 +132,9 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
                 birth_date_day,
             ) = patient.birthday.split("-")
 
-            self.birth_date_day_entry.set_text(birth_date_day)
-            self.birth_date_month_entry.set_text(birth_date_month)
-            self.birth_date_year_entry.set_text(birth_date_year)
+            self.birth_date_day_entry.set_text(str(birth_date_day))
+            self.birth_date_month_entry.set_text(str(birth_date_month))
+            self.birth_date_year_entry.set_text(str(birth_date_year))
 
             self.weight_entry.set_text(str(patient.weight).replace(".", ","))
 
@@ -361,22 +361,23 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
             if text == "":
                 return
 
-            text = "0" + text.replace(",", ".")
+            text = text.replace(",", ".").zfill(1)
 
-            value: Union[int, float]
+            value: Union[int, Decimal]
 
             if "." in text:  # Float
-                value = float(text)
+                value = Decimal(text)
+                q: Decimal = Decimal(10) ** -1  # 1 place --> '0.1'
 
                 if minimum is not None:
-                    value = max(value, minimum)
+                    value = max(value, Decimal(minimum))
                 if maximum is not None:
-                    value = min(value, maximum)
+                    value = min(value, Decimal(maximum))
 
-                frac, whole = modf(value)
+                value = value.quantize(q)
+
                 entry.set_text(
-                    format(int(whole), f"0{leading_zeroes}d")
-                    + str(frac).replace("0", "", 1)
+                    str(value).replace(".", ",").zfill(leading_zeroes + 2)
                 )
 
             else:  # Int
@@ -435,7 +436,7 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
         else:
             return MONTHS[month]  # No leap year
 
-    def on_values_changed(self, *args):
+    def on_values_changed(self, *args) -> None:
         """React to patient data being changed.
 
         Args:
@@ -451,7 +452,7 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
                 + "-"
                 + self.birth_date_day_entry.get_text(),
                 gender=self.gender_combobox_text.get_active_id(),
-                weight=self.weight_entry.get_text(),
+                weight=float(self.weight_entry.get_text().replace(",", ".")),
                 comment=self.comment_entry.get_text(),
             )
             self.title = f"{self.patient.first_name} {self.patient.last_name}"

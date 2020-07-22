@@ -158,14 +158,14 @@ class ProgramHeader(Gtk.Box):
         if size_groups.get("INFO_BUTTON", None) is None:
             size_groups["INFO_BUTTON"] = Gtk.SizeGroup(Gtk.SizeGroupMode.BOTH)
 
-        info_button_placeholder: Gtk.Button = Gtk.Box()
-        info_button_placeholder.set_size_request(40, 40)
-        info_button_placeholder.set_border_width(2)
+        info_button_dummy: Gtk.Button = Gtk.Box()
+        info_button_dummy.set_size_request(40, 40)
+        info_button_dummy.set_border_width(2)
 
-        size_groups["INFO_BUTTON"].add_widget(info_button_placeholder)
+        size_groups["INFO_BUTTON"].add_widget(info_button_dummy)
 
         self.pack_start(
-            info_button_placeholder, expand=False, fill=False, padding=4
+            info_button_dummy, expand=False, fill=False, padding=4
         )
 
         self.show_all()

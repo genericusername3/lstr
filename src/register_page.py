@@ -89,7 +89,7 @@ class RegisterPage(Gtk.Box, Page, metaclass=PageClass):
                 being changed. Ignored if new_user is True. Defaults to None
             access_level (Optional[str], optional): The default access level
                 for a new user. Ignored if new_user is False. See auth_util for
-                valid access level names. Defaults to "user"
+                valid access level names. Defaults to "helper"
             next_page (Optional[str], optional): The page to switch to on
                 completion. None to go back. Defaults to None
             next_page_args (Iterable[Any], optional): Arguments to pass to the
@@ -110,7 +110,7 @@ class RegisterPage(Gtk.Box, Page, metaclass=PageClass):
         if new_user:
             self.access_level_combobox.set_active_id(access_level)
             self.title = "Registrieren"
-            self.header_visible = False
+            self.header_visible = next_page is None
         else:
             self.title = "Passwort ändern"
             self.header_visible = True
@@ -230,15 +230,6 @@ class RegisterPage(Gtk.Box, Page, metaclass=PageClass):
                 self.get_toplevel().active_user_password,
             )
 
-            if self.next_page is None:
-                self.get_toplevel().go_back()
-            else:
-                self.get_toplevel().switch_page(
-                    self.next_page,
-                    *self.next_page_args,
-                    **self.next_page_kwargs
-                )
-
             if self.get_toplevel().active_user is None:
                 self.get_toplevel().active_user = (
                     self.username_entry.get_text()
@@ -248,6 +239,15 @@ class RegisterPage(Gtk.Box, Page, metaclass=PageClass):
                 )
 
                 self.get_toplevel().clear_history()
+
+            if self.next_page is None:
+                self.get_toplevel().go_back()
+            else:
+                self.get_toplevel().switch_page(
+                    self.next_page,
+                    *self.next_page_args,
+                    **self.next_page_kwargs
+                )
 
         except ValueError as v_err:
             self.get_toplevel().show_error(" ".join(v_err.args))

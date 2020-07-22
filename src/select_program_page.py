@@ -1,4 +1,4 @@
-"""A page that prompts the user to select a patient."""
+"""A page that prompts the user to select a program."""
 
 from typing import Union, Optional
 
@@ -16,7 +16,7 @@ from .program_row import ProgramRow, ProgramHeader
     resource_path="/de/linusmathieu/Liegensteuerung/select_program_page.ui"
 )
 class SelectProgramPage(Gtk.Box, Page, metaclass=PageClass):
-    """A page that prompts the user to select a patient.
+    """A page that prompts the user to select a program.
 
     Attributes:
         header_visible (bool): Whether a Gtk.HeaderBar should be shown for the
@@ -61,18 +61,17 @@ class SelectProgramPage(Gtk.Box, Page, metaclass=PageClass):
             max_left (int): The maximum pusher_left_distance_up to allow
             max_right (int): The maximum pusher_right_distance_up to allow
         """
-        self.program_list_box.bind_model(
-            Program.iter_to_model(Program.get_fitting(max_left, max_right)),
-            ProgramRow,
-        )
-        self.program_list_box.show_all()
-
         self.end_pos_left_label.set_text(f"{max_left} mm")
         self.end_pos_right_label.set_text(f"{max_right} mm")
 
+        self.max_left, self.max_right = max_left, max_right
+
+        self.update_programs()
+
         is_admin: bool = (
             self.get_toplevel().active_user is not None
-            and auth_util.get_access_level(self.get_toplevel().active_user) == "admin"
+            and auth_util.get_access_level(self.get_toplevel().active_user)
+            == "admin"
         )
 
         self.add_button.set_visible(is_admin)
@@ -80,6 +79,19 @@ class SelectProgramPage(Gtk.Box, Page, metaclass=PageClass):
     def prepare_return(self) -> None:
         """Prepare the page to be shown when returning from another page."""
         self.get_toplevel().active_program = None
+
+        # Inefficient to re-load all programs, but everything else is more work
+        self.update_programs()
+
+    def update_programs(self) -> None:
+        """Re-query all programs."""
+        self.program_list_box.bind_model(
+            Program.iter_to_model(
+                Program.get_fitting(self.max_left, self.max_right)
+            ),
+            ProgramRow,
+        )
+        self.program_list_box.show_all()
 
     def do_parent_set(self, old_parent: Optional[Gtk.Widget]) -> None:
         """React to the parent being set.

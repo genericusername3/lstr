@@ -575,6 +575,15 @@
                     <property name="position">8</property>
                   </packing>
                 </child>
+                <child>
+                  <object class="UsersPage">
+                    <property name="visible">True</property>
+                  </object>
+                  <packing>
+                    <property name="name">users</property>
+                    <property name="position">9</property>
+                  </packing>
+                </child>
               </object>
               <packing>
                 <property name="index">-1</property>

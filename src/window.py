@@ -18,6 +18,7 @@ from . import (
     select_program_page,
     set_up_page,
     treatment_page,
+    users_page,
 )
 
 
@@ -99,9 +100,7 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
         Gtk.Template.Child, Gtk.InfoBar
     ] = Gtk.Template.Child()
 
-    error_bar: Union[
-        Gtk.Template.Child, Gtk.InfoBar
-    ] = Gtk.Template.Child()
+    error_bar: Union[Gtk.Template.Child, Gtk.InfoBar] = Gtk.Template.Child()
     error_bar_label: Union[
         Gtk.Template.Child, Gtk.Label
     ] = Gtk.Template.Child()
@@ -160,17 +159,9 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
         self.maximize()
         self.set_decorated(False)
 
-        if auth_util.does_admin_exist():
-            self.switch_page("login")
-        else:
-            self.switch_page(
-                "register",
-                new_user=True,
-                access_level="admin",
-                next_page="select_patient",
-            )
-
         self.connect_after("show", self.on_show)
+
+        self.log_out()
 
     def on_show(self, widget) -> None:
         """React to being shown.
@@ -186,9 +177,40 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
 
         self.main_area_overlay.add_overlay(self.shutdown_compact_revealer)
 
-        self.change_password_button.connect("clicked", self.on_change_password_clicked)
+        self.change_password_button.connect(
+            "clicked", self.on_change_password_clicked
+        )
+        self.users_button.connect("clicked", self.on_users_clicked)
 
         self.log_out_button.connect("clicked", self.on_log_out_clicked)
+
+    def log_out(self) -> None:
+        """Log out and go to the log in or register page."""
+        self._show_page("login", animation_direction=-1)
+        self.clear_history()
+
+        if not auth_util.does_admin_exist():
+            self._show_page(
+                "register",
+                animation_direction=-1,
+                kwargs={
+                    "new_user": True,
+                    "access_level": "admin",
+                    "next_page": "select_patient",
+                },
+            )
+        elif not auth_util.does_doctor_exist():
+            self._show_page(
+                "register",
+                animation_direction=-1,
+                kwargs={
+                    "new_user": True,
+                    "access_level": "doctor",
+                    "next_page": "select_patient",
+                },
+            )
+        else:
+            self._show_page("login", animation_direction=-1)
 
     def switch_page(self, page_name: str, *args, **kwargs,) -> None:
         """Switch the active page.
@@ -345,6 +367,8 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
         Args:
             button (Gtk.Button): The clicked button
         """
+        assert self.active_user is not None
+
         self.switch_page(
             "register",
             new_user=False,
@@ -352,15 +376,21 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
             access_level=auth_util.get_access_level(self.active_user),
         )
 
+    def on_users_clicked(self, button: Gtk.Button) -> None:
+        """React to the "Users..." button being clicked.
+
+        Args:
+            button (Gtk.Button): The clicked button
+        """
+        self.switch_page("users")
+
     def on_log_out_clicked(self, button: Gtk.Button) -> None:
         """React to the "Log out" button being clicked.
 
         Args:
             button (Gtk.Button): The clicked button
         """
-
-        self._show_page("login", animation_direction=-1)
-        self.clear_history()
+        self.log_out()
 
     def on_info_bar_response(self, info_bar: Gtk.InfoBar, response: int):
         """React to the user responding to a Gtk.InfoBar.

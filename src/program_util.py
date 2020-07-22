@@ -1,18 +1,13 @@
 """Utility functions that deal with the sqlite database 'programs'."""
 
-# SIJ (Sacroiliac joint) = ISG (Iliosakralgelenk)
-
-from typing import Generator, Optional, Iterable, List, Dict, Any, Tuple
+from typing import Generator, Iterable, List, Dict, Any, Tuple
 
 import os
-
-from threading import Thread
-import time
 
 import sqlite3
 import atexit
 
-from gi.repository import GObject, GLib, Gio  # type: ignore
+from gi.repository import GObject, Gio  # type: ignore
 
 
 try:
@@ -22,7 +17,7 @@ except FileExistsError:
 finally:
     os.chdir(os.path.expanduser("~/.liegensteuerung"))
 
-DATABASE_NAME = "liegensteuerung.db"
+DATABASE_NAME: str = "liegensteuerung.db"
 
 # Python 3.6 or higher is needed to retain dict order
 PROGRAM_COLUMNS: Dict[str, Tuple[type, str]] = {
@@ -136,8 +131,8 @@ class Program(GObject.Object):
         """Create a new Program.
 
         This should never be manually done. To add a program to the database,
-        use Program.add(). To get programs from the database, use
-        Program.get() or Program.get_all().
+            use Program.add(). To get programs from the database, use
+            Program.get_all().
 
         Args:
             program_dict (Dict[str, Any]): A dict representing the program.
@@ -211,6 +206,56 @@ class Program(GObject.Object):
 
         return program
 
+    def modify(
+        self,
+        **kwargs
+    ):
+        """Modify the program and save to the database.
+
+        Python 3.6 or higher is needed to retain dict order.
+
+        Args:
+            **kwargs: The attributes of the program to update
+        """
+        for attribute in kwargs:
+            if attribute not in PROGRAM_COLUMNS:
+                raise ValueError(f"{attribute} is not a valid attribute")
+
+        print(f"""
+                UPDATE programs
+                SET {', '.join([attribute + ' = ?' for attribute in kwargs])}
+                WHERE id=?
+            """)
+
+        cursor.execute(
+            f"""
+                UPDATE programs
+                SET {', '.join([attribute + ' = ?' for attribute in kwargs])}
+                WHERE id=?
+            """,
+            (
+                *[kwargs[attribute] for attribute in kwargs],
+                self.id,
+            ),
+        )
+
+        connection.commit()
+
+        self.__dict["pusher_left_distance_max"] = max(
+            self.__dict["pusher_left_distance_up"],
+            self.__dict["pusher_left_distance_down"],
+        )
+        self.__dict["pusher_right_distance_max"] = max(
+            self.__dict["pusher_right_distance_up"],
+            self.__dict["pusher_right_distance_down"],
+        )
+        self.__dict["push_count_sum"] = (
+            self.__dict["push_count_up"] + self.__dict["push_count_down"]
+        )
+        self.__dict["pass_count_sum"] = (
+            self.__dict["pass_count_up"] + self.__dict["pass_count_down"]
+        )
+
     @staticmethod
     def get_all() -> Generator["Program", None, None]:
         """Yield all programs in the database."""
@@ -245,22 +290,19 @@ class Program(GObject.Object):
 
     @staticmethod
     def iter_to_model(program_iter: Iterable["Program"]) -> Gio.ListStore:
-        """Convert an iterable of Program objects into a Gio.ListStore."""
+        """Convert an iterable of Program objects into a Gio.ListStore.
+
+        Args:
+            program_iter (Iterable[Program]): An iterable of programs to convert
+
+        Returns:
+            Gio.ListStore: The converted model"""
         model: Gio.ListStore = Gio.ListStore()
 
         program_list: List[Program] = list(program_iter)
 
-        def add_programs(program_list: List[Program]):
-            if len(program_list):
-                for program in program_list[:10]:
-                    model.append(program)
-                GLib.timeout_add(20, add_programs, program_list[10:])
-
-        for program in program_list[:50]:
+        for program in program_list:
             model.append(program)
-
-        # left out for perfomance reasons
-        # add_programs(program_list[50:])
 
         return model
 

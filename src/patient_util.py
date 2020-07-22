@@ -31,14 +31,6 @@ import atexit
 
 from gi.repository import GObject, GLib, Gio  # type: ignore
 
-
-GENDERS: Dict[str, str] = {
-    "male": "Männlich",
-    "female": "Weiblich",
-    "other": "Divers",
-}
-
-
 try:
     from . import program_util
 except ImportError:
@@ -52,7 +44,13 @@ except FileExistsError:
 finally:
     os.chdir(os.path.expanduser("~/.liegensteuerung"))
 
-DATABASE_NAME = "liegensteuerung.db"
+DATABASE_NAME: str = "liegensteuerung.db"
+
+GENDERS: Dict[str, str] = {
+    "male": "Männlich",
+    "female": "Weiblich",
+    "other": "Divers",
+}
 
 COLUMNS: List[str] = [
     "id",
@@ -148,8 +146,8 @@ class Patient(GObject.Object):
         """Create a new Patient.
 
         This should never be manually done. To add a patient to the database,
-        use Patient.add(). To get patients from the database, use
-        Patient.get() or Patient.get_all().
+            use Patient.add(). To get patients from the database, use
+            Patient.get_all().
 
         Args:
             patient_id (int): An assigned ID
@@ -392,7 +390,13 @@ class Patient(GObject.Object):
 
     @staticmethod
     def iter_to_model(patient_iter: Iterable["Patient"]) -> Gio.ListStore:
-        """Convert an iterable of Patient objects into a Gio.ListStore."""
+        """Convert an iterable of Patient objects into a Gio.ListStore.
+
+        Args:
+            patient_iter (Iterable[Patient]): An iterable of patients to convert
+
+        Returns:
+            Gio.ListStore: The converted model"""
         model: Gio.ListStore = Gio.ListStore()
 
         patient_list: List[Patient] = list(patient_iter)

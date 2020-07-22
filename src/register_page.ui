@@ -74,8 +74,8 @@
             <property name="active_id">user</property>
             <items>
               <item id="admin" translatable="yes">Administrator</item>
-              <item id="expert" translatable="yes">Experte</item>
-              <item id="user" translatable="yes">Anwender</item>
+              <item id="doctor" translatable="yes">Arzt</item>
+              <item id="helper" translatable="yes">Aushilfe</item>
             </items>
           </object>
           <packing>

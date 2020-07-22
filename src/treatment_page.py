@@ -1,4 +1,4 @@
-"""A page that prompts the user to select a patient."""
+"""A page that allows the user to perform a treatment program on a patient."""
 
 from typing import Union, Optional
 
@@ -11,7 +11,7 @@ from .page import Page, PageClass
     resource_path="/de/linusmathieu/Liegensteuerung/treatment_page.ui"
 )
 class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
-    """A page that prompts the user to select a patient.
+    """A page that allows the user to perform a treatment program on a patient.
 
     Attributes:
         header_visible (bool): Whether a Gtk.HeaderBar should be shown for the

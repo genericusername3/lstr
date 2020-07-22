@@ -1,4 +1,4 @@
-"""A page that prompts the user to select a patient."""
+"""A page that prompts the user to input the patient's pain values."""
 
 from typing import Union, Optional
 
@@ -11,7 +11,7 @@ from .page import Page, PageClass
     resource_path="/de/linusmathieu/Liegensteuerung/pain_evaluation_page.ui"
 )
 class PainEvaluationPage(Gtk.Box, Page, metaclass=PageClass):
-    """A page that prompts the user to enter two levels of pain.
+    """A page that prompts the user to input the patient's pain values.
 
     Attributes:
         header_visible (bool): Whether a Gtk.HeaderBar should be shown for the

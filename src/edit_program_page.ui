@@ -2,6 +2,11 @@
 <!-- Generated with glade 3.36.0 -->
 <interface>
   <requires lib="gtk+" version="3.20"/>
+  <object class="GtkImage" id="save_as_icon">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="icon_name">document-save-as-symbolic</property>
+  </object>
   <object class="GtkImage" id="save_icon">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -10,6 +15,7 @@
   <template class="EditProgramPage" parent="GtkBox">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
+    <property name="margin_end">4</property>
     <property name="hexpand">True</property>
     <property name="vexpand">True</property>
     <property name="border_width">4</property>
@@ -270,6 +276,7 @@
                       <object class="GtkEntry" id="pusher_distance_up_left_entry">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <property name="has_focus">True</property>
                         <property name="max_length">5</property>
                         <property name="width_chars">5</property>
                         <property name="max_width_chars">5</property>
@@ -1574,24 +1581,57 @@
       </packing>
     </child>
     <child>
-      <object class="GtkButton">
-        <property name="label" translatable="yes">Speichern</property>
-        <property name="width_request">224</property>
-        <property name="height_request">48</property>
+      <object class="GtkBox" id="save_box">
         <property name="visible">True</property>
-        <property name="can_focus">True</property>
-        <property name="receives_default">True</property>
-        <property name="halign">end</property>
-        <property name="image">save_icon</property>
-        <property name="always_show_image">True</property>
-        <style>
-          <class name="suggested-action"/>
-        </style>
+        <property name="can_focus">False</property>
+        <child>
+          <object class="GtkButton" id="save_new_button">
+            <property name="label" translatable="yes">Speichern mit neuer ID</property>
+            <property name="width_request">224</property>
+            <property name="height_request">48</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="halign">end</property>
+            <property name="image">save_as_icon</property>
+            <property name="always_show_image">True</property>
+            <style>
+              <class name="suggested-action"/>
+            </style>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="save_button">
+            <property name="label" translatable="yes">Speichern</property>
+            <property name="width_request">224</property>
+            <property name="height_request">48</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="halign">end</property>
+            <property name="image">save_icon</property>
+            <property name="always_show_image">True</property>
+            <style>
+              <class name="suggested-action"/>
+            </style>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="pack_type">end</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
       </object>
       <packing>
         <property name="expand">False</property>
         <property name="fill">True</property>
-        <property name="pack_type">end</property>
         <property name="position">1</property>
       </packing>
     </child>

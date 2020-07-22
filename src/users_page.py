@@ -1,39 +1,70 @@
-"""A page that prompts the user to log in."""
+"""A page that prompts the user manage all existent users."""
 
-from typing import Union, Optional
+from typing import Union, Optional, List
 
-from gi.repository import GObject, Gdk, Gtk  # type: ignore
+from gi.repository import GObject, Gio, Gtk  # type: ignore
 
-from . import onboard_util
+from .page import Page, PageClass
+
+from .user_row import UserRow, UserHeader
+from .user_util import User
+
 from . import auth_util
 
 
-@Gtk.Template(resource_path="/de/linusmathieu/Liegensteuerung/login_page.ui")
-class LoginPage(Gtk.Box):
-    """A page that prompts the user to log in.
+@Gtk.Template(resource_path="/de/linusmathieu/Liegensteuerung/users_page.ui")
+class UsersPage(Gtk.Box, Page, metaclass=PageClass):
+    """A page that prompts the user manage all existent users.
 
     Attributes:
-        username_entry (Gtk.Entry or Gtk.Template.Child): The entry for the
-            user's username
-        password_entry (Gtk.Entry or Gtk.Template.Child): The entry for the
-            user's password
-        log_in_button (Gtk.Button or Gtk.Template.Child): The button that is
-            clicked to compolete the log-in
+        header_visible (bool): Whether a Gtk.HeaderBar should be shown for the
+            page
+        title (str): The Page's title
+        user_list_box (Gtk.ListBox or Gtk.Template.Child): The listbox
+            displaying users
     """
 
-    __gtype_name__ = "LoginPage"
+    __gtype_name__ = "UsersPage"
 
-    username_entry: Union[Gtk.Entry, Gtk.Template.Child] = Gtk.Template.Child()
-    password_entry: Union[Gtk.Entry, Gtk.Template.Child] = Gtk.Template.Child()
-    log_in_button: Union[Gtk.Button, Gtk.Template.Child] = Gtk.Template.Child()
+    header_visible: bool = True
+    title: str = "Benutzer"
+
+    user_list_box: Union[
+        Gtk.ListBox, Gtk.Template.Child
+    ] = Gtk.Template.Child()
+
+    header_box: Union[Gtk.Box, Gtk.Template.Child] = Gtk.Template.Child()
+
+    add_button: Union[Gtk.Button, Gtk.Template.Child] = Gtk.Template.Child()
 
     def __init__(self, **kwargs):
-        """Create a new LoginPage.
+        """Create a new SelectUserPage.
 
         Args:
             **kwargs: Arguments passed on to Gtk.Box
         """
         super().__init__(**kwargs)
+
+    def prepare(self) -> None:
+        """Prepare the page to be shown."""
+        self.update_users()
+
+    def prepare_return(self) -> None:
+        """Prepare the page to be shown when returning from another page."""
+        # Inefficient to re-load all users, but everything else is more work
+        self.update_users()
+
+    def update_users(self) -> None:
+        """Re-query all users."""
+        self.user_list_box.bind_model(
+            User.iter_to_model(User.get_all()),
+            UserRow,
+            self.get_toplevel().active_user,
+        )
+        self.user_list_box.show_all()
+
+        for row in self.user_list_box.get_children():
+            row.set_activatable(False)
 
     def do_parent_set(self, old_parent: Optional[Gtk.Widget]) -> None:
         """React to the parent being set.
@@ -47,65 +78,27 @@ class LoginPage(Gtk.Box):
         if self.get_parent() is None:
             return
 
-        self.username_entry.connect("focus-in-event", self.on_focus_entry)
-        self.password_entry.connect("focus-in-event", self.on_focus_entry)
+        self.header_box.pack_start(
+            UserHeader(), fill=True, expand=True, padding=0
+        )
+        self.header_box.show_all()
 
-        self.username_entry.connect("focus-out-event", self.on_unfocus_entry)
-        self.password_entry.connect("focus-out-event", self.on_unfocus_entry)
+        self.add_button.connect("clicked", self.on_add_clicked)
 
-        self.username_entry.connect("changed", self.on_entry_changed)
-        self.password_entry.connect("changed", self.on_entry_changed)
-
-        self.log_in_button.connect("clicked", self.on_log_in_clicked)
-
-    def on_focus_entry(
-        self, widget: Gtk.Widget, event: Gdk.EventFocus
-    ) -> None:
-        """React to an entry being focused. Show an on-screen keyboard.
+    def on_add_clicked(self, button: Gtk.Button) -> None:
+        """React to the "Add user" button being clicked.
 
         Args:
-            widget (Gtk.Widget): The focused entry.
-            event (Gdk.EventFocus): The focus event.
+            button (Gtk.Button): The clicked button
         """
-        onboard_util.request_keyboard()
-
-    def on_unfocus_entry(
-        self, widget: Gtk.Widget, event: Gdk.EventFocus
-    ) -> None:
-        """React to an entry being unfocused. Hide the on-screen keyboard.
-
-        Args:
-            widget (Gtk.Widget): The focused entry.
-            event (Gdk.EventFocus): The focus event.
-        """
-        onboard_util.unrequest_keyboard()
-
-    def on_entry_changed(self, entry: Gtk.Entry) -> None:
-        entry.get_style_context().remove_class("error")
-
-    def on_log_in_clicked(self, button: Gtk.Button) -> None:
-        """React to the log in button being clicked.
-
-        Args:
-            widget (Gtk.Widget): The focused entry.
-            event (Gdk.EventFocus): The focus event.
-        """
-        try:
-            if auth_util.authenticate(
-                self.username_entry.get_text(), self.password_entry.get_text()
-            ):
-                onboard_util.unrequest_keyboard()
-                print("LOGGED IN")
-                ...
-
-            else:
-                self.password_entry.get_style_context().add_class("error")
-                self.password_entry.grab_focus_without_selecting()
-        except ValueError as e:
-            print(e)
-            self.username_entry.get_style_context().add_class("error")
-            self.username_entry.grab_focus_without_selecting()
+        self.get_toplevel().switch_page(
+            "register",
+            new_user=True,
+            # Hardcoded access level because that hopefully
+            # isn't changing anytime soon
+            access_level="helper",
+        )
 
 
-# Make LoginPage accessible via .ui files
-GObject.type_ensure(LoginPage)
+# Make UsersPage accessible via .ui files
+GObject.type_ensure(UsersPage)
