@@ -100,8 +100,12 @@ cursor.execute(
 cursor.execute(
     """CREATE TABLE IF NOT EXISTS treatment_entries
         (
-            patient_id UNSIGNED BIG INT, program_id UNSIGNED BIG INT,
-            timestamp UNSIGNED BIG INT, pain_intensity INT, pain_location TEXT
+            patient_id UNSIGNED BIG INT,
+            program_id UNSIGNED BIG INT,
+            timestamp UNSIGNED BIG INT,
+            username TEXT,
+            pain_intensity INT,
+            pain_location TEXT
         )
     """
 )
@@ -393,10 +397,12 @@ class Patient(GObject.Object):
         """Convert an iterable of Patient objects into a Gio.ListStore.
 
         Args:
-            patient_iter (Iterable[Patient]): An iterable of patients to convert
+            patient_iter (Iterable[Patient]): An iterable of patients to
+                convert
 
         Returns:
-            Gio.ListStore: The converted model"""
+            Gio.ListStore: The converted model
+        """
         model: Gio.ListStore = Gio.ListStore()
 
         patient_list: List[Patient] = list(patient_iter)
@@ -447,18 +453,24 @@ class Patient(GObject.Object):
         cursor.execute(
             """
                 INSERT INTO treatment_entries
-                    (patient_id, timestamp, pain_intensity, pain_location)
+                    (
+                        patient_id,
+                        timestamp,
+                        username,
+                        pain_intensity,
+                        pain_location
+                    )
                 VALUES
-                    (?, ?, ?, ?)
+                    (?, ?, ?, ?, ?)
             """,
-            (self.patient_id, timestamp, pain_intensity, pain_location),
+            (self.patient_id, timestamp, username, pain_intensity, pain_location),
         )
         connection.commit()
 
         return timestamp
 
     def add_treatment_entry(
-        self, timestamp: int, username: str, program: program_util.Program,
+        self, timestamp: int, username: str, program: program_util.Program
     ) -> int:
         """Add a program entry to the database.
 
@@ -480,9 +492,9 @@ class Patient(GObject.Object):
             """
             UPDATE treatment_entries
             SET program_id = ?, timestamp = ?
-            WHERE patient_id=? AND timestamp=?
+            WHERE patient_id=? AND timestamp=? AND username=?
             """,
-            (program.id, new_timestamp, self.patient_id, timestamp,),
+            (program.id, new_timestamp, self.patient_id, timestamp, username),
         )
         connection.commit()
 
