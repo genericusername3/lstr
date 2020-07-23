@@ -230,6 +230,8 @@ class RegisterPage(Gtk.Box, Page, metaclass=PageClass):
                 self.get_toplevel().active_user_password,
             )
 
+            clear_history: bool = False
+
             if self.get_toplevel().active_user is None:
                 self.get_toplevel().active_user = (
                     self.username_entry.get_text()
@@ -238,7 +240,7 @@ class RegisterPage(Gtk.Box, Page, metaclass=PageClass):
                     self.password_entry.get_text()
                 )
 
-                self.get_toplevel().clear_history()
+                clear_history = True
 
             if self.next_page is None:
                 self.get_toplevel().go_back()
@@ -248,6 +250,9 @@ class RegisterPage(Gtk.Box, Page, metaclass=PageClass):
                     *self.next_page_args,
                     **self.next_page_kwargs
                 )
+
+            if clear_history:
+                self.get_toplevel().clear_history()
 
         except ValueError as v_err:
             self.get_toplevel().show_error(" ".join(v_err.args))
