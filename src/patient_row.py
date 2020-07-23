@@ -7,7 +7,6 @@ Gtk.SizeGroup
 from typing import Dict, List
 
 from datetime import datetime
-from fuzzywuzzy import fuzz  # type: ignore
 
 from gi.repository import GLib, Gdk, Gtk  # type: ignore
 
@@ -107,31 +106,6 @@ class PatientRow(Gtk.Box):
         h_box.pack_start(info_button, expand=False, fill=False, padding=4)
 
         self.show_all()
-
-    @staticmethod
-    def matches_query(list_box_row: Gtk.ListBoxRow, query: str) -> bool:
-        """Return if a Gtk.ListBoxRow with a PatientRow matches a query.
-
-        Args:
-            list_box_row (Gtk.ListBoxRow): The Gtk.ListboxRow. Must contain a
-                PatientRow
-            query (str): The query
-        """
-        patient: patient_util.Patient = list_box_row.get_child().patient
-
-        ratios: List[int] = []
-        patient_string: str = " ".join(
-            (str(patient.patient_id), patient.first_name, patient.last_name,)
-        )
-
-        words: List[str] = query.split(" ")
-
-        for word in words:
-            ratios.append(fuzz.partial_ratio(query, patient_string))
-
-            print(query, ":", word, ":", patient_string, ":", ratios[-1])
-
-        return max(ratios) > 80
 
     def on_info_clicked(self, button: Gtk.Button) -> None:
         """React to the row's info button being clicked.
