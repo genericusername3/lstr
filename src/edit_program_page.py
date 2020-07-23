@@ -1,6 +1,6 @@
 """A page that prompts the user to view, edit or create a program."""
 
-from typing import Union, Optional, Dict, TypedDict
+from typing import Union, Optional, Dict
 
 from decimal import Decimal, InvalidOperation
 
@@ -10,17 +10,6 @@ from .page import Page, PageClass
 
 from . import program_util
 from . import auth_util
-
-
-class EntryDict(TypedDict):
-    """A TypedDict that holds types for values saved for each Gtk.Entry."""
-
-    column: str
-    places: int
-    leading_zeroes: int
-    minimum: Optional[Union[int, float, Decimal]]
-    maximum: Optional[Union[int, float, Decimal]]
-    calculated_column: bool
 
 
 @Gtk.Template(
@@ -214,7 +203,9 @@ class EditProgramPage(Gtk.Box, Page, metaclass=PageClass):
         if self.get_parent() is None:
             return
 
-        self.entries: Dict[Gtk.Entry, EntryDict] = {
+        self.entries: Dict[
+            Gtk.Entry, Dict[str, Union[str, int, Optional[float], bool]]
+        ] = {
             self.angle_change_down_entry: {
                 "column": "angle_change_down",
                 "places": 0,
