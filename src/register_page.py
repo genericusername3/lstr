@@ -103,18 +103,22 @@ class RegisterPage(Gtk.Box, Page, metaclass=PageClass):
         self.password_entry.set_text("")
         self.password_confirm_entry.set_text("")
 
-        self.access_level_combobox.set_visible(
-            new_user and access_level is None
-        )
+        # self.access_level_combobox.set_visible(
+        #     new_user and access_level is None
+        # )
 
         if new_user:
             self.access_level_combobox.set_active_id(access_level)
             self.title = "Registrieren"
             self.header_visible = next_page is None
         else:
+            assert username is not None
+
+            self.access_level_combobox.set_active_id(
+                auth_util.get_access_level(username)
+            )
             self.title = "Passwort ändern"
             self.header_visible = True
-
 
         self.register_button.set_visible(new_user)
         self.accept_button.set_visible(not new_user)

@@ -256,6 +256,18 @@ class Program(GObject.Object):
             self.__dict["pass_count_up"] + self.__dict["pass_count_down"]
         )
 
+    def delete(self):
+        """Delete the program from the database."""
+        cursor.execute(
+            """
+                DELETE FROM programs
+                WHERE id=?
+            """,
+            (self.id,),
+        )
+
+        connection.commit()
+
     @staticmethod
     def get_all() -> Generator["Program", None, None]:
         """Yield all programs in the database."""

@@ -60,6 +60,7 @@ class UsersPage(Gtk.Box, Page, metaclass=PageClass):
             User.iter_to_model(User.get_all()),
             UserRow,
             self.get_toplevel().active_user,
+            self,
         )
         self.user_list_box.show_all()
 

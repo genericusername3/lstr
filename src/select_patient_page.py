@@ -54,6 +54,8 @@ class SelectPatientPage(Gtk.Box, Page, metaclass=PageClass):
 
     def prepare(self) -> None:
         """Prepare the page to be shown."""
+        self.get_toplevel().active_patient = None
+
         self.sort_column = PATIENT_COLUMNS.index("last_name")
         self.sort_reverse = False
 

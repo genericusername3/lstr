@@ -104,7 +104,9 @@ def new_user(
     Raises:
         ValueError: if admin credentials are wrong or missing.
     """
-    if does_admin_exist() and not (access_level == "doctor" and not does_doctor_exist()):
+    if does_admin_exist() and not (
+        access_level == "doctor" and not does_doctor_exist()
+    ):
         if admin_username is None or admin_password is None:
             raise ValueError(
                 "When creating an admin account, "
@@ -156,7 +158,7 @@ def delete_user(
         raise ValueError("Admin password invalid")
 
     elif (
-        ACCESS_LEVELS[access_level]
+        ACCESS_LEVELS[get_access_level(username)]
         > ACCESS_LEVELS[get_access_level(admin_username)]
     ):
         raise ValueError("Given admin does not have sufficient permissions")

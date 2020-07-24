@@ -10,6 +10,7 @@ from gi.repository import GObject, Gdk, Gtk  # type: ignore
 
 from .page import Page, PageClass
 
+from . import auth_util
 from . import patient_util
 
 
@@ -102,6 +103,12 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
 
     comment_entry: Union[Gtk.Entry, Gtk.Template.Child] = Gtk.Template.Child()
 
+    patient_tabs_stack_switcher: Union[
+        Gtk.StackSwitcher, Gtk.Template.Child
+    ] = Gtk.Template.Child()
+
+    delete_button: Union[Gtk.Button, Gtk.Template.Child] = Gtk.Template.Child()
+
     editable: bool = False
 
     def __init__(self, **kwargs):
@@ -140,6 +147,16 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
 
             self.comment_entry.set_text(patient.comment)
 
+            advanced_access: bool = (
+                auth_util.ACCESS_LEVELS[
+                    auth_util.get_access_level(self.get_toplevel().active_user)
+                ]
+                >= 1
+            )
+
+            self.delete_button.set_visible(advanced_access)
+            self.patient_tabs_stack_switcher.set_visible(advanced_access)
+
         else:
             self.title = "Patient hinzufügen"
 
@@ -155,6 +172,9 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
             self.weight_entry.set_text("")
 
             self.comment_entry.set_text("")
+
+            self.delete_button.hide()
+            self.patient_tabs_stack_switcher.hide()
 
         self.editable = True
 
@@ -249,6 +269,8 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
 
         for field in self.all_fields:
             field.connect_after("changed", self.on_values_changed)
+
+        self.delete_button.connect("clicked", self.on_delete_clicked)
 
     def on_num_entry_insert(
         self,
@@ -387,7 +409,7 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
                     # Re-include digits of the year e.g. (19)73
                     if value < 100 and leading_zeroes > 2:
                         if today_century + value > today_year:
-                            value += today_century - 150
+                            value += today_century - 100
                         else:
                             value += today_century
 
@@ -409,7 +431,11 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
         """
         if self.editable:
             self.check_input(
-                self.birth_date_year_entry, 4, today_year - 150, today_year, True,
+                self.birth_date_year_entry,
+                4,
+                today_year - 150,
+                today_year,
+                True,
             )
 
             self.check_input(self.birth_date_month_entry, 2, 1, 12)
@@ -443,21 +469,103 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
             *args: Arguments that Gtk passes to the ::connect handler
         """
         if self.editable:
-            self.patient.modify(
-                first_name=self.first_name_entry.get_text(),
-                last_name=self.last_name_entry.get_text(),
-                birthday=self.birth_date_year_entry.get_text()
-                + "-"
-                + self.birth_date_month_entry.get_text()
-                + "-"
-                + self.birth_date_day_entry.get_text(),
-                gender=self.gender_combobox_text.get_active_id(),
-                weight=float(self.weight_entry.get_text().replace(",", ".")),
-                comment=self.comment_entry.get_text(),
-            )
-            self.title = f"{self.patient.first_name} {self.patient.last_name}"
+            if (
+                self.first_name_entry.get_text().strip() != ""
+                and self.last_name_entry.get_text().strip() != ""
+                and self.birth_date_year_entry.get_text() != ""
+                and self.birth_date_month_entry.get_text() != ""
+                and self.birth_date_day_entry.get_text() != ""
+                and self.gender_combobox_text.get_active_id() is not None
+                and self.weight_entry.get_text().replace(",", ".") != ""
+            ):
+                if self.patient is not None:
+                    self.patient.modify(
+                        first_name=self.first_name_entry.get_text().strip(),
+                        last_name=self.last_name_entry.get_text().strip(),
+                        birthday=self.birth_date_year_entry.get_text()
+                        + "-"
+                        + self.birth_date_month_entry.get_text()
+                        + "-"
+                        + self.birth_date_day_entry.get_text(),
+                        gender=self.gender_combobox_text.get_active_id(),
+                        weight=float(
+                            self.weight_entry.get_text().replace(",", ".")
+                        ),
+                        comment=self.comment_entry.get_text().strip(),
+                    )
+
+                else:
+                    self.patient = patient_util.Patient.add(
+                        first_name=self.first_name_entry.get_text().strip(),
+                        last_name=self.last_name_entry.get_text().strip(),
+                        birthday=self.birth_date_year_entry.get_text()
+                        + "-"
+                        + self.birth_date_month_entry.get_text()
+                        + "-"
+                        + self.birth_date_day_entry.get_text(),
+                        gender=self.gender_combobox_text.get_active_id(),
+                        weight=float(
+                            self.weight_entry.get_text().replace(",", ".")
+                        ),
+                        comment=self.comment_entry.get_text().strip(),
+                    )
+
+                    self.title = (
+                        f"{self.first_name_entry.get_text()} "
+                        f"{self.last_name_entry.get_text()}"
+                    )
+
+                    self.get_toplevel().update_title()
+
+            if (
+                self.first_name_entry.get_text().strip() != ""
+                and self.last_name_entry.get_text().strip() != ""
+            ):
+                self.title = (
+                    f"{self.first_name_entry.get_text().strip()} "
+                    f"{self.last_name_entry.get_text().strip()}"
+                )
+
+            elif self.patient is None:
+                self.title = "Patient hinzufügen"
+
+            else:
+                self.title = (
+                    f"{self.patient.first_name} {self.patient.last_name}"
+                )
 
             self.get_toplevel().update_title()
+
+    def on_delete_clicked(self, button: Gtk.Button) -> None:
+        """React to the "Delete" button being clicked.
+
+        Args:
+            button (Gtk.Button): The clicked button
+        """
+        assert self.patient is not None
+
+        dialog = Gtk.MessageDialog(
+            self.get_toplevel(),
+            Gtk.DialogFlags.MODAL,
+            Gtk.MessageType.WARNING,
+            ("Nein", Gtk.ResponseType.NO, "Ja", Gtk.ResponseType.YES),
+            (
+                f"Patient {self.patient.first_name} {self.patient.last_name}"
+                " unwiderruflich löschen?"
+            ),
+        )
+        dialog.set_decorated(False)
+        response: int = dialog.run()
+        dialog.destroy()
+
+        if response == Gtk.ResponseType.YES:
+            self.patient.delete()
+            self.get_toplevel().go_back()
+            while self.get_toplevel().active_patient is self.patient:
+                self.get_toplevel().go_back()
+
+        elif response == Gtk.ResponseType.NO:
+            pass
 
 
 # Make EditPatientPage accessible via .ui files

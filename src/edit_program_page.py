@@ -144,6 +144,7 @@ class EditProgramPage(Gtk.Box, Page, metaclass=PageClass):
     ] = Gtk.Template.Child()
 
     save_box: Union[Gtk.Box, Gtk.Template.Child] = Gtk.Template.Child()
+    delete_button: Union[Gtk.Button, Gtk.Template.Child] = Gtk.Template.Child()
     save_button: Union[Gtk.Button, Gtk.Template.Child] = Gtk.Template.Child()
     save_new_button: Union[
         Gtk.Button, Gtk.Template.Child
@@ -502,6 +503,7 @@ class EditProgramPage(Gtk.Box, Page, metaclass=PageClass):
 
             entry.connect_after("changed", self.on_after_entry_changed)
 
+        self.delete_button.connect("clicked", self.on_delete_clicked)
         self.save_button.connect("clicked", self.on_save_clicked)
         self.save_new_button.connect("clicked", self.on_save_new_clicked)
 
@@ -679,6 +681,32 @@ class EditProgramPage(Gtk.Box, Page, metaclass=PageClass):
                 self.save_new_button.set_sensitive(False)
                 self.save_button.set_sensitive(False)
                 break
+
+    def on_delete_clicked(self, button: Gtk.Button) -> None:
+        """React to the "Delete" button being clicked.
+
+        Args:
+            button (Gtk.Button): The clicked button
+        """
+        assert self.program is not None
+
+        dialog = Gtk.MessageDialog(
+            self.get_toplevel(),
+            Gtk.DialogFlags.MODAL,
+            Gtk.MessageType.WARNING,
+            ("Nein", Gtk.ResponseType.NO, "Ja", Gtk.ResponseType.YES),
+            (f"Programm {self.program.id} unwiderruflich löschen?"),
+        )
+        dialog.set_decorated(False)
+        response: int = dialog.run()
+        dialog.destroy()
+
+        if response == Gtk.ResponseType.YES:
+            self.program.delete()
+            self.get_toplevel().go_back()
+
+        elif response == Gtk.ResponseType.NO:
+            pass
 
     def on_save_clicked(self, button: Gtk.Button) -> None:
         """React to the user clicking on the "Save" button.

@@ -73,6 +73,15 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
 
         self.display_camera_input_loop()
 
+    def prepare_return(self) -> None:
+        """Prepare the page to be shown."""
+        self.running = True
+
+        read_thread = Thread(target=self.read_camera_input_loop)
+        read_thread.start()
+
+        self.display_camera_input_loop()
+
     def unprepare(self):
         """Prepare the page to be hidden."""
         self.running = False

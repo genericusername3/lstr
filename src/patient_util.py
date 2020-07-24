@@ -284,6 +284,18 @@ class Patient(GObject.Object):
 
         connection.commit()
 
+    def delete(self):
+        """Delete the patient from the database."""
+        cursor.execute(
+            """
+                DELETE FROM patients
+                WHERE id=?
+            """,
+            (self.patient_id,),
+        )
+
+        connection.commit()
+
     @staticmethod
     def sort(
         patient_rows: Iterable[Tuple[Any, ...]],
@@ -413,11 +425,11 @@ class Patient(GObject.Object):
                     model.append(patient)
                 GLib.timeout_add(20, add_patients, patient_list[10:])
 
-        for patient in patient_list[:50]:
+        for patient in patient_list[:20]:
             model.append(patient)
 
         # left out for perfomance reasons
-        # add_patients(patient_list[50:])
+        # add_patients(patient_list[20:])
 
         return model
 
@@ -463,7 +475,13 @@ class Patient(GObject.Object):
                 VALUES
                     (?, ?, ?, ?, ?)
             """,
-            (self.patient_id, timestamp, username, pain_intensity, pain_location),
+            (
+                self.patient_id,
+                timestamp,
+                username,
+                pain_intensity,
+                pain_location,
+            ),
         )
         connection.commit()
 
@@ -580,6 +598,7 @@ if __name__ == "__main__":
         print("added " + first_name)
 
         timestamp = p.add_pain_entry(
+            "root",
             random.randint(0, 10),
             random.choice(
                 ("left", "left-right", "both", "right-left", "right")
@@ -587,5 +606,5 @@ if __name__ == "__main__":
         )
 
         p.add_treatment_entry(
-            timestamp, program_util.Program.get_all().__next__(),
+            timestamp, "root", program_util.Program.get_all().__next__(),
         )

@@ -186,9 +186,6 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
 
     def log_out(self) -> None:
         """Log out and go to the log in or register page."""
-        self._show_page("login", animation_direction=-1)
-        self.clear_history()
-
         if not auth_util.does_admin_exist():
             self._show_page(
                 "register",
@@ -211,6 +208,8 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
             )
         else:
             self._show_page("login", animation_direction=-1)
+
+        self.clear_history()
 
     def switch_page(self, page_name: str, *args, **kwargs,) -> None:
         """Switch the active page.

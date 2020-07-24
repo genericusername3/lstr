@@ -92,7 +92,7 @@ button.suggested-action:active {
 }
 
 button.destructive-action {
-    background: mix(@bad, #222, 0.2);
+    background: @bad;
     color: #fff;
 }
 button.destructive-action * {
@@ -100,7 +100,7 @@ button.destructive-action * {
 }
 
 button.destructive-action:hover {
-    background: @bad;
+    background: mix(@bad, #fff, 0.1);
     color: #fff;
 }
 
@@ -290,9 +290,28 @@ combobox arrow {
     box-shadow: none;
 }
 
+combobox:disabled>box>button:disabled {
+    background: none;
+    border: 2px solid alpha(mix(@accent, #888, 0.8), 0.4);
+    color: #888;
+}
+combobox:disabled>box>button:disabled * {
+    color: #888;
+};
+
+combobox:disabled arrow {
+    -gtk-icon-source: -gtk-icontheme("pan-down-symbolic");
+    background: none;
+    margin: 0px;
+    border: none;
+    outline: none;
+    box-shadow: none;
+    opacity: 0.5;
+}
+
 
 stackswitcher {
-    background-color: rgba(128, 128, 128, 0.3);
+    background-color: rgba(128, 128, 128, 0.1);
     padding: 4px
 }
 

@@ -8,6 +8,8 @@ from typing import Dict, Union
 
 from gi.repository import GLib, Gtk  # type: ignore
 
+from .page import Page
+
 from . import auth_util
 from . import user_util
 
@@ -35,15 +37,23 @@ class UserRow(Gtk.Box):
 
     user: user_util.User
 
-    def __init__(self, user: user_util.User, username: str):
+    def __init__(self, user: user_util.User, username: str, page: Page):
         """Create a new UserRow.
 
         Args:
             user (user_util.User): The user to represent
             username (str): The username of the current user
-
+            page (Page): The page the UserRow is going to appear on.
         """
         super().__init__(orientation=Gtk.Orientation.VERTICAL)
+
+        self.user = user
+        self.page = page
+
+        self.access_level: int = auth_util.ACCESS_LEVELS[
+            auth_util.get_access_level(username)
+        ]
+        self.active_user: str = username
 
         h_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL)
 
@@ -55,13 +65,6 @@ class UserRow(Gtk.Box):
             fill=True,
             padding=0,
         )
-
-        self.user = user
-
-        self.access_level: int = auth_util.ACCESS_LEVELS[
-            auth_util.get_access_level(username)
-        ]
-        self.active_user: str = username
 
         for column in user_util.DISPLAY_COLUMNS:
             if size_groups.get(column, None) is None:
@@ -187,6 +190,8 @@ class UserRow(Gtk.Box):
             )
             if self.active_user == self.user.username:
                 self.get_toplevel().log_out()
+            else:
+                self.page.prepare()
 
         elif response == Gtk.ResponseType.NO:
             pass
