@@ -13,6 +13,9 @@ from .page import Page, PageClass
 from . import auth_util
 from . import patient_util
 
+from .treatment_util import Treatment
+from .treatment_row import TreatmentRow, TreatmentHeader
+
 
 today_year: int = date.today().year
 today_century: int = int(today_year / 100) * 100
@@ -99,6 +102,13 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
         Gtk.Entry, Gtk.Template.Child
     ] = Gtk.Template.Child()
 
+    treatment_list_box: Union[
+        Gtk.ListBox, Gtk.Template.Child
+    ] = Gtk.Template.Child()
+    header_box: Union[
+        Gtk.Box, Gtk.Template.Child
+    ] = Gtk.Template.Child()
+
     weight_entry: Union[Gtk.Entry, Gtk.Template.Child] = Gtk.Template.Child()
 
     comment_entry: Union[Gtk.Entry, Gtk.Template.Child] = Gtk.Template.Child()
@@ -179,6 +189,17 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
             self.patient_tabs_stack_switcher.hide()
 
         self.editable = True
+
+        self.header_box.pack_start(
+            TreatmentHeader(), fill=True, expand=True, padding=0
+        )
+        self.header_box.show_all()
+
+        self.update_treatments()
+
+    def prepare_return(self):
+        """Prepare the page to be shown when returning from another page."""
+        self.update_treatments()
 
     def unprepare(self) -> None:
         """Prepare the page to be hidden."""
@@ -273,6 +294,17 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
             field.connect_after("changed", self.on_values_changed)
 
         self.delete_button.connect("clicked", self.on_delete_clicked)
+
+    def update_treatments(self) -> None:
+        """Re-query all treatments."""
+        self.treatment_list_box.bind_model(
+            Treatment.iter_to_model(Treatment.get_all()),
+            TreatmentRow,
+        )
+        self.treatment_list_box.show_all()
+
+        for row in self.treatment_list_box.get_children():
+            row.set_activatable(False)
 
     def on_num_entry_insert(
         self,

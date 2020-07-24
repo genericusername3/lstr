@@ -122,12 +122,7 @@ class PatientHeader(Gtk.Box):
     sort_icons: List[Gtk.Image]
 
     def __init__(self, page):
-        """Create a new PatientRow.
-
-        Args:
-            page (select_patient_page.SelectPatientPage): The page to act as a
-                header for
-        """
+        """Create a new PatientHeader."""
         super().__init__(orientation=Gtk.Orientation.HORIZONTAL)
 
         self.page = page
