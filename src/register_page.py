@@ -108,9 +108,13 @@ class RegisterPage(Gtk.Box, Page, metaclass=PageClass):
         # )
 
         if new_user:
+            self.get_toplevel().active_user = None
+
             self.access_level_combobox.set_active_id(access_level)
             self.title = "Registrieren"
             self.header_visible = next_page is None
+
+            self.username_entry.grab_focus()
         else:
             assert username is not None
 
@@ -119,6 +123,8 @@ class RegisterPage(Gtk.Box, Page, metaclass=PageClass):
             )
             self.title = "Passwort ändern"
             self.header_visible = True
+
+            self.password_entry.grab_focus()
 
         self.register_button.set_visible(new_user)
         self.accept_button.set_visible(not new_user)

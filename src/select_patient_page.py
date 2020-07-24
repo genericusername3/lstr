@@ -64,6 +64,8 @@ class SelectPatientPage(Gtk.Box, Page, metaclass=PageClass):
         self.patient_search_entry.set_text("")
         self.update_patients()
 
+        self.patient_search_entry.grab_focus()
+
     def prepare_return(self) -> None:
         """Prepare the page to be shown when returning from another page."""
         self.get_toplevel().active_patient = None

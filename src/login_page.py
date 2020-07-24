@@ -48,6 +48,8 @@ class LoginPage(Gtk.Box, Page, metaclass=PageClass):
         self.username_entry.set_text("")
         self.password_entry.set_text("")
 
+        self.username_entry.grab_focus()
+
     def do_parent_set(self, old_parent: Optional[Gtk.Widget]) -> None:
         """React to the parent being set.
 

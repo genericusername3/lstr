@@ -68,6 +68,8 @@ class PainEvaluationPage(Gtk.Box, Page, metaclass=PageClass):
 
         self.save_button.set_sensitive(False)
 
+        self.pain_location_combobox_text.grab_focus()
+
     def do_parent_set(self, old_parent: Optional[Gtk.Widget]) -> None:
         """React to the parent being set.
 
