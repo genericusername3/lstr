@@ -123,7 +123,7 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
         """Prepare the page to be shown."""
         self.patient = patient
 
-        self.get_toplevel().back_button.grab_focus()
+        self.first_name_entry.grab_focus()
 
         if patient is not None:
             self.title = f"{patient.first_name} {patient.last_name}"
