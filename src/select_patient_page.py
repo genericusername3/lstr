@@ -95,6 +95,12 @@ class SelectPatientPage(Gtk.Box, Page, metaclass=PageClass):
         self.patient_search_entry.connect(
             "search-changed", self.on_search_changed
         )
+        self.patient_search_entry.connect(
+            "focus-in-event", self.on_focus_entry
+        )
+        self.patient_search_entry.connect(
+            "focus-out-event", self.on_unfocus_entry
+        )
 
     def on_patient_selected(self, list_box: Gtk.ListBox, row: Gtk.ListBoxRow):
         """React to the user selecting a patient.
