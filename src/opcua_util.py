@@ -215,7 +215,7 @@ class NodeCategory:
         """
         self.nodes = node_dict
 
-    def __getattr__(self, name: str) -> Any:
+    def __getitem__(self, name: str) -> Any:
         """Get the value of a Node in this category.
 
         Args:
@@ -227,6 +227,9 @@ class NodeCategory:
         Raises:
             AttributeError: If the node does not exist
         """
+        if name == "nodes":
+            return self.__dict__["nodes"]
+
         if name not in self.nodes:
             raise AttributeError(f"{name} is not a node of this NodeCategory")
 
@@ -237,7 +240,7 @@ class NodeCategory:
 
             return self.nodes[name].get_value()
 
-    def __setattr__(self, name: str, value: Any) -> None:
+    def __setitem__(self, name: str, value: Any) -> None:
         """Set the value of a Node in this category.
 
         Args:
@@ -288,7 +291,7 @@ class Connection(metaclass=Singleton):
         """Connect to the OPC UA server."""
         self.client.connect()
 
-    def __getattr__(self, name: str) -> NodeCategory:
+    def __getitem__(self, name: str) -> NodeCategory:
         """Get a NodeCategory if it exists.
 
         Args:
