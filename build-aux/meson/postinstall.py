@@ -35,5 +35,6 @@ if not destdir:
             "opencv-python",
             "passwordmeter",
             "pycairo",
+            "opcua",
         ]
     )
