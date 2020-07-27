@@ -119,12 +119,7 @@ class ProgramHeader(Gtk.Box):
     """A widget that acts as a header for ProgramRow widgets."""
 
     def __init__(self):
-        """Create a new ProgramRow.
-
-        Args:
-            program (program_util.Program): The program to represent
-
-        """
+        """Create a new ProgramHeader."""
         super().__init__(orientation=Gtk.Orientation.HORIZONTAL)
 
         self.set_margin_start(2)

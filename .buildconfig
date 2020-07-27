@@ -1,10 +1,11 @@
 [default]
 name=Default
-runtime=jhbuild
+runtime=host
 toolchain=default
 config-opts=
 run-opts=
-prefix=/home/liloneum/jhbuild/install
+prefix=/home/liloneum/.cache/gnome-builder/install/lstr/host
 app-id=
 postbuild=
 prebuild=
+default=true

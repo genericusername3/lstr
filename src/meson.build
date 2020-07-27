@@ -47,12 +47,14 @@ liegensteuerung_sources = [
   'patient_row.py',
   'program_row.py',
   'user_row.py',
+  'treatment_row.py',
 
   'auth_util.py',
   'onboard_util.py',
   'patient_util.py',
   'program_util.py',
   'user_util.py',
+  'treatment_util.py',
 ]
 
 install_data(liegensteuerung_sources, install_dir: moduledir)

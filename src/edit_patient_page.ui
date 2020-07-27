@@ -309,35 +309,73 @@
           </packing>
         </child>
         <child>
-          <object class="GtkGrid">
+          <object class="GtkBox">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="orientation">vertical</property>
             <child>
-              <placeholder/>
+              <object class="GtkBox" id="header_box">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="border_width">1</property>
+                <property name="orientation">vertical</property>
+                <child>
+                  <object class="GtkSeparator">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="margin_top">3</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
             </child>
             <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
-            </child>
-            <child>
-              <placeholder/>
+              <object class="GtkScrolledWindow">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="vexpand">True</property>
+                <property name="hscrollbar_policy">never</property>
+                <property name="shadow_type">in</property>
+                <child>
+                  <object class="GtkViewport">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="vscroll_policy">natural</property>
+                    <child>
+                      <object class="GtkListBox" id="treatment_list_box">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="selection_mode">none</property>
+                        <child type="placeholder">
+                          <object class="GtkLabel">
+                            <property name="height_request">40</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="label" translatable="yes">Der Patient wurde noch nicht behandelt</property>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">2</property>
+              </packing>
             </child>
           </object>
           <packing>
@@ -357,7 +395,7 @@
   </template>
   <object class="GtkAdjustment" id="weight_adjustment">
     <property name="upper">999</property>
-    <property name="step_increment">0.5</property>
+    <property name="step_increment">0,50000000000000000000</property>
     <property name="page_increment">1</property>
   </object>
 </interface>

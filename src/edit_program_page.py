@@ -186,6 +186,8 @@ class EditProgramPage(Gtk.Box, Page, metaclass=PageClass):
         for entry in self.entries:
             entry.set_sensitive(is_admin)
 
+        self.pusher_distance_up_left_entry.grab_focus()
+
         self.save_box.set_visible(is_admin)
 
     def unprepare(self) -> None:

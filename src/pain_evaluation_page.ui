@@ -64,7 +64,7 @@
                   <item id="left-right" translatable="yes">Eher links</item>
                   <item id="both" translatable="yes">Beidseitig</item>
                   <item id="right-left" translatable="yes">Eher rechts</item>
-                  <item translatable="yes">Rechts</item>
+                  <item id="right" translatable="yes">Rechts</item>
                 </items>
               </object>
               <packing>

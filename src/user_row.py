@@ -201,12 +201,7 @@ class UserHeader(Gtk.Box):
     """A widget that acts as a header for UserRow widgets."""
 
     def __init__(self):
-        """Create a new UserRow.
-
-        Args:
-            user (user_util.User): The user to represent
-
-        """
+        """Create a new UserHeader."""
         super().__init__(orientation=Gtk.Orientation.HORIZONTAL)
 
         self.set_margin_start(2)
