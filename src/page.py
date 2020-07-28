@@ -3,6 +3,7 @@
 from gi.repository import GObject, Gdk, Gtk  # type: ignore
 
 from . import onboard_util
+from .opcua_util import Connection
 
 import abc
 
@@ -79,14 +80,35 @@ class Page(abc.ABC):
         """
         onboard_util.unrequest_keyboard()
 
+    def on_opcua_button_clicked(
+        self, button: Gtk.Button, category: str, variable_name: str
+    ) -> None:
+        """React to a button that is represented in OPC UA being clicked.
 
-if __name__ == "__main__":
+        Set the boolean OPC UA variable that represents teh button (yuck) to
+            True.
 
-    class TestPage(Page):
-        title = "TestPage"
-        header_visible = False
+        The indended use for this is with a Gtk callback, i.e.:
+            button: Gtk.Button
+            page: Page
+            category: str
+            variable_name: str
+            ...
+            button.connect(
+                "clicked", page.on_opcua_button_clicked, category, variable_name
+            )
 
-        def prepare(self) -> None:
-            pass
+        category and variable_name might look like this:
+            Regular way of accessing variable:
+                Connection()["main"]["emergency_off_button"]
+            Path of variable:
+                category: "main"
+                variable_name: "emergency_off_button"
 
-    TestPage()
+        Args:
+            button (Gtk.Button): The button that was clicked
+            category (str): The name of the NodeCategory that the boolean
+                variable (yuck) is in
+            variable_name (str): The name of the boolean variable (yuck) node
+        """
+        Connection()[category][variable_name] = True
