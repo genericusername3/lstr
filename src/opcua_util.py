@@ -120,7 +120,7 @@ node_ids: Dict[str, Dict[str, str]] = {
         "push_count_down": prefix + program_prefix + "iAnzahl_Vorschuebe_Rueck",
         "pass_count_up": prefix + program_prefix + "iWiederholungen_Vor",
         "pass_count_down": prefix + program_prefix + "iWiederholungen_Rueck",
-        "pass_count_total": prefix + program_prefix + "iWiederholungen_Gesamt",
+        "pass_count_sum": prefix + program_prefix + "iWiederholungen_Gesamt",
     },
     "setup": {
         # Displayed values
