@@ -246,6 +246,7 @@ class NodeCategory:
             raise AttributeError(f"{name} is not a node of this NodeCategory")
 
         try:
+            print(name, self.nodes[name])
             self.nodes[name].set_value(
                 value, self.nodes[name].get_data_type_as_variant_type()
             )
