@@ -175,6 +175,23 @@ class Program(GObject.Object):
             self.__dict["pass_count_up"] + self.__dict["pass_count_down"]
         )
 
+        self.__dict["pusher_left_push_time_up"] = round(
+            self.__dict["pusher_left_distance_up"]
+            / self.__dict["pusher_left_speed_up"]
+        )
+        self.__dict["pusher_left_push_time_down"] = round(
+            self.__dict["pusher_left_distance_down"]
+            / self.__dict["pusher_left_speed_down"]
+        )
+        self.__dict["pusher_right_push_time_up"] = round(
+            self.__dict["pusher_right_distance_up"]
+            / self.__dict["pusher_right_speed_up"]
+        )
+        self.__dict["pusher_right_push_time_down"] = round(
+            self.__dict["pusher_right_distance_down"]
+            / self.__dict["pusher_right_speed_down"]
+        )
+
     @staticmethod
     def add(program_dict: Dict[str, Any], **kwargs) -> "Program":
         """Create a new Program and add it to the database.
@@ -206,10 +223,7 @@ class Program(GObject.Object):
 
         return program
 
-    def modify(
-        self,
-        **kwargs
-    ):
+    def modify(self, **kwargs):
         """Modify the program and save to the database.
 
         Python 3.6 or higher is needed to retain dict order.
@@ -221,11 +235,13 @@ class Program(GObject.Object):
             if attribute not in PROGRAM_COLUMNS:
                 raise ValueError(f"{attribute} is not a valid attribute")
 
-        print(f"""
+        print(
+            f"""
                 UPDATE programs
                 SET {', '.join([attribute + ' = ?' for attribute in kwargs])}
                 WHERE id=?
-            """)
+            """
+        )
 
         cursor.execute(
             f"""
@@ -233,10 +249,7 @@ class Program(GObject.Object):
                 SET {', '.join([attribute + ' = ?' for attribute in kwargs])}
                 WHERE id=?
             """,
-            (
-                *[kwargs[attribute] for attribute in kwargs],
-                self.id,
-            ),
+            (*[kwargs[attribute] for attribute in kwargs], self.id,),
         )
 
         connection.commit()
