@@ -200,7 +200,16 @@ headerbar button:active {
 window {
     border-radius: 0;
     outline: none;
-    border:none;
+    border: none;
+}
+
+messagedialog {
+    border: 1px #888 solid;
+    border-radius: 0px;
+}
+
+messagedialog>* {
+    margin: 8px;
 }
 
 infobar box {
