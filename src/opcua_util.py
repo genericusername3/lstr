@@ -4,7 +4,7 @@ Abstraction layer on top of the opcua Python module.
 Also specifies all used variable names.
 """
 
-from typing import Dict, Any, Optional
+from typing import Dict, Any, Optional, List
 from opcua import Client  # type: ignore
 from opcua.common.node import Node  # type: ignore
 
@@ -55,9 +55,7 @@ node_ids: Dict[str, Dict[str, str]] = {
         + "iZeit_Pusher_B_Rueck",
         #
         # Push delays
-        "pusher_left_delay_up": prefix
-        + program_prefix
-        + "iDelay_Pusher_A_Vor",
+        "pusher_left_delay_up": prefix + program_prefix + "iDelay_Pusher_A_Vor",
         "pusher_left_delay_down": prefix
         + program_prefix
         + "iDelay_Pusher_A_Rueck",
@@ -112,18 +110,14 @@ node_ids: Dict[str, Dict[str, str]] = {
         #
         # Angle changes in deg (per push I guess)
         "angle_change_up": prefix + program_prefix + "iWinkelaenderung_Vor",
-        "angle_change_down": prefix
-        + program_prefix
-        + "iWinkelaenderung_Rueck",
+        "angle_change_down": prefix + program_prefix + "iWinkelaenderung_Rueck",
         "push_distance_up": prefix + program_prefix + "iVorschub_Vor",
         "push_distance_down": prefix + program_prefix + "iVorschub_Rueck",
         #
         # Push counts (idk if these are calculated, but they're in the OPCUA
         #              vars, so I'm including them here)
         "push_count_up": prefix + program_prefix + "iAnzahl_Vorschuebe_Vor",
-        "push_count_down": prefix
-        + program_prefix
-        + "iAnzahl_Vorschuebe_Rueck",
+        "push_count_down": prefix + program_prefix + "iAnzahl_Vorschuebe_Rueck",
         "pass_count_up": prefix + program_prefix + "iWiederholungen_Vor",
         "pass_count_down": prefix + program_prefix + "iWiederholungen_Rueck",
         "pass_count_total": prefix + program_prefix + "iWiederholungen_Gesamt",
@@ -144,9 +138,7 @@ node_ids: Dict[str, Dict[str, str]] = {
         "tilt_down_button": prefix + setup_prefix + "xBut_Kipp_kaudal",
         "tilt_up_button": prefix + setup_prefix + "xBut_Kipp_kranial",
         # Pusher buttons
-        "left_move_in_button": prefix
-        + setup_prefix
-        + "xBut_pusher_A_hoch_5mm",
+        "left_move_in_button": prefix + setup_prefix + "xBut_pusher_A_hoch_5mm",
         "left_move_out_button": prefix
         + setup_prefix
         + "xBut_pusher_A_runter_5mm",
@@ -182,9 +174,7 @@ node_ids: Dict[str, Dict[str, str]] = {
         #
         # "Visibility" of different "pop-ups"
         "emergency_off": prefix + main_prefix + "xSichtbarkeit_NOTAUS_PopUp",
-        "not_referenced": prefix
-        + main_prefix
-        + "xSichtbarkeit_NichtRef_PopUp",
+        "not_referenced": prefix + main_prefix + "xSichtbarkeit_NichtRef_PopUp",
         "referencing": prefix
         + main_prefix
         + "xSichtbarkeit_Referenzierung_PopUp",
@@ -199,7 +189,9 @@ class Singleton(type):
 
     def __call__(cls, *args, **kwargs):
         if cls not in cls._instances:
-            cls._instances[cls] = super(Singleton, cls).__call__(*args, **kwargs)
+            cls._instances[cls] = super(Singleton, cls).__call__(
+                *args, **kwargs
+            )
         return cls._instances[cls]
 
 
@@ -263,6 +255,14 @@ class NodeCategory:
             self.nodes[name].set_value(
                 value, self.nodes[name].get_data_type_as_variant_type()
             )
+
+    def keys(self) -> List[str]:
+        """Return the names of all nodes contained in this NodeCategory.
+
+        Returns:
+            List[str]: A list of node names
+        """
+        return list(self.nodes.keys())
 
 
 class Connection(metaclass=Singleton):

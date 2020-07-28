@@ -6,6 +6,9 @@ from gi.repository import GObject, Gtk  # type: ignore
 
 from .page import Page, PageClass
 
+from .program_util import Program
+from .opcua_util import Connection
+
 
 @Gtk.Template(
     resource_path="/de/linusmathieu/Liegensteuerung/treatment_page.ui"
@@ -38,6 +41,9 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
 
     def prepare(self) -> None:
         """Prepare the page to be shown."""
+        program: Program = self.get_toplevel().active_program
+        for key in Connection()["program"].keys():
+            print(program[key])
 
     def do_parent_set(self, old_parent: Optional[Gtk.Widget]) -> None:
         """React to the parent being set.
