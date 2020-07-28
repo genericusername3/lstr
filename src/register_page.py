@@ -108,7 +108,8 @@ class RegisterPage(Gtk.Box, Page, metaclass=PageClass):
         # )
 
         if new_user:
-            self.get_toplevel().active_user = None
+            if next_page is not None:
+                self.get_toplevel().active_user = None
 
             self.access_level_combobox.set_active_id(access_level)
             self.title = "Registrieren"
