@@ -230,6 +230,24 @@
           </packing>
         </child>
         <child>
+          <object class="GtkButton" id="resume_button">
+            <property name="label" translatable="yes">Forsetzen</property>
+            <property name="width_request">224</property>
+            <property name="height_request">48</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="border_width">2</property>
+            <style>
+              <class name="suggested-action"/>
+            </style>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
           <object class="GtkButton" id="pause_button">
             <property name="label" translatable="yes">Pausieren</property>
             <property name="width_request">224</property>
