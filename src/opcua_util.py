@@ -14,6 +14,13 @@ program_prefix: str = "GVL_Tabelle.stTabelle_PrgDat."
 setup_prefix: str = "Application.GVL_Visu_Einrichten."
 main_prefix: str = "GVL_Visu_Haupt."
 
+# Due to some INGENIOUS programming of the backend, you might notice the word
+# "pusher" being spelled any of the following ways:
+#     pusher
+#     Pusher (which makes sense when using casing iFoo_Bar (for some reason))
+#     puscher (with a german "sch")
+#     Puscher
+
 node_ids: Dict[str, Dict[str, str]] = {
     "program": {
         "id": prefix + program_prefix + "iProgramm_Nummer",
@@ -21,16 +28,16 @@ node_ids: Dict[str, Dict[str, str]] = {
         # Distances
         "pusher_left_distance_up": prefix
         + program_prefix
-        + "iWeg_Pusher_A_Vor",
+        + "iWeg_Puscher_A_Vor",
         "pusher_left_distance_down": prefix
         + program_prefix
-        + "iWeg_Pusher_A_Rueck",
+        + "iWeg_Puscher_A_Rueck",
         "pusher_right_distance_up": prefix
         + program_prefix
-        + "iWeg_Pusher_B_Vor",
+        + "iWeg_Puscher_B_Vor",
         "pusher_right_distance_down": prefix
         + program_prefix
-        + "iWeg_Pusher_B_Rueck",
+        + "iWeg_Puscher_B_Rueck",
         #
         # Pusher speeds (apparently I'll have to calculate push time myself,
         #                so it's commented out)
@@ -43,42 +50,42 @@ node_ids: Dict[str, Dict[str, str]] = {
         # Push times (calculated from speed)
         "pusher_left_push_time_up": prefix
         + program_prefix
-        + "iZeit_Pusher_A_Vor",
+        + "iZeit_Puscher_A_Vor",
         "pusher_left_push_time_down": prefix
         + program_prefix
-        + "iZeit_Pusher_A_Rueck",
+        + "iZeit_Puscher_A_Rueck",
         "pusher_right_push_time_up": prefix
         + program_prefix
-        + "iZeit_Pusher_B_Vor",
+        + "iZeit_Puscher_B_Vor",
         "pusher_right_push_time_down": prefix
         + program_prefix
-        + "iZeit_Pusher_B_Rueck",
+        + "iZeit_Puscher_B_Rueck",
         #
         # Push delays
-        "pusher_left_delay_up": prefix + program_prefix + "iDelay_Pusher_A_Vor",
+        "pusher_left_delay_up": prefix + program_prefix + "iDelay_Puscher_A_Vor",
         "pusher_left_delay_down": prefix
         + program_prefix
-        + "iDelay_Pusher_A_Rueck",
+        + "iDelay_Puscher_A_Rueck",
         "pusher_right_delay_up": prefix
         + program_prefix
-        + "iDelay_Pusher_B_Vor",
+        + "iDelay_puscher_B_Vor",
         "pusher_right_delay_down": prefix
         + program_prefix
-        + "iDelay_Pusher_B_Rueck",
+        + "iDelay_puscher_B_Rueck",
         #
         # Push wait times
         "pusher_left_stay_duration_up": prefix
         + program_prefix
-        + "iWarten_Pusher_A_Vor",
+        + "iWarten_Puscher_A_Vor",
         "pusher_left_stay_duration_down": prefix
         + program_prefix
-        + "iWarten_Pusher_A_Rueck",
+        + "iWarten_Puscher_A_Rueck",
         "pusher_right_stay_duration_up": prefix
         + program_prefix
-        + "iWarten_Pusher_B_Vor",
+        + "iWarten_puscher_B_Vor",
         "pusher_right_stay_duration_down": prefix
         + program_prefix
-        + "iWarten_Pusher_B_Rueck",
+        + "iWarten_puscher_B_Rueck",
         #
         # Push counts
         "pusher_left_push_count_up": prefix
@@ -97,16 +104,16 @@ node_ids: Dict[str, Dict[str, str]] = {
         # Distance correction per 7deg
         "pusher_left_distance_correction_up": prefix
         + program_prefix
-        + "iWinkelkorrektur_Pusher_A_Vor",
+        + "iWinkelkorrektur_Puscher_A_Vor",
         "pusher_left_distance_correction_down": prefix
         + program_prefix
-        + "iWinkelkorrektur_Pusher_A_Rueck",
+        + "iWinkelkorrektur_Puscher_A_Rueck",
         "pusher_right_distance_correction_up": prefix
         + program_prefix
-        + "iWinkelkorrektur_Pusher_B_Vor",
+        + "iWinkelkorrektur_Puscher_B_Vor",
         "pusher_right_distance_correction_down": prefix
         + program_prefix
-        + "iWinkelkorrektur_Pusher_B_Rueck",
+        + "iWinkelkorrektur_Puscher_B_Rueck",
         #
         # Angle changes in deg (per push I guess)
         "angle_change_up": prefix + program_prefix + "iWinkelaenderung_Vor",
