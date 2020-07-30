@@ -5,7 +5,6 @@
   <template class="RegisterPage" parent="GtkBox">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
-    <property name="valign">start</property>
     <property name="hexpand">True</property>
     <property name="vexpand">True</property>
     <property name="orientation">vertical</property>
@@ -15,7 +14,6 @@
         <property name="can_focus">False</property>
         <property name="halign">center</property>
         <property name="valign">center</property>
-        <property name="margin_top">128</property>
         <property name="row_spacing">5</property>
         <property name="column_spacing">7</property>
         <property name="column_homogeneous">True</property>

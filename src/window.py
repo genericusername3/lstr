@@ -7,8 +7,10 @@ from gi.repository import GLib, Gtk  # type: ignore
 from . import auth_util
 from . import patient_util
 from . import program_util
+from . import osk_util
 from . import page
 from . import (
+    keyboard,
     edit_patient_page,
     edit_program_page,
     login_page,
@@ -138,7 +140,11 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
         Gtk.Template.Child, Gtk.Button
     ] = Gtk.Template.Child()
     shutdown_compact_revealer: Union[
-        Gtk.Template.Child, Gtk.Button
+        Gtk.Template.Child, Gtk.Revealer
+    ] = Gtk.Template.Child()
+
+    keyboard_revealer: Union[
+        Gtk.Template.Child, Gtk.Revealer
     ] = Gtk.Template.Child()
 
     active_user: Optional[str] = None
@@ -169,6 +175,8 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
         At this point, all Gtk.Template.Child objects should have been replaced
             by actual Gtk.Widgets. Therefore, signals are connected here.
         """
+        osk_util.set_keyboard(self.keyboard_revealer)
+
         self.back_button.connect("clicked", self.on_back_clicked)
         self.patient_button.connect("clicked", self.on_patient_clicked)
 

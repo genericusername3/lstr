@@ -101,6 +101,9 @@ class SelectPatientPage(Gtk.Box, Page, metaclass=PageClass):
             "focus-in-event", self.on_focus_entry
         )
         self.patient_search_entry.connect(
+            "button-press-event", self.on_entry_button_press
+        )
+        self.patient_search_entry.connect(
             "focus-out-event", self.on_unfocus_entry
         )
 

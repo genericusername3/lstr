@@ -292,6 +292,7 @@ combobox>box>button {
 }
 combobox arrow {
     -gtk-icon-source: -gtk-icontheme("pan-down-symbolic");
+    color: #888;
     background: none;
     margin: 0px;
     border: none;
@@ -374,4 +375,37 @@ spinbutton button:not(:last-child) {
     border-top-right-radius: 0px;
     border-bottom-right-radius: 0px;
     margin-right: 0;
+}
+
+grid.keyboard {
+    background: #222;
+}
+
+grid.keyboard button.key:not(.implicit) {
+    color: #fff;
+}
+
+grid.keyboard button.key.implicit {
+    background: #555;
+    color: #aaa;
+}
+
+grid.keyboard button.key {
+    background: #333;
+    border: none;
+}
+
+grid.keyboard button.key.active, grid.keyboard button.key:active {
+    background: #555;
+    border: none;
+}
+
+grid.keyboard button.key.implicit.active, grid.keyboard button.key.implicit:active {
+    background: #777;
+    border: none;
+}
+
+grid.keyboard button.key.locked {
+    background: mix(@accent, #333, 0.5);
+    border: none;
 }

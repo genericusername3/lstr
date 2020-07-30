@@ -38,7 +38,7 @@ class UsersPage(Gtk.Box, Page, metaclass=PageClass):
     add_button: Union[Gtk.Button, Gtk.Template.Child] = Gtk.Template.Child()
 
     def __init__(self, **kwargs):
-        """Create a new SelectUserPage.
+        """Create a new UsersPage.
 
         Args:
             **kwargs: Arguments passed on to Gtk.Box

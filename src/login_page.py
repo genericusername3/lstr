@@ -71,6 +71,9 @@ class LoginPage(Gtk.Box, Page, metaclass=PageClass):
         self.username_entry.connect("focus-out-event", self.on_unfocus_entry)
         self.password_entry.connect("focus-out-event", self.on_unfocus_entry)
 
+        self.username_entry.connect("button-press-event", self.on_entry_button_press)
+        self.password_entry.connect("button-press-event", self.on_entry_button_press)
+
         self.username_entry.connect("changed", self.on_entry_changed)
         self.password_entry.connect("changed", self.on_entry_changed)
 

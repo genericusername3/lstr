@@ -1,0 +1,835 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.36.0 -->
+<interface>
+  <requires lib="gtk+" version="3.20"/>
+  <object class="GtkImage" id="close_icon">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="icon_name">go-down-symbolic</property>
+  </object>
+  <template class="OnscreenKeyboard" parent="GtkGrid">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="orientation">vertical</property>
+    <property name="row_homogeneous">True</property>
+    <property name="column_homogeneous">True</property>
+    <child>
+      <object class="GtkButton" id="button_a00">
+        <property name="label">a00</property>
+        <property name="height_request">52</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="receives_default">True</property>
+        <style>
+          <class name="key"/>
+        </style>
+      </object>
+      <packing>
+        <property name="left_attach">0</property>
+        <property name="top_attach">0</property>
+        <property name="width">2</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkButton" id="button_a01">
+        <property name="label">a01</property>
+        <property name="height_request">52</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="receives_default">True</property>
+        <style>
+          <class name="key"/>
+        </style>
+      </object>
+      <packing>
+        <property name="left_attach">2</property>
+        <property name="top_attach">0</property>
+        <property name="width">2</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkButton" id="button_a02">
+        <property name="label">a02</property>
+        <property name="height_request">52</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="receives_default">True</property>
+        <style>
+          <class name="key"/>
+        </style>
+      </object>
+      <packing>
+        <property name="left_attach">4</property>
+        <property name="top_attach">0</property>
+        <property name="width">2</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkButton" id="button_a03">
+        <property name="label">a03</property>
+        <property name="height_request">52</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="receives_default">True</property>
+        <style>
+          <class name="key"/>
+        </style>
+      </object>
+      <packing>
+        <property name="left_attach">6</property>
+        <property name="top_attach">0</property>
+        <property name="width">2</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkButton" id="button_a04">
+        <property name="label">a04</property>
+        <property name="height_request">52</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="receives_default">True</property>
+        <style>
+          <class name="key"/>
+        </style>
+      </object>
+      <packing>
+        <property name="left_attach">8</property>
+        <property name="top_attach">0</property>
+        <property name="width">2</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkButton" id="button_a05">
+        <property name="label">a05</property>
+        <property name="height_request">52</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="receives_default">True</property>
+        <style>
+          <class name="key"/>
+        </style>
+      </object>
+      <packing>
+        <property name="left_attach">10</property>
+        <property name="top_attach">0</property>
+        <property name="width">2</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkButton" id="button_a06">
+        <property name="label">a06</property>
+        <property name="height_request">52</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="receives_default">True</property>
+        <style>
+          <class name="key"/>
+        </style>
+      </object>
+      <packing>
+        <property name="left_attach">12</property>
+        <property name="top_attach">0</property>
+        <property name="width">2</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkButton" id="button_a07">
+        <property name="label">a07</property>
+        <property name="height_request">52</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="receives_default">True</property>
+        <style>
+          <class name="key"/>
+        </style>
+      </object>
+      <packing>
+        <property name="left_attach">14</property>
+        <property name="top_attach">0</property>
+        <property name="width">2</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkButton" id="button_a08">
+        <property name="label">a08</property>
+        <property name="height_request">52</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="receives_default">True</property>
+        <style>
+          <class name="key"/>
+        </style>
+      </object>
+      <packing>
+        <property name="left_attach">16</property>
+        <property name="top_attach">0</property>
+        <property name="width">2</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkButton" id="button_a09">
+        <property name="label">a09</property>
+        <property name="height_request">52</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="receives_default">True</property>
+        <style>
+          <class name="key"/>
+        </style>
+      </object>
+      <packing>
+        <property name="left_attach">18</property>
+        <property name="top_attach">0</property>
+        <property name="width">2</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkButton" id="button_a10">
+        <property name="label">a10</property>
+        <property name="height_request">52</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="receives_default">True</property>
+        <style>
+          <class name="key"/>
+        </style>
+      </object>
+      <packing>
+        <property name="left_attach">20</property>
+        <property name="top_attach">0</property>
+        <property name="width">2</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkButton" id="button_b00">
+        <property name="label">b00</property>
+        <property name="height_request">52</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="receives_default">True</property>
+        <style>
+          <class name="key"/>
+        </style>
+      </object>
+      <packing>
+        <property name="left_attach">0</property>
+        <property name="top_attach">1</property>
+        <property name="width">2</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkButton" id="button_b01">
+        <property name="label">b01</property>
+        <property name="height_request">52</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="receives_default">True</property>
+        <style>
+          <class name="key"/>
+        </style>
+      </object>
+      <packing>
+        <property name="left_attach">2</property>
+        <property name="top_attach">1</property>
+        <property name="width">2</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkButton" id="button_b02">
+        <property name="label">b02</property>
+        <property name="height_request">52</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="receives_default">True</property>
+        <style>
+          <class name="key"/>
+        </style>
+      </object>
+      <packing>
+        <property name="left_attach">4</property>
+        <property name="top_attach">1</property>
+        <property name="width">2</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkButton" id="button_b03">
+        <property name="label">b03</property>
+        <property name="height_request">52</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="receives_default">True</property>
+        <style>
+          <class name="key"/>
+        </style>
+      </object>
+      <packing>
+        <property name="left_attach">6</property>
+        <property name="top_attach">1</property>
+        <property name="width">2</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkButton" id="button_b04">
+        <property name="label">b04</property>
+        <property name="height_request">52</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="receives_default">True</property>
+        <style>
+          <class name="key"/>
+        </style>
+      </object>
+      <packing>
+        <property name="left_attach">8</property>
+        <property name="top_attach">1</property>
+        <property name="width">2</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkButton" id="button_b05">
+        <property name="label">b05</property>
+        <property name="height_request">52</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="receives_default">True</property>
+        <style>
+          <class name="key"/>
+        </style>
+      </object>
+      <packing>
+        <property name="left_attach">10</property>
+        <property name="top_attach">1</property>
+        <property name="width">2</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkButton" id="button_b06">
+        <property name="label">b06</property>
+        <property name="height_request">52</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="receives_default">True</property>
+        <style>
+          <class name="key"/>
+        </style>
+      </object>
+      <packing>
+        <property name="left_attach">12</property>
+        <property name="top_attach">1</property>
+        <property name="width">2</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkButton" id="button_b07">
+        <property name="label">b07</property>
+        <property name="height_request">52</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="receives_default">True</property>
+        <style>
+          <class name="key"/>
+        </style>
+      </object>
+      <packing>
+        <property name="left_attach">14</property>
+        <property name="top_attach">1</property>
+        <property name="width">2</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkButton" id="button_b08">
+        <property name="label">b08</property>
+        <property name="height_request">52</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="receives_default">True</property>
+        <style>
+          <class name="key"/>
+        </style>
+      </object>
+      <packing>
+        <property name="left_attach">16</property>
+        <property name="top_attach">1</property>
+        <property name="width">2</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkButton" id="button_b09">
+        <property name="label">b09</property>
+        <property name="height_request">52</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="receives_default">True</property>
+        <style>
+          <class name="key"/>
+        </style>
+      </object>
+      <packing>
+        <property name="left_attach">18</property>
+        <property name="top_attach">1</property>
+        <property name="width">2</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkButton" id="button_b10">
+        <property name="label">b10</property>
+        <property name="height_request">52</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="receives_default">True</property>
+        <style>
+          <class name="key"/>
+        </style>
+      </object>
+      <packing>
+        <property name="left_attach">20</property>
+        <property name="top_attach">1</property>
+        <property name="width">2</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkButton" id="button_c00">
+        <property name="label">c00</property>
+        <property name="height_request">52</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="receives_default">True</property>
+        <style>
+          <class name="key"/>
+        </style>
+      </object>
+      <packing>
+        <property name="left_attach">0</property>
+        <property name="top_attach">2</property>
+        <property name="width">2</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkButton" id="button_c01">
+        <property name="label">c01</property>
+        <property name="height_request">52</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="receives_default">True</property>
+        <style>
+          <class name="key"/>
+        </style>
+      </object>
+      <packing>
+        <property name="left_attach">2</property>
+        <property name="top_attach">2</property>
+        <property name="width">2</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkButton" id="button_c02">
+        <property name="label">c02</property>
+        <property name="height_request">52</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="receives_default">True</property>
+        <style>
+          <class name="key"/>
+        </style>
+      </object>
+      <packing>
+        <property name="left_attach">4</property>
+        <property name="top_attach">2</property>
+        <property name="width">2</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkButton" id="button_c03">
+        <property name="label">c03</property>
+        <property name="height_request">52</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="receives_default">True</property>
+        <style>
+          <class name="key"/>
+        </style>
+      </object>
+      <packing>
+        <property name="left_attach">6</property>
+        <property name="top_attach">2</property>
+        <property name="width">2</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkButton" id="button_c04">
+        <property name="label">c04</property>
+        <property name="height_request">52</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="receives_default">True</property>
+        <style>
+          <class name="key"/>
+        </style>
+      </object>
+      <packing>
+        <property name="left_attach">8</property>
+        <property name="top_attach">2</property>
+        <property name="width">2</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkButton" id="button_c05">
+        <property name="label">c05</property>
+        <property name="height_request">52</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="receives_default">True</property>
+        <style>
+          <class name="key"/>
+        </style>
+      </object>
+      <packing>
+        <property name="left_attach">10</property>
+        <property name="top_attach">2</property>
+        <property name="width">2</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkButton" id="button_c06">
+        <property name="label">c06</property>
+        <property name="height_request">52</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="receives_default">True</property>
+        <style>
+          <class name="key"/>
+        </style>
+      </object>
+      <packing>
+        <property name="left_attach">12</property>
+        <property name="top_attach">2</property>
+        <property name="width">2</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkButton" id="button_c07">
+        <property name="label">c07</property>
+        <property name="height_request">52</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="receives_default">True</property>
+        <style>
+          <class name="key"/>
+        </style>
+      </object>
+      <packing>
+        <property name="left_attach">14</property>
+        <property name="top_attach">2</property>
+        <property name="width">2</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkButton" id="button_c08">
+        <property name="label">c08</property>
+        <property name="height_request">52</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="receives_default">True</property>
+        <style>
+          <class name="key"/>
+        </style>
+      </object>
+      <packing>
+        <property name="left_attach">16</property>
+        <property name="top_attach">2</property>
+        <property name="width">2</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkButton" id="button_c09">
+        <property name="label">c09</property>
+        <property name="height_request">52</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="receives_default">True</property>
+        <style>
+          <class name="key"/>
+        </style>
+      </object>
+      <packing>
+        <property name="left_attach">18</property>
+        <property name="top_attach">2</property>
+        <property name="width">2</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkButton" id="button_c10">
+        <property name="label">c10</property>
+        <property name="height_request">52</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="receives_default">True</property>
+        <style>
+          <class name="key"/>
+        </style>
+      </object>
+      <packing>
+        <property name="left_attach">20</property>
+        <property name="top_attach">2</property>
+        <property name="width">2</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkButton" id="button_d00">
+        <property name="label">d00</property>
+        <property name="height_request">52</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="receives_default">True</property>
+        <style>
+          <class name="key"/>
+        </style>
+      </object>
+      <packing>
+        <property name="left_attach">4</property>
+        <property name="top_attach">3</property>
+        <property name="width">2</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkButton" id="button_d01">
+        <property name="label">d01</property>
+        <property name="height_request">52</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="receives_default">True</property>
+        <style>
+          <class name="key"/>
+        </style>
+      </object>
+      <packing>
+        <property name="left_attach">6</property>
+        <property name="top_attach">3</property>
+        <property name="width">2</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkButton" id="button_d02">
+        <property name="label">d02</property>
+        <property name="height_request">52</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="receives_default">True</property>
+        <style>
+          <class name="key"/>
+        </style>
+      </object>
+      <packing>
+        <property name="left_attach">8</property>
+        <property name="top_attach">3</property>
+        <property name="width">2</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkButton" id="button_d03">
+        <property name="label">d03</property>
+        <property name="height_request">52</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="receives_default">True</property>
+        <style>
+          <class name="key"/>
+        </style>
+      </object>
+      <packing>
+        <property name="left_attach">10</property>
+        <property name="top_attach">3</property>
+        <property name="width">2</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkButton" id="button_d04">
+        <property name="label">d04</property>
+        <property name="height_request">52</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="receives_default">True</property>
+        <style>
+          <class name="key"/>
+        </style>
+      </object>
+      <packing>
+        <property name="left_attach">12</property>
+        <property name="top_attach">3</property>
+        <property name="width">2</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkButton" id="button_d05">
+        <property name="label">d05</property>
+        <property name="height_request">52</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="receives_default">True</property>
+        <style>
+          <class name="key"/>
+        </style>
+      </object>
+      <packing>
+        <property name="left_attach">14</property>
+        <property name="top_attach">3</property>
+        <property name="width">2</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkButton" id="shift_button">
+        <property name="label">shift</property>
+        <property name="height_request">52</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="receives_default">True</property>
+        <style>
+          <class name="key"/>
+        </style>
+      </object>
+      <packing>
+        <property name="left_attach">0</property>
+        <property name="top_attach">3</property>
+        <property name="width">4</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkButton" id="space_button">
+        <property name="label">space</property>
+        <property name="height_request">52</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="receives_default">True</property>
+        <style>
+          <class name="key"/>
+          <class name="implicit"/>
+        </style>
+      </object>
+      <packing>
+        <property name="left_attach">6</property>
+        <property name="top_attach">4</property>
+        <property name="width">8</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkButton" id="bksp_button">
+        <property name="label">bksp</property>
+        <property name="height_request">52</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="receives_default">True</property>
+        <property name="always_show_image">True</property>
+        <style>
+          <class name="key"/>
+        </style>
+      </object>
+      <packing>
+        <property name="left_attach">18</property>
+        <property name="top_attach">3</property>
+        <property name="width">4</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkButton" id="button_d06">
+        <property name="label">d06</property>
+        <property name="height_request">52</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="receives_default">True</property>
+        <style>
+          <class name="key"/>
+        </style>
+      </object>
+      <packing>
+        <property name="left_attach">16</property>
+        <property name="top_attach">3</property>
+        <property name="width">2</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkButton" id="button_e00">
+        <property name="label">e00</property>
+        <property name="height_request">52</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="receives_default">True</property>
+        <style>
+          <class name="key"/>
+        </style>
+      </object>
+      <packing>
+        <property name="left_attach">4</property>
+        <property name="top_attach">4</property>
+        <property name="width">2</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkButton" id="button_e01">
+        <property name="label">e01</property>
+        <property name="height_request">52</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="receives_default">True</property>
+        <style>
+          <class name="key"/>
+        </style>
+      </object>
+      <packing>
+        <property name="left_attach">14</property>
+        <property name="top_attach">4</property>
+        <property name="width">2</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkButton" id="button_e02">
+        <property name="label">e02</property>
+        <property name="height_request">52</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="receives_default">True</property>
+        <style>
+          <class name="key"/>
+        </style>
+      </object>
+      <packing>
+        <property name="left_attach">16</property>
+        <property name="top_attach">4</property>
+        <property name="width">2</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkButton" id="close_button">
+        <property name="label" translatable="yes">Schließen	</property>
+        <property name="height_request">52</property>
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="receives_default">True</property>
+        <property name="image">close_icon</property>
+        <property name="always_show_image">True</property>
+        <style>
+          <class name="key"/>
+        </style>
+      </object>
+      <packing>
+        <property name="left_attach">18</property>
+        <property name="top_attach">4</property>
+        <property name="width">4</property>
+      </packing>
+    </child>
+    <child>
+      <placeholder/>
+    </child>
+    <child>
+      <placeholder/>
+    </child>
+    <child>
+      <placeholder/>
+    </child>
+    <child>
+      <placeholder/>
+    </child>
+    <style>
+      <class name="keyboard"/>
+    </style>
+  </template>
+</interface>

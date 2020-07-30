@@ -487,6 +487,7 @@ class EditProgramPage(Gtk.Box, Page, metaclass=PageClass):
             )
 
             entry.connect("focus-in-event", self.on_focus_entry)
+            entry.connect("button-press-event", self.on_entry_button_press)
             entry.connect(
                 "focus-out-event",
                 self.on_unfocus_num_entry,
@@ -495,6 +496,7 @@ class EditProgramPage(Gtk.Box, Page, metaclass=PageClass):
                 minimum,
                 maximum,
             )
+
             entry.connect(
                 "insert-text",
                 self.on_num_entry_insert,

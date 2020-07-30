@@ -494,6 +494,7 @@
               <object class="GtkStack" id="page_stack">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="vhomogeneous">False</property>
                 <property name="transition_type">slide-left-right</property>
                 <child>
                   <object class="RegisterPage">
@@ -594,6 +595,25 @@
             <property name="expand">True</property>
             <property name="fill">True</property>
             <property name="position">3</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkRevealer" id="keyboard_revealer">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="transition_type">slide-up</property>
+            <property name="transition_duration">200</property>
+            <property name="reveal_child">True</property>
+            <child>
+              <object class="OnscreenKeyboard">
+                <property name="visible">True</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">4</property>
           </packing>
         </child>
       </object>

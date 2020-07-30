@@ -84,9 +84,7 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
     first_name_entry: Union[
         Gtk.Entry, Gtk.Template.Child
     ] = Gtk.Template.Child()
-    last_name_entry: Union[
-        Gtk.Entry, Gtk.Template.Child
-    ] = Gtk.Template.Child()
+    last_name_entry: Union[Gtk.Entry, Gtk.Template.Child] = Gtk.Template.Child()
 
     gender_combobox_text: Union[
         Gtk.ComboBoxText, Gtk.Template.Child
@@ -105,9 +103,7 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
     treatment_list_box: Union[
         Gtk.ListBox, Gtk.Template.Child
     ] = Gtk.Template.Child()
-    header_box: Union[
-        Gtk.Box, Gtk.Template.Child
-    ] = Gtk.Template.Child()
+    header_box: Union[Gtk.Box, Gtk.Template.Child] = Gtk.Template.Child()
 
     weight_entry: Union[Gtk.Entry, Gtk.Template.Child] = Gtk.Template.Child()
 
@@ -219,13 +215,21 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
 
         # Name entries
         self.first_name_entry.connect("focus-in-event", self.on_focus_entry)
+        self.first_name_entry.connect(
+            "button-press-event", self.on_entry_button_press
+        )
         self.first_name_entry.connect("focus-out-event", self.on_unfocus_entry)
+
         self.last_name_entry.connect("focus-in-event", self.on_focus_entry)
+        self.last_name_entry.connect(
+            "button-press-event", self.on_entry_button_press
+        )
         self.last_name_entry.connect("focus-out-event", self.on_unfocus_entry)
 
         # Day entry
+        self.birth_date_day_entry.connect("focus-in-event", self.on_focus_entry)
         self.birth_date_day_entry.connect(
-            "focus-in-event", self.on_focus_entry
+            "button-press-event", self.on_entry_button_press
         )
         self.birth_date_day_entry.connect(
             "focus-out-event", self.on_unfocus_num_entry, 2, 1, self.max_day,
@@ -239,6 +243,9 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
             "focus-in-event", self.on_focus_entry
         )
         self.birth_date_month_entry.connect(
+            "button-press-event", self.on_entry_button_press
+        )
+        self.birth_date_month_entry.connect(
             "focus-out-event", self.on_unfocus_num_entry, 2, 1, 12
         )
         self.birth_date_month_entry.connect(
@@ -248,6 +255,9 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
         # Year entry
         self.birth_date_year_entry.connect(
             "focus-in-event", self.on_focus_entry
+        )
+        self.birth_date_year_entry.connect(
+            "button-press-event", self.on_entry_button_press
         )
         self.birth_date_year_entry.connect(
             "focus-out-event",
@@ -264,12 +274,18 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
         # Weight entry
         self.weight_entry.connect("focus-in-event", self.on_focus_entry)
         self.weight_entry.connect(
+            "button-press-event", self.on_entry_button_press
+        )
+        self.weight_entry.connect(
             "focus-out-event", self.on_unfocus_num_entry, 2, 0, 999.9
         )
         self.weight_entry.connect("insert-text", self.on_num_entry_insert, 1)
 
         # Comment entry
         self.comment_entry.connect("focus-in-event", self.on_focus_entry)
+        self.comment_entry.connect(
+            "button-press-event", self.on_entry_button_press
+        )
         self.comment_entry.connect("focus-out-event", self.on_unfocus_entry)
 
         # Entries that are date input
@@ -298,8 +314,7 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
     def update_treatments(self) -> None:
         """Re-query all treatments."""
         self.treatment_list_box.bind_model(
-            Treatment.iter_to_model(Treatment.get_all()),
-            TreatmentRow,
+            Treatment.iter_to_model(Treatment.get_all()), TreatmentRow,
         )
         self.treatment_list_box.show_all()
 

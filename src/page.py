@@ -2,7 +2,7 @@
 
 from gi.repository import GObject, Gdk, Gtk  # type: ignore
 
-from . import onboard_util
+from . import osk_util
 from .opcua_util import Connection
 
 import abc
@@ -67,7 +67,18 @@ class Page(abc.ABC):
             widget (Gtk.Widget): The focused entry.
             event (Gdk.EventFocus): The focus event.
         """
-        onboard_util.request_keyboard()
+        osk_util.request_keyboard()
+
+    def on_entry_button_press(
+        self, widget: Gtk.Widget, event: Gdk.EventButton
+    ) -> None:
+        """React to an entry being clicked (button press). Toggle OSK.
+
+        Args:
+            widget (Gtk.Widget): The clicked entry.
+            event (Gdk.EventFocus): The button press event.
+        """
+        osk_util.toggle_keyboard_request()
 
     def on_unfocus_entry(
         self, widget: Gtk.Widget, event: Gdk.EventFocus
@@ -78,7 +89,7 @@ class Page(abc.ABC):
             widget (Gtk.Widget): The focused entry.
             event (Gdk.EventFocus): The focus event.
         """
-        onboard_util.unrequest_keyboard()
+        osk_util.unrequest_keyboard()
 
     def on_opcua_button_clicked(
         self, button: Gtk.Button, category: str, variable_name: str

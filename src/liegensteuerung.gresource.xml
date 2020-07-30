@@ -5,6 +5,10 @@
   </gresource>
 
   <gresource prefix="/de/linusmathieu/Liegensteuerung">
+    <file>keyboard.ui</file>
+  </gresource>
+
+  <gresource prefix="/de/linusmathieu/Liegensteuerung">
     <file>edit_patient_page.ui</file>
   </gresource>
 

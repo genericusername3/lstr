@@ -5,6 +5,8 @@ from threading import Timer
 from typing import Optional
 from time import sleep
 
+from gi.repository import Gtk  # type: ignore
+
 
 keyboard_shown: bool = False
 keyboard_needed: bool = False
@@ -13,6 +15,20 @@ update_timer: Optional[Timer] = None
 
 UPDATE_DELAY: float = 0.1
 KEYBOARD_REACT_DELAY: float = 0.2
+
+keyboard_revealer: Optional[Gtk.Revealer] = None
+
+
+def set_keyboard(keyboard: Gtk.Revealer) -> None:
+    """Set the Gtk.Revealer that contains the on-screen keyboard.
+
+    Args:
+        keyboard (Gtk.Revealer): A Gtk.Revealer that can be revealed to show
+            the keyboard (and unrevealed to hide it)
+    """
+    global keyboard_revealer
+
+    keyboard_revealer = keyboard
 
 
 def request_keyboard() -> None:
@@ -76,16 +92,13 @@ def show_keyboard() -> None:
     """Show the virtual keyboard."""
     global keyboard_shown
 
-    call(
-        (
-            "dbus-send",
-            "--type=method_call",
-            # "--print-reply",
-            "--dest=org.onboard.Onboard",
-            "/org/onboard/Onboard/Keyboard",
-            "org.onboard.Onboard.Keyboard.Show",
+    if keyboard_revealer is None:
+        raise ValueError(
+            "You must call set_keyboard to set a keyboard revealer first."
         )
-    )
+
+    else:
+        keyboard_revealer.set_reveal_child(True)
 
     sleep(KEYBOARD_REACT_DELAY)
 
@@ -96,24 +109,22 @@ def hide_keyboard() -> None:
     """Hide the virtual keyboard."""
     global keyboard_shown
 
-    call(
-        (
-            "dbus-send",
-            "--type=method_call",
-            # "--print-reply",
-            "--dest=org.onboard.Onboard",
-            "/org/onboard/Onboard/Keyboard",
-            "org.onboard.Onboard.Keyboard.Hide",
+    if keyboard_revealer is None:
+        raise ValueError(
+            "You must call set_keyboard to set a keyboard revealer first."
         )
-    )
+
+    else:
+        keyboard_revealer.set_reveal_child(False)
 
     sleep(KEYBOARD_REACT_DELAY)
 
     keyboard_shown = False
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     import time
+
     show_keyboard()
     time.sleep(1)
     hide_keyboard()

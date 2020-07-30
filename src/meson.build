@@ -33,6 +33,8 @@ liegensteuerung_sources = [
 
   'page.py',
 
+  'keyboard.py',
+
   'edit_patient_page.py',
   'edit_program_page.py',
   'login_page.py',
@@ -50,7 +52,7 @@ liegensteuerung_sources = [
   'treatment_row.py',
 
   'auth_util.py',
-  'onboard_util.py',
+  'osk_util.py',
   'opcua_util.py',
   'patient_util.py',
   'program_util.py',

@@ -151,6 +151,16 @@ class RegisterPage(Gtk.Box, Page, metaclass=PageClass):
             "focus-in-event", self.on_focus_entry
         )
 
+        self.username_entry.connect(
+            "button-press-event", self.on_entry_button_press
+        )
+        self.password_entry.connect(
+            "button-press-event", self.on_entry_button_press
+        )
+        self.password_confirm_entry.connect(
+            "button-press-event", self.on_entry_button_press
+        )
+
         self.username_entry.connect("focus-out-event", self.on_unfocus_entry)
         self.password_entry.connect("focus-out-event", self.on_unfocus_entry)
         self.password_confirm_entry.connect(
