@@ -7,12 +7,79 @@
     <property name="can_focus">False</property>
     <property name="icon_name">user-trash-full-symbolic</property>
   </object>
+  <object class="GtkImage" id="export_usb_icon">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="icon_name">drive-removable-media-usb-symbolic</property>
+  </object>
   <template class="EditPatientPage" parent="GtkBox">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="hexpand">True</property>
     <property name="vexpand">True</property>
     <property name="orientation">vertical</property>
+    <child>
+      <object class="GtkInfoBar" id="export_success_info_bar">
+        <property name="can_focus">False</property>
+        <property name="show_close_button">True</property>
+        <property name="revealed">False</property>
+        <child internal-child="action_area">
+          <object class="GtkButtonBox">
+            <property name="can_focus">False</property>
+            <property name="spacing">6</property>
+            <property name="layout_style">end</property>
+            <child>
+              <placeholder/>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child internal-child="content_area">
+          <object class="GtkBox">
+            <property name="can_focus">False</property>
+            <property name="spacing">16</property>
+            <child>
+              <object class="GtkImage">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="icon_name">process-completed-symbolic</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Patientendaten erfolgreich exportiert</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="position">0</property>
+      </packing>
+    </child>
     <child>
       <object class="GtkStackSwitcher" id="patient_tabs_stack_switcher">
         <property name="visible">True</property>
@@ -24,7 +91,7 @@
       <packing>
         <property name="expand">False</property>
         <property name="fill">True</property>
-        <property name="position">0</property>
+        <property name="position">1</property>
       </packing>
     </child>
     <child>
@@ -338,7 +405,7 @@
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="position">1</property>
+                <property name="position">0</property>
               </packing>
             </child>
             <child>
@@ -374,6 +441,23 @@
               <packing>
                 <property name="expand">True</property>
                 <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="export_button">
+                <property name="label" translatable="yes">Exportieren</property>
+                <property name="height_request">48</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="halign">end</property>
+                <property name="image">export_usb_icon</property>
+                <property name="always_show_image">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
                 <property name="position">2</property>
               </packing>
             </child>
@@ -389,13 +473,12 @@
         <property name="expand">True</property>
         <property name="fill">True</property>
         <property name="pack_type">end</property>
-        <property name="position">1</property>
+        <property name="position">2</property>
       </packing>
     </child>
   </template>
   <object class="GtkAdjustment" id="weight_adjustment">
     <property name="upper">999</property>
-    <property name="step_increment">0,50000000000000000000</property>
     <property name="page_increment">1</property>
   </object>
 </interface>

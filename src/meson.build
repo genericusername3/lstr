@@ -56,6 +56,7 @@ liegensteuerung_sources = [
   'opcua_util.py',
   'patient_util.py',
   'program_util.py',
+  'usb_util.py',
   'user_util.py',
   'treatment_util.py',
 ]

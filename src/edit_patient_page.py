@@ -6,7 +6,7 @@ from decimal import Decimal
 
 from datetime import date
 
-from gi.repository import GObject, Gdk, Gtk  # type: ignore
+from gi.repository import GObject, GLib, Gdk, Gtk  # type: ignore
 
 from .page import Page, PageClass
 
@@ -80,6 +80,11 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
     header_visible: bool = True
     title: str = "Patient hinzufügen"
     is_patient_info_page: bool = True
+
+    export_button: Union[Gtk.Template.Child, Gtk.Button] = Gtk.Template.Child()
+    export_success_info_bar: Union[
+        Gtk.Template.Child, Gtk.InfoBar
+    ] = Gtk.Template.Child()
 
     first_name_entry: Union[
         Gtk.Entry, Gtk.Template.Child
@@ -186,11 +191,6 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
 
         self.editable = True
 
-        self.header_box.pack_start(
-            TreatmentHeader(), fill=True, expand=True, padding=0
-        )
-        self.header_box.show_all()
-
         self.update_treatments()
 
     def prepare_return(self):
@@ -213,10 +213,19 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
         if self.get_parent() is None:
             return
 
+        self.export_success_info_bar.connect(
+            "response", self.on_info_bar_response
+        )
+
+        self.export_button.connect("clicked", self.on_export_clicked)
+
         # Name entries
         self.first_name_entry.connect("focus-in-event", self.on_focus_entry)
         self.first_name_entry.connect(
             "button-press-event", self.on_entry_button_press
+        )
+        self.first_name_entry.connect(
+            "button-release-event", self.on_entry_button_release
         )
         self.first_name_entry.connect("focus-out-event", self.on_unfocus_entry)
 
@@ -224,12 +233,18 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
         self.last_name_entry.connect(
             "button-press-event", self.on_entry_button_press
         )
+        self.last_name_entry.connect(
+            "button-release-event", self.on_entry_button_release
+        )
         self.last_name_entry.connect("focus-out-event", self.on_unfocus_entry)
 
         # Day entry
         self.birth_date_day_entry.connect("focus-in-event", self.on_focus_entry)
         self.birth_date_day_entry.connect(
             "button-press-event", self.on_entry_button_press
+        )
+        self.birth_date_day_entry.connect(
+            "button-release-event", self.on_entry_button_release
         )
         self.birth_date_day_entry.connect(
             "focus-out-event", self.on_unfocus_num_entry, 2, 1, self.max_day,
@@ -246,6 +261,9 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
             "button-press-event", self.on_entry_button_press
         )
         self.birth_date_month_entry.connect(
+            "button-release-event", self.on_entry_button_release
+        )
+        self.birth_date_month_entry.connect(
             "focus-out-event", self.on_unfocus_num_entry, 2, 1, 12
         )
         self.birth_date_month_entry.connect(
@@ -258,6 +276,9 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
         )
         self.birth_date_year_entry.connect(
             "button-press-event", self.on_entry_button_press
+        )
+        self.birth_date_year_entry.connect(
+            "button-release-event", self.on_entry_button_release
         )
         self.birth_date_year_entry.connect(
             "focus-out-event",
@@ -277,6 +298,9 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
             "button-press-event", self.on_entry_button_press
         )
         self.weight_entry.connect(
+            "button-release-event", self.on_entry_button_release
+        )
+        self.weight_entry.connect(
             "focus-out-event", self.on_unfocus_num_entry, 2, 0, 999.9
         )
         self.weight_entry.connect("insert-text", self.on_num_entry_insert, 1)
@@ -285,6 +309,9 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
         self.comment_entry.connect("focus-in-event", self.on_focus_entry)
         self.comment_entry.connect(
             "button-press-event", self.on_entry_button_press
+        )
+        self.comment_entry.connect(
+            "button-release-event", self.on_entry_button_release
         )
         self.comment_entry.connect("focus-out-event", self.on_unfocus_entry)
 
@@ -310,6 +337,11 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
             field.connect_after("changed", self.on_values_changed)
 
         self.delete_button.connect("clicked", self.on_delete_clicked)
+
+        self.header_box.pack_start(
+            TreatmentHeader(), fill=True, expand=True, padding=0
+        )
+        self.header_box.show_all()
 
     def update_treatments(self) -> None:
         """Re-query all treatments."""
@@ -615,6 +647,33 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
 
         elif response == Gtk.ResponseType.NO:
             pass
+
+    def on_export_clicked(self, button: Gtk.Button) -> None:
+        """React to the "Export" button being clicked.
+
+        Args:
+            button (Gtk.Button): The clicked button
+        """
+        try:
+            assert self.patient is not None
+
+            self.patient.simple_export()
+            self.export_success_info_bar.set_visible(True)
+            self.export_success_info_bar.set_revealed(True)
+        except IOError as io_err:
+            self.get_toplevel().show_error(" ".join(io_err.args))
+
+
+    def on_info_bar_response(self, info_bar: Gtk.InfoBar, response: int):
+        """React to the user responding to a Gtk.InfoBar.
+
+        Args:
+            info_bar (Gtk.InfoBar): The Gtk.InfoBar that received the response
+            response (int): The response id (Gtk.ResponseType)
+        """
+        if response == Gtk.ResponseType.CLOSE:
+            info_bar.set_revealed(False)
+            GLib.timeout_add(250, info_bar.set_visible, False)
 
 
 # Make EditPatientPage accessible via .ui files

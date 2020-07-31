@@ -2,6 +2,8 @@
 
 from typing import Union, Optional, List, Dict, Iterable, Any
 
+import subprocess
+
 from gi.repository import GLib, Gtk  # type: ignore
 
 from . import auth_util
@@ -191,6 +193,9 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
         self.users_button.connect("clicked", self.on_users_clicked)
 
         self.log_out_button.connect("clicked", self.on_log_out_clicked)
+
+        self.shutdown_button.connect("clicked", self.on_shutdown_clicked)
+        self.shutdown_button_compact.connect("clicked", self.on_shutdown_clicked)
 
     def log_out(self) -> None:
         """Log out and go to the log in or register page."""
@@ -398,6 +403,29 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
             button (Gtk.Button): The clicked button
         """
         self.log_out()
+
+    def on_shutdown_clicked(self, button: Gtk.Button) -> None:
+        """React to the "Shutdown" button being clicked.
+
+        Args:
+            button (Gtk.Button): The clicked button
+        """
+        dialog = Gtk.MessageDialog(
+            self.get_toplevel(),
+            Gtk.DialogFlags.MODAL,
+            Gtk.MessageType.WARNING,
+            ("Nein", Gtk.ResponseType.NO, "Ja", Gtk.ResponseType.YES),
+            (f"Jetzt herunterfahren?"),
+        )
+        dialog.set_decorated(False)
+        response: int = dialog.run()
+        dialog.destroy()
+
+        if response == Gtk.ResponseType.YES:
+            subprocess.call(("shutdown", "-h", "now"))
+
+        elif response == Gtk.ResponseType.NO:
+            pass
 
     def on_info_bar_response(self, info_bar: Gtk.InfoBar, response: int):
         """React to the user responding to a Gtk.InfoBar.

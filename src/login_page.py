@@ -71,8 +71,19 @@ class LoginPage(Gtk.Box, Page, metaclass=PageClass):
         self.username_entry.connect("focus-out-event", self.on_unfocus_entry)
         self.password_entry.connect("focus-out-event", self.on_unfocus_entry)
 
-        self.username_entry.connect("button-press-event", self.on_entry_button_press)
-        self.password_entry.connect("button-press-event", self.on_entry_button_press)
+        self.username_entry.connect(
+            "button-press-event", self.on_entry_button_press
+        )
+        self.password_entry.connect(
+            "button-press-event", self.on_entry_button_press
+        )
+
+        self.username_entry.connect(
+            "button-release-event", self.on_entry_button_release
+        )
+        self.password_entry.connect(
+            "button-release-event", self.on_entry_button_release
+        )
 
         self.username_entry.connect("changed", self.on_entry_changed)
         self.password_entry.connect("changed", self.on_entry_changed)
@@ -102,9 +113,7 @@ class LoginPage(Gtk.Box, Page, metaclass=PageClass):
             if auth_util.authenticate(
                 self.username_entry.get_text(), self.password_entry.get_text()
             ):
-                self.get_toplevel().active_user = (
-                    self.username_entry.get_text()
-                )
+                self.get_toplevel().active_user = self.username_entry.get_text()
                 self.get_toplevel().active_user_password = (
                     self.password_entry.get_text()
                 )

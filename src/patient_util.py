@@ -36,8 +36,10 @@ from gi.repository import GObject, GLib, Gio  # type: ignore
 
 try:
     from . import program_util
+    from . import usb_util
 except ImportError:
     import program_util
+    import usb_util
 
 
 try:
@@ -580,6 +582,24 @@ class Patient(GObject.Object):
         connection.commit()
 
         return new_timestamp
+
+    def simple_export(self):
+        """Export the patient data to a USB stick, no questions asked.
+
+        Raises:
+            IOError: If the export failed
+        """
+        try:
+            self.save_to_file(
+                os.path.join(
+                    usb_util.get_export_dir(),
+                    f"{self.patient_id}_{self.last_name}_{self.first_name}.csv",
+                )
+            )
+        except Exception:
+            import traceback
+            print(traceback.format_exc())
+            raise IOError("Export fehlgeschlagen")
 
     def save_to_file(self, path: str) -> None:
         """Save the patient data to a CSV file.

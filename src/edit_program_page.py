@@ -488,6 +488,7 @@ class EditProgramPage(Gtk.Box, Page, metaclass=PageClass):
 
             entry.connect("focus-in-event", self.on_focus_entry)
             entry.connect("button-press-event", self.on_entry_button_press)
+            entry.connect("button-release-event", self.on_entry_button_release)
             entry.connect(
                 "focus-out-event",
                 self.on_unfocus_num_entry,

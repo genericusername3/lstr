@@ -11,9 +11,7 @@ from .page import Page, PageClass
 from . import auth_util
 
 
-@Gtk.Template(
-    resource_path="/de/linusmathieu/Liegensteuerung/register_page.ui"
-)
+@Gtk.Template(resource_path="/de/linusmathieu/Liegensteuerung/register_page.ui")
 class RegisterPage(Gtk.Box, Page, metaclass=PageClass):
     """A page that prompts the user to register.
 
@@ -161,6 +159,16 @@ class RegisterPage(Gtk.Box, Page, metaclass=PageClass):
             "button-press-event", self.on_entry_button_press
         )
 
+        self.username_entry.connect(
+            "button-release-event", self.on_entry_button_release
+        )
+        self.password_entry.connect(
+            "button-release-event", self.on_entry_button_release
+        )
+        self.password_confirm_entry.connect(
+            "button-release-event", self.on_entry_button_release
+        )
+
         self.username_entry.connect("focus-out-event", self.on_unfocus_entry)
         self.password_entry.connect("focus-out-event", self.on_unfocus_entry)
         self.password_confirm_entry.connect(
@@ -254,9 +262,7 @@ class RegisterPage(Gtk.Box, Page, metaclass=PageClass):
             clear_history: bool = False
 
             if self.get_toplevel().active_user is None:
-                self.get_toplevel().active_user = (
-                    self.username_entry.get_text()
-                )
+                self.get_toplevel().active_user = self.username_entry.get_text()
                 self.get_toplevel().active_user_password = (
                     self.password_entry.get_text()
                 )

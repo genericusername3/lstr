@@ -1,5 +1,6 @@
 @define-color accent darker(lightblue);
 
+@define-color info mix(mediumspringgreen, @accent, 0.25);
 @define-color error mix(indianred, @accent, 0.25);
 @define-color warning mix(lightsalmon, @accent, 0.25);
 
@@ -218,6 +219,11 @@ infobar box {
 
 infobar.warning {
     background: alpha(@warning, 0.8);
+    color: #222;
+}
+
+infobar.info {
+    background: alpha(@good, 0.8);
     color: #222;
 }
 

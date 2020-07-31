@@ -1,11 +1,18 @@
 """A page that prompts the user to register."""
 
-from gi.repository import GObject, Gdk, Gtk  # type: ignore
+from typing import Dict
+
+import abc
+
+import time
+
+from gi.repository import Gdk, Gtk  # type: ignore
 
 from . import osk_util
 from .opcua_util import Connection
 
-import abc
+
+LONG_PRESS_TIME = 0.5  # seconds
 
 
 class PageClass(abc.ABCMeta, type(Gtk.Box)):
@@ -25,6 +32,8 @@ class Page(abc.ABC):
     """
 
     is_patient_info_page: bool = False
+
+    _entries_pressed: Dict[Gtk.Entry, float] = {}
 
     @property
     @abc.abstractmethod
@@ -72,13 +81,27 @@ class Page(abc.ABC):
     def on_entry_button_press(
         self, widget: Gtk.Widget, event: Gdk.EventButton
     ) -> None:
-        """React to an entry being clicked (button press). Toggle OSK.
+        """React to an entry being clicked (button press).
 
         Args:
             widget (Gtk.Widget): The clicked entry.
             event (Gdk.EventFocus): The button press event.
         """
-        osk_util.toggle_keyboard_request()
+        if widget.is_focus():
+            self._entries_pressed[widget] = time.time()
+
+    def on_entry_button_release(
+        self, widget: Gtk.Widget, event: Gdk.EventButton
+    ) -> None:
+        """React to an entry being unclicked (button release). Toggle OSK.
+
+        Args:
+            widget (Gtk.Widget): The clicked entry.
+            event (Gdk.EventFocus): The button press event.
+        """
+        if time.time() < self._entries_pressed[widget] + LONG_PRESS_TIME:
+            osk_util.toggle_keyboard_request()
+            del self._entries_pressed[widget]
 
     def on_unfocus_entry(
         self, widget: Gtk.Widget, event: Gdk.EventFocus

@@ -104,6 +104,9 @@ class SelectPatientPage(Gtk.Box, Page, metaclass=PageClass):
             "button-press-event", self.on_entry_button_press
         )
         self.patient_search_entry.connect(
+            "button-release-event", self.on_entry_button_release
+        )
+        self.patient_search_entry.connect(
             "focus-out-event", self.on_unfocus_entry
         )
 
