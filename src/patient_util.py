@@ -23,8 +23,11 @@ from typing import (
 
 import os
 
+import csv
+
 from threading import Thread
 import time
+from datetime import date
 
 import sqlite3
 import atexit
@@ -50,6 +53,14 @@ GENDERS: Dict[str, str] = {
     "male": "Männlich",
     "female": "Weiblich",
     "other": "Divers",
+}
+
+PAIN_LOCATIONS: Dict[str, str] = {
+    "left": "links",
+    "left-right": "eher links",
+    "both": "beidseitig",
+    "right-left": "eher rechts",
+    "right": "rechts",
 }
 
 COLUMNS: List[str] = [
@@ -570,12 +581,87 @@ class Patient(GObject.Object):
 
         return new_timestamp
 
+    def save_to_file(self, path: str) -> None:
+        """Save the patient data to a CSV file.
+
+        Args:
+            path (str): The path to save the patient data to.
+        """
+        with open(path, mode="w") as patient_file:
+            patient_writer = csv.writer(
+                patient_file,
+                delimiter=",",
+                quotechar='"',
+                quoting=csv.QUOTE_MINIMAL,
+            )
+
+            patient_writer.writerow(
+                [
+                    "ID",
+                    "Vorname",
+                    "Nachname",
+                    "Geburtsdatum",
+                    "Geschlecht",
+                    "Gewicht",
+                    "Kommentar",
+                    "",
+                    "Behandlungen",
+                ]
+            )
+
+            patient_writer.writerow(
+                [
+                    str(self.patient_id),
+                    self.first_name,
+                    self.last_name,
+                    self.birthday,
+                    GENDERS[self.gender],
+                    str(self.weight),
+                    self.comment,
+                    "",
+                    "Datum",
+                    "Programm",
+                    "Benutzername",
+                    "Verteilung d. Schmerzen",
+                    "VAS",
+                ]
+            )
+
+            for treatment_row in cursor.execute(
+                f"""
+                    SELECT
+                        timestamp,
+                        program_id,
+                        username,
+                        pain_location,
+                        pain_intensity
+                    FROM
+                        treatment_entries
+                    WHERE
+                        patient_id=?
+                """,
+                (self.patient_id,),
+            ).fetchall():
+                csv_row: List[str] = [
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    date.fromtimestamp(treatment_row[0]).isoformat(),
+                    *[str(col) for col in treatment_row[1:]],
+                ]
+                patient_writer.writerow(csv_row)
+
 
 if __name__ == "__main__":
     import names  # type: ignore
     import random
 
-    for i in range(75):
+    for i in range(2):
         first_name: str
         gender: str
 
@@ -608,3 +694,5 @@ if __name__ == "__main__":
         p.add_treatment_entry(
             timestamp, "root", program_util.Program.get_all().__next__(),
         )
+
+        p.save_to_file("/home/liloneum/" + f"test_patient_{p.patient_id}.csv")
