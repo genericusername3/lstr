@@ -16,7 +16,7 @@
     <property name="column_homogeneous">True</property>
     <child>
       <object class="GtkButton" id="button_a00">
-        <property name="height_request">56</property>
+        <property name="height_request">64</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="receives_default">False</property>
@@ -42,7 +42,7 @@
     </child>
     <child>
       <object class="GtkButton" id="button_a01">
-        <property name="height_request">56</property>
+        <property name="height_request">64</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="receives_default">False</property>
@@ -68,7 +68,7 @@
     </child>
     <child>
       <object class="GtkButton" id="button_a02">
-        <property name="height_request">56</property>
+        <property name="height_request">64</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="receives_default">False</property>
@@ -94,7 +94,7 @@
     </child>
     <child>
       <object class="GtkButton" id="button_a03">
-        <property name="height_request">56</property>
+        <property name="height_request">64</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="receives_default">False</property>
@@ -120,7 +120,7 @@
     </child>
     <child>
       <object class="GtkButton" id="button_a04">
-        <property name="height_request">56</property>
+        <property name="height_request">64</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="receives_default">False</property>
@@ -146,7 +146,7 @@
     </child>
     <child>
       <object class="GtkButton" id="button_a05">
-        <property name="height_request">56</property>
+        <property name="height_request">64</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="receives_default">False</property>
@@ -172,7 +172,7 @@
     </child>
     <child>
       <object class="GtkButton" id="button_a06">
-        <property name="height_request">56</property>
+        <property name="height_request">64</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="receives_default">False</property>
@@ -198,7 +198,7 @@
     </child>
     <child>
       <object class="GtkButton" id="button_a07">
-        <property name="height_request">56</property>
+        <property name="height_request">64</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="receives_default">False</property>
@@ -224,7 +224,7 @@
     </child>
     <child>
       <object class="GtkButton" id="button_a08">
-        <property name="height_request">56</property>
+        <property name="height_request">64</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="receives_default">False</property>
@@ -250,7 +250,7 @@
     </child>
     <child>
       <object class="GtkButton" id="button_a09">
-        <property name="height_request">56</property>
+        <property name="height_request">64</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="receives_default">False</property>
@@ -276,7 +276,7 @@
     </child>
     <child>
       <object class="GtkButton" id="button_a10">
-        <property name="height_request">56</property>
+        <property name="height_request">64</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="receives_default">False</property>
@@ -302,7 +302,7 @@
     </child>
     <child>
       <object class="GtkButton" id="button_b00">
-        <property name="height_request">56</property>
+        <property name="height_request">64</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="receives_default">False</property>
@@ -328,7 +328,7 @@
     </child>
     <child>
       <object class="GtkButton" id="button_b01">
-        <property name="height_request">56</property>
+        <property name="height_request">64</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="receives_default">False</property>
@@ -354,7 +354,7 @@
     </child>
     <child>
       <object class="GtkButton" id="button_b02">
-        <property name="height_request">56</property>
+        <property name="height_request">64</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="receives_default">False</property>
@@ -380,7 +380,7 @@
     </child>
     <child>
       <object class="GtkButton" id="button_b03">
-        <property name="height_request">56</property>
+        <property name="height_request">64</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="receives_default">False</property>
@@ -406,7 +406,7 @@
     </child>
     <child>
       <object class="GtkButton" id="button_b04">
-        <property name="height_request">56</property>
+        <property name="height_request">64</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="receives_default">False</property>
@@ -432,7 +432,7 @@
     </child>
     <child>
       <object class="GtkButton" id="button_b05">
-        <property name="height_request">56</property>
+        <property name="height_request">64</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="receives_default">False</property>
@@ -458,7 +458,7 @@
     </child>
     <child>
       <object class="GtkButton" id="button_b06">
-        <property name="height_request">56</property>
+        <property name="height_request">64</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="receives_default">False</property>
@@ -484,7 +484,7 @@
     </child>
     <child>
       <object class="GtkButton" id="button_b07">
-        <property name="height_request">56</property>
+        <property name="height_request">64</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="receives_default">False</property>
@@ -510,7 +510,7 @@
     </child>
     <child>
       <object class="GtkButton" id="button_b08">
-        <property name="height_request">56</property>
+        <property name="height_request">64</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="receives_default">False</property>
@@ -536,7 +536,7 @@
     </child>
     <child>
       <object class="GtkButton" id="button_b09">
-        <property name="height_request">56</property>
+        <property name="height_request">64</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="receives_default">False</property>
@@ -562,7 +562,7 @@
     </child>
     <child>
       <object class="GtkButton" id="button_b10">
-        <property name="height_request">56</property>
+        <property name="height_request">64</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="receives_default">False</property>
@@ -588,7 +588,7 @@
     </child>
     <child>
       <object class="GtkButton" id="button_c00">
-        <property name="height_request">56</property>
+        <property name="height_request">64</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="receives_default">False</property>
@@ -614,7 +614,7 @@
     </child>
     <child>
       <object class="GtkButton" id="button_c01">
-        <property name="height_request">56</property>
+        <property name="height_request">64</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="receives_default">False</property>
@@ -640,7 +640,7 @@
     </child>
     <child>
       <object class="GtkButton" id="button_c02">
-        <property name="height_request">56</property>
+        <property name="height_request">64</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="receives_default">False</property>
@@ -666,7 +666,7 @@
     </child>
     <child>
       <object class="GtkButton" id="button_c03">
-        <property name="height_request">56</property>
+        <property name="height_request">64</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="receives_default">False</property>
@@ -692,7 +692,7 @@
     </child>
     <child>
       <object class="GtkButton" id="button_c04">
-        <property name="height_request">56</property>
+        <property name="height_request">64</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="receives_default">False</property>
@@ -718,7 +718,7 @@
     </child>
     <child>
       <object class="GtkButton" id="button_c05">
-        <property name="height_request">56</property>
+        <property name="height_request">64</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="receives_default">False</property>
@@ -744,7 +744,7 @@
     </child>
     <child>
       <object class="GtkButton" id="button_c06">
-        <property name="height_request">56</property>
+        <property name="height_request">64</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="receives_default">False</property>
@@ -770,7 +770,7 @@
     </child>
     <child>
       <object class="GtkButton" id="button_c07">
-        <property name="height_request">56</property>
+        <property name="height_request">64</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="receives_default">False</property>
@@ -796,7 +796,7 @@
     </child>
     <child>
       <object class="GtkButton" id="button_c08">
-        <property name="height_request">56</property>
+        <property name="height_request">64</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="receives_default">False</property>
@@ -822,7 +822,7 @@
     </child>
     <child>
       <object class="GtkButton" id="button_c09">
-        <property name="height_request">56</property>
+        <property name="height_request">64</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="receives_default">False</property>
@@ -848,7 +848,7 @@
     </child>
     <child>
       <object class="GtkButton" id="button_c10">
-        <property name="height_request">56</property>
+        <property name="height_request">64</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="receives_default">False</property>
@@ -874,7 +874,7 @@
     </child>
     <child>
       <object class="GtkButton" id="button_d00">
-        <property name="height_request">56</property>
+        <property name="height_request">64</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="receives_default">False</property>
@@ -900,7 +900,7 @@
     </child>
     <child>
       <object class="GtkButton" id="button_d01">
-        <property name="height_request">56</property>
+        <property name="height_request">64</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="receives_default">False</property>
@@ -926,7 +926,7 @@
     </child>
     <child>
       <object class="GtkButton" id="button_d02">
-        <property name="height_request">56</property>
+        <property name="height_request">64</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="receives_default">False</property>
@@ -952,7 +952,7 @@
     </child>
     <child>
       <object class="GtkButton" id="button_d03">
-        <property name="height_request">56</property>
+        <property name="height_request">64</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="receives_default">False</property>
@@ -978,7 +978,7 @@
     </child>
     <child>
       <object class="GtkButton" id="button_d04">
-        <property name="height_request">56</property>
+        <property name="height_request">64</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="receives_default">False</property>
@@ -1004,7 +1004,7 @@
     </child>
     <child>
       <object class="GtkButton" id="button_d05">
-        <property name="height_request">56</property>
+        <property name="height_request">64</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="receives_default">False</property>
@@ -1030,7 +1030,7 @@
     </child>
     <child>
       <object class="GtkButton" id="shift_button">
-        <property name="height_request">56</property>
+        <property name="height_request">64</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="receives_default">False</property>
@@ -1056,7 +1056,7 @@
     </child>
     <child>
       <object class="GtkButton" id="space_button">
-        <property name="height_request">56</property>
+        <property name="height_request">64</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="receives_default">False</property>
@@ -1083,7 +1083,7 @@
     </child>
     <child>
       <object class="GtkButton" id="bksp_button">
-        <property name="height_request">56</property>
+        <property name="height_request">64</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="receives_default">False</property>
@@ -1109,7 +1109,7 @@
     </child>
     <child>
       <object class="GtkButton" id="button_d06">
-        <property name="height_request">56</property>
+        <property name="height_request">64</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="receives_default">False</property>
@@ -1135,7 +1135,7 @@
     </child>
     <child>
       <object class="GtkButton" id="button_e00">
-        <property name="height_request">56</property>
+        <property name="height_request">64</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="receives_default">False</property>
@@ -1161,7 +1161,7 @@
     </child>
     <child>
       <object class="GtkButton" id="button_e01">
-        <property name="height_request">56</property>
+        <property name="height_request">64</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="receives_default">False</property>
@@ -1187,7 +1187,7 @@
     </child>
     <child>
       <object class="GtkButton" id="button_e02">
-        <property name="height_request">56</property>
+        <property name="height_request">64</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="receives_default">False</property>
@@ -1213,7 +1213,7 @@
     </child>
     <child>
       <object class="GtkButton" id="close_button">
-        <property name="height_request">56</property>
+        <property name="height_request">64</property>
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <property name="receives_default">False</property>

@@ -114,6 +114,10 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
 
     comment_entry: Union[Gtk.Entry, Gtk.Template.Child] = Gtk.Template.Child()
 
+    patient_tabs_stack: Union[
+        Gtk.Stack, Gtk.Template.Child
+    ] = Gtk.Template.Child()
+
     patient_tabs_stack_switcher: Union[
         Gtk.StackSwitcher, Gtk.Template.Child
     ] = Gtk.Template.Child()
@@ -133,6 +137,8 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
     def prepare(self, patient: Optional[patient_util.Patient] = None) -> None:
         """Prepare the page to be shown."""
         self.patient = patient
+
+        self.patient_tabs_stack.set_visible_child_name("patient")
 
         self.first_name_entry.grab_focus()
 
