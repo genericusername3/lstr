@@ -307,7 +307,7 @@ combobox:disabled>box>button:disabled {
 }
 combobox:disabled>box>button:disabled * {
     color: #888;
-};
+}
 
 combobox:disabled arrow {
     -gtk-icon-source: -gtk-icontheme("pan-down-symbolic");

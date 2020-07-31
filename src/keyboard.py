@@ -301,13 +301,13 @@ class OnscreenKeyboard(Gtk.Grid):
         """Update the key labels according to modifiers."""
         if self.shift_lock:
             for key in self.KEYS:
-                key.set_label(self.KEYS[key][2])
+                key.get_child().set_label(self.KEYS[key][2])
         elif self.shift_active:
             for key in self.KEYS:
-                key.set_label(self.KEYS[key][1])
+                key.get_child().set_label(self.KEYS[key][1])
         else:
             for key in self.KEYS:
-                key.set_label(self.KEYS[key][0])
+                key.get_child().set_label(self.KEYS[key][0])
 
 
 # Make OnscreenKeyboard accessible via .ui files
