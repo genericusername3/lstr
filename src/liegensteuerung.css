@@ -223,7 +223,7 @@ infobar.warning {
 }
 
 infobar.info {
-    background: alpha(@good, 0.8);
+    background: alpha(@info, 0.8);
     color: #222;
 }
 
