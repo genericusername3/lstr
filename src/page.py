@@ -99,7 +99,7 @@ class Page(abc.ABC):
             widget (Gtk.Widget): The clicked entry.
             event (Gdk.EventFocus): The button press event.
         """
-        if time.time() < self._entries_pressed[widget] + LONG_PRESS_TIME:
+        if time.time() < self._entries_pressed.get(widget, 0) + LONG_PRESS_TIME:
             osk_util.toggle_keyboard_request()
             del self._entries_pressed[widget]
 
