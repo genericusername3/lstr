@@ -178,8 +178,8 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
         """React to the visualisation being queried to be drawn. Draw the visualisation.
 
         Args:
-            widget (Gtk.Widget): Description
-            cr (cairo.Context): Description
+            widget (Gtk.Widget): The widget to re-draw
+            cr (cairo.Context): The cairo.Context to draw on/with
         """
         try:
             Connection()

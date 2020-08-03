@@ -16,6 +16,7 @@ import numpy  # type: ignore
 from threading import Thread  # type: ignore
 
 from .page import Page, PageClass
+from .opcua_util import Connection
 
 
 @Gtk.Template(resource_path="/de/linusmathieu/Liegensteuerung/set_up_page.ui")
@@ -47,6 +48,15 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
 
     save_position_button: Union[Gtk.Template.Child, Gtk.Button] = Gtk.Template.Child()
 
+    up_down_label: Union[Gtk.Label, Gtk.Template.Child] = Gtk.Template.Child()
+    left_right_label: Union[Gtk.Label, Gtk.Template.Child] = Gtk.Template.Child()
+    tilt_label: Union[Gtk.Label, Gtk.Template.Child] = Gtk.Template.Child()
+    left_pusher_label: Union[Gtk.Label, Gtk.Template.Child] = Gtk.Template.Child()
+    right_pusher_label: Union[Gtk.Label, Gtk.Template.Child] = Gtk.Template.Child()
+
+    end_pos_left_label: Union[Gtk.Label, Gtk.Template.Child] = Gtk.Template.Child()
+    end_pos_right_label: Union[Gtk.Label, Gtk.Template.Child] = Gtk.Template.Child()
+
     camera_frame: numpy.ndarray = None
     running: bool = True
     cam_available: bool = True
@@ -66,12 +76,16 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
         """Prepare the page to be shown."""
         self.running = True
 
+        self.end_value_left = 0
+        self.end_value_right = 0
+
         read_thread = Thread(target=self.read_camera_input_loop)
         read_thread.start()
 
         self.ok_button.set_sensitive(False)
 
         self.display_camera_input_loop()
+        self.update_labels_loop()
 
     def prepare_return(self) -> None:
         """Prepare the page to be shown."""
@@ -81,6 +95,7 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
         read_thread.start()
 
         self.display_camera_input_loop()
+        self.update_labels_loop()
 
     def unprepare(self):
         """Prepare the page to be hidden."""
@@ -99,9 +114,7 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
 
                 try:
                     # Some operations like color correction
-                    new_camera_frame = cv2.cvtColor(
-                        new_camera_frame, cv2.COLOR_BGR2RGB
-                    )
+                    new_camera_frame = cv2.cvtColor(new_camera_frame, cv2.COLOR_BGR2RGB)
 
                     self.camera_frame = new_camera_frame
                 except cv2.error:
@@ -124,13 +137,9 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
         if self.get_parent() is None:
             return
 
-        self.camera_drawing_area.connect(
-            "draw", self.on_draw_camera_drawing_area
-        )
+        self.camera_drawing_area.connect("draw", self.on_draw_camera_drawing_area)
 
-        self.ok_button.connect(
-            "clicked", self.on_ok_clicked
-        )
+        self.ok_button.connect("clicked", self.on_ok_clicked)
 
         self.save_position_button.connect("clicked", self.on_save_pos_clicked)
 
@@ -142,6 +151,26 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
         if self.running:
             GLib.timeout_add(1000 / 60, self.display_camera_input_loop)
 
+    def update_labels_loop(self) -> None:
+        """Read OPC UA values to display current motor status."""
+        try:
+            Connection()
+        except ConnectionRefusedError:
+            self.get_toplevel().show_error("Die Liege wurde nicht erkannt")
+            return
+
+        self.up_down_label.set_text(str(Connection()["setup"]["up_down"]))
+        self.left_right_label.set_text(str(Connection()["setup"]["left_right"]))
+        self.tilt_label.set_text(str(Connection()["setup"]["tilt"]))
+        self.left_pusher_label.set_text(str(Connection()["setup"]["left_pusher"]))
+        self.right_pusher_label.set_text(str(Connection()["setup"]["right_pusher"]))
+
+        self.end_pos_left_label.set_text(str(self.end_value_left or "-"))
+        self.end_pos_right_label.set_text(str(self.end_value_right or "-"))
+
+        if self.running:
+            GLib.timeout_add(1000 / 5, self.display_camera_input_loop)
+
     def do_destroy(self) -> None:
         """When the window is destroyed, stop all threads and quit."""
         self.running = False
@@ -149,6 +178,12 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
     def on_draw_camera_drawing_area(
         self, widget: Gtk.Widget, cr: cairo.Context
     ) -> None:
+        """React to the camera output being queried to be drawn. Draw the camera output.
+
+        Args:
+            widget (Gtk.Widget): The widget to re-draw
+            cr (cairo.Context): The cairo.Context to draw on/with
+        """
         if self.camera_frame is not None:
             pixbuf = GdkPixbuf.Pixbuf.new_from_data(
                 self.camera_frame.tobytes(),
@@ -191,7 +226,9 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
         Args:
             button (Gtk.Button): The button that was clicked
         """
-        self.get_toplevel().switch_page("select_program", 90, 90)  # TODO: Use actual values
+        self.get_toplevel().switch_page(
+            "select_program", self.end_value_left, self.end_value_right
+        )  # TODO: Use actual values
 
     def on_save_pos_clicked(self, button: Gtk.Button) -> None:
         """React to the "Save position" button being clicked.
@@ -199,8 +236,19 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
         Args:
             button (Gtk.Button): The button that was clicked
         """
-        self.ok_button.set_sensitive(True)
+        try:
+            self.end_value_left = Connection()["setup"]["left_pusher"]
+            self.end_value_right = Connection()["setup"]["right_pusher"]
+        except ConnectionRefusedError:
+            self.get_toplevel().show_error("Die Liege wurde nicht erkannt")
 
+            self.end_value_left = 999999
+            self.end_value_right = 999999
+
+        self.end_pos_left_label.set_text(str(self.end_value_left or "-"))
+        self.end_pos_right_label.set_text(str(self.end_value_right or "-"))
+
+        self.ok_button.set_sensitive(True)
 
 
 GObject.type_ensure(SetupPage)
