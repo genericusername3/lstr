@@ -44,7 +44,9 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
     visualisation_scroller: Union[
         Gtk.ScrolledWindow, Gtk.Template.Child
     ] = Gtk.Template.Child()
-    visualisation_image: Union[Gtk.Image, Gtk.Template.Child] = Gtk.Template.Child()
+    visualisation_drawing_area: Union[
+        Gtk.DrawingArea, Gtk.Template.Child
+    ] = Gtk.Template.Child()
 
     visualising: bool = False
 
@@ -66,6 +68,14 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
         self.resume_button.hide()
         self.pause_button.hide()
         self.cancel_button.hide()
+
+        self.visualising = True
+        self.visualisation_loop()
+
+    def prepare_return(self) -> None:
+        """Prepare the page to be shown when returning from another page."""
+        self.visualising = True
+        self.visualisation_loop()
 
     def unprepare(self) -> None:
         """Prepare the page to be hidden."""
@@ -92,9 +102,7 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
             "clicked", self.on_opcua_button_clicked, "main", "emergency_off_button",
         )
 
-        self.visualisation_scroller.connect(
-            "size-allocate", self.on_visualisation_size_allocated
-        )
+        self.visualisation_drawing_area.connect("draw", self.on_draw_visualisation)
 
     def on_start_clicked(self, button: Gtk.Button) -> None:
         """React to the "Start" button being clicked.
@@ -148,32 +156,19 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
         self.pause_button.hide()
         self.cancel_button.hide()
 
-    def on_visualisation_size_allocated(
-        self, widget: Gtk.Widget, allocation: Gdk.Rectangle
-    ):
-        """React to the size of the visualisation scroller being set. Render visualisation.
-
-        Args:
-            widget (Gtk.Widget): The visualisation widget
-            allocation (Gdk.Rectangle): The new allocation
-        """
-        if not self.visualising:
-            self.visualising = True
-            self.visualisation_loop()
-
     def visualisation_loop(self) -> None:
         """Repeatedly render an SVG visualisation for the motor values."""
-        self.render_svg()
+        self.visualisation_drawing_area.queue_draw()
 
         if self.visualising:
             GLib.timeout_add(1000 / 60, self.visualisation_loop)
 
-    def render_svg(self, allocation: Optional[Gdk.Rectangle] = None) -> None:
-        """Insert the current values of the motors into the SVG code and display the SVG.
+    def on_draw_visualisation(self, widget: Gtk.Widget, cr: cairo.Context) -> None:
+        """React to the visualisation being queried to be drawn. Draw the visualisation.
 
         Args:
-            allocation (Gdk.Rectangle, optional): A Gdk.Rectangle that is the size of
-                the available space, or None (default) to automatically detect
+            widget (Gtk.Widget): Description
+            cr (cairo.Context): Description
         """
         import time, math
 
@@ -190,59 +185,25 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
             right_pusher=math.sin(time.time() * 0.53) * 25,
         )
 
-        print(svg)
-
-        start_time = time.time()
         handle = Rsvg.Handle.new_from_data(svg.encode())
 
-        print("RSVG:", time.time() - start_time)
-        start_time = time.time()
+        available_width = self.visualisation_drawing_area.get_allocated_width()
+        available_height = self.visualisation_drawing_area.get_allocated_height()
 
         dimensions = handle.get_dimensions()
 
-        width: float = float(dimensions.width)
-        height: float = float(dimensions.height)
+        width = float(dimensions.width)
+        height = float(dimensions.height)
 
-        available_width: int
-        available_height: int
+        scale = min(available_width / width, available_height / height)
 
-        if allocation is None:
-            available_width = self.visualisation_scroller.get_allocated_width()
-            available_height = self.visualisation_scroller.get_allocated_height()
-        else:
-            available_width, available_height = (
-                allocation.width,
-                allocation.height,
-            )
-
-        scale: float = min(available_width / width, available_height / height)
-
-        width = dimensions.width * scale
-        height = dimensions.height * scale
-
-        svg_surface = cairo.SVGSurface("treatment_preview.svg", width, height)
-        ctx = cairo.Context(svg_surface)
-
-        ctx.scale(scale, scale)
-
-        print("CTX:", time.time() - start_time)
-        start_time = time.time()
-
-        handle.render_cairo(ctx)
-
-        print("RENDER:", time.time() - start_time)
-        start_time = time.time()
-
-        pixbuf = Gdk.pixbuf_get_from_surface(
-            svg_surface, src_x=0, src_y=0, width=width, height=height,
+        cr.translate(
+            (available_width - width * scale) / 2.0,
+            (available_height - height * scale) / 2.0,
         )
+        cr.scale(scale, scale)
 
-        print("PIXBUF:", time.time() - start_time)
-        start_time = time.time()
-
-        self.visualisation_image.set_from_pixbuf(pixbuf)
-
-        print("SET:", time.time() - start_time)
+        handle.render_cairo(cr)
 
 
 # Make TreatmentPage accessible via .ui files
