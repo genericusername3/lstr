@@ -170,7 +170,10 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
         self.save_position_button.connect("clicked", self.on_save_pos_clicked)
 
         self.reset_axes_button.connect(
-            "button-press-event", self.on_opcua_button_pressed, "setup", "reset_axes"
+            "button-press-event",
+            self.on_opcua_button_pressed,
+            "setup",
+            "reset_axes_button",
         )
         self.reset_axes_button.connect(
             "button-release-event",
@@ -181,21 +184,36 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
 
         # Tilt buttons
         self.tilt_down_button.connect(
-            "button-press-event", self.on_opcua_button_pressed, "setup", "tilt_down"
+            "button-press-event",
+            self.on_opcua_button_pressed,
+            "setup",
+            "tilt_down_button",
         )
         self.tilt_down_button.connect(
-            "button-release-event", self.on_opcua_button_released, "setup", "tilt_down"
+            "button-release-event",
+            self.on_opcua_button_released,
+            "setup",
+            "tilt_down_button",
         )
         self.tilt_up_button.connect(
-            "button-press-event", self.on_opcua_button_pressed, "setup", "tilt_up"
+            "button-press-event",
+            self.on_opcua_button_pressed,
+            "setup",
+            "tilt_up_button",
         )
         self.tilt_up_button.connect(
-            "button-release-event", self.on_opcua_button_released, "setup", "tilt_up"
+            "button-release-event",
+            self.on_opcua_button_released,
+            "setup",
+            "tilt_up_button",
         )
 
         # Pusher buttons
         self.left_move_in_button.connect(
-            "button-press-event", self.on_opcua_button_pressed, "setup", "left_move_in"
+            "button-press-event",
+            self.on_opcua_button_pressed,
+            "setup",
+            "left_move_in_button",
         )
         self.left_move_in_button.connect(
             "button-release-event",
@@ -242,13 +260,22 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
 
         # Movement buttons
         self.move_left_button.connect(
-            "button-press-event", self.on_opcua_button_pressed, "setup", "move_left"
+            "button-press-event",
+            self.on_opcua_button_pressed,
+            "setup",
+            "move_left_button",
         )
         self.move_left_button.connect(
-            "button-release-event", self.on_opcua_button_released, "setup", "move_left"
+            "button-release-event",
+            self.on_opcua_button_released,
+            "setup",
+            "move_left_button",
         )
         self.move_right_button.connect(
-            "button-press-event", self.on_opcua_button_pressed, "setup", "move_right"
+            "button-press-event",
+            self.on_opcua_button_pressed,
+            "setup",
+            "move_right_button",
         )
         self.move_right_button.connect(
             "button-release-event",
@@ -257,16 +284,28 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
             "move_right",
         )
         self.move_up_button.connect(
-            "button-press-event", self.on_opcua_button_pressed, "setup", "move_up"
+            "button-press-event",
+            self.on_opcua_button_pressed,
+            "setup",
+            "move_up_button",
         )
         self.move_up_button.connect(
-            "button-release-event", self.on_opcua_button_released, "setup", "move_up"
+            "button-release-event",
+            self.on_opcua_button_released,
+            "setup",
+            "move_up_button",
         )
         self.move_down_button.connect(
-            "button-press-event", self.on_opcua_button_pressed, "setup", "move_down"
+            "button-press-event",
+            self.on_opcua_button_pressed,
+            "setup",
+            "move_down_button",
         )
         self.move_down_button.connect(
-            "button-release-event", self.on_opcua_button_released, "setup", "move_down"
+            "button-release-event",
+            self.on_opcua_button_released,
+            "setup",
+            "move_down_button",
         )
 
     def display_camera_input_loop(self) -> None:
