@@ -128,7 +128,7 @@ node_ids: Dict[str, Dict[str, str]] = {
         "left_move_in_button": prefix + setup_prefix + "xBut_pusher_A_hoch_5mm",
         "left_move_out_button": prefix + setup_prefix + "xBut_pusher_A_runter_5mm",
         "right_move_in_button": prefix + setup_prefix + "xBut_pusher_B_hoch_5mm",
-        "righ_movet_out_button": prefix + setup_prefix + "xBut_pusher_B_runter_5mm",
+        "right_move_out_button": prefix + setup_prefix + "xBut_pusher_B_runter_5mm",
         # Movement buttons
         "move_left_button": prefix + setup_prefix + "xBut_links",
         "move_right_button": prefix + setup_prefix + "xBut_rechts",

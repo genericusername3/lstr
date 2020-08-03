@@ -44,7 +44,23 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
 
     ok_button: Union[Gtk.Template.Child, Gtk.Button] = Gtk.Template.Child()
 
-    reset_axes_button: Union[Gtk.Template.Child, Gtk.Button] = Gtk.Template.Child()
+    reset_axes_button: Union[Gtk.Button, Gtk.Template.Child] = Gtk.Template.Child()
+
+    # Tilt buttons
+    tilt_down_button: Union[Gtk.Button, Gtk.Template.Child] = Gtk.Template.Child()
+    tilt_up_button: Union[Gtk.Button, Gtk.Template.Child] = Gtk.Template.Child()
+
+    # Pusher buttons
+    left_move_in_button: Union[Gtk.Button, Gtk.Template.Child] = Gtk.Template.Child()
+    left_move_out_button: Union[Gtk.Button, Gtk.Template.Child] = Gtk.Template.Child()
+    right_move_in_button: Union[Gtk.Button, Gtk.Template.Child] = Gtk.Template.Child()
+    right_move_out_button: Union[Gtk.Button, Gtk.Template.Child] = Gtk.Template.Child()
+
+    # Movement buttons
+    move_left_button: Union[Gtk.Button, Gtk.Template.Child] = Gtk.Template.Child()
+    move_right_button: Union[Gtk.Button, Gtk.Template.Child] = Gtk.Template.Child()
+    move_up_button: Union[Gtk.Button, Gtk.Template.Child] = Gtk.Template.Child()
+    move_down_button: Union[Gtk.Button, Gtk.Template.Child] = Gtk.Template.Child()
 
     save_position_button: Union[Gtk.Template.Child, Gtk.Button] = Gtk.Template.Child()
 
@@ -74,6 +90,11 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
 
     def prepare(self) -> None:
         """Prepare the page to be shown."""
+        try:
+            Connection()
+        except ConnectionRefusedError:
+            self.get_toplevel().show_error("Die Liege wurde nicht erkannt")
+
         self.running = True
 
         self.end_value_left = 0
@@ -89,6 +110,11 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
 
     def prepare_return(self) -> None:
         """Prepare the page to be shown."""
+        try:
+            Connection()
+        except ConnectionRefusedError:
+            self.get_toplevel().show_error("Die Liege wurde nicht erkannt")
+
         self.running = True
 
         read_thread = Thread(target=self.read_camera_input_loop)
@@ -142,6 +168,106 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
         self.ok_button.connect("clicked", self.on_ok_clicked)
 
         self.save_position_button.connect("clicked", self.on_save_pos_clicked)
+
+        self.reset_axes_button.connect(
+            "button-press-event", self.on_opcua_button_pressed, "setup", "reset_axes"
+        )
+        self.reset_axes_button.connect(
+            "button-release-event",
+            self.on_opcua_button_released,
+            "setup",
+            "reset_axes",
+        )
+
+        # Tilt buttons
+        self.tilt_down_button.connect(
+            "button-press-event", self.on_opcua_button_pressed, "setup", "tilt_down"
+        )
+        self.tilt_down_button.connect(
+            "button-release-event", self.on_opcua_button_released, "setup", "tilt_down"
+        )
+        self.tilt_up_button.connect(
+            "button-press-event", self.on_opcua_button_pressed, "setup", "tilt_up"
+        )
+        self.tilt_up_button.connect(
+            "button-release-event", self.on_opcua_button_released, "setup", "tilt_up"
+        )
+
+        # Pusher buttons
+        self.left_move_in_button.connect(
+            "button-press-event", self.on_opcua_button_pressed, "setup", "left_move_in"
+        )
+        self.left_move_in_button.connect(
+            "button-release-event",
+            self.on_opcua_button_released,
+            "setup",
+            "left_move_in",
+        )
+        self.left_move_out_button.connect(
+            "button-press-event",
+            self.on_opcua_button_pressed,
+            "setup",
+            "left_move_out",
+        )
+        self.left_move_out_button.connect(
+            "button-release-event",
+            self.on_opcua_button_released,
+            "setup",
+            "left_move_out",
+        )
+        self.right_move_in_button.connect(
+            "button-press-event",
+            self.on_opcua_button_pressed,
+            "setup",
+            "right_move_in",
+        )
+        self.right_move_in_button.connect(
+            "button-release-event",
+            self.on_opcua_button_released,
+            "setup",
+            "right_move_in",
+        )
+        self.right_move_out_button.connect(
+            "button-press-event",
+            self.on_opcua_button_pressed,
+            "setup",
+            "right_move_out",
+        )
+        self.right_move_out_button.connect(
+            "button-release-event",
+            self.on_opcua_button_released,
+            "setup",
+            "right_move_out",
+        )
+
+        # Movement buttons
+        self.move_left_button.connect(
+            "button-press-event", self.on_opcua_button_pressed, "setup", "move_left"
+        )
+        self.move_left_button.connect(
+            "button-release-event", self.on_opcua_button_released, "setup", "move_left"
+        )
+        self.move_right_button.connect(
+            "button-press-event", self.on_opcua_button_pressed, "setup", "move_right"
+        )
+        self.move_right_button.connect(
+            "button-release-event",
+            self.on_opcua_button_released,
+            "setup",
+            "move_right",
+        )
+        self.move_up_button.connect(
+            "button-press-event", self.on_opcua_button_pressed, "setup", "move_up"
+        )
+        self.move_up_button.connect(
+            "button-release-event", self.on_opcua_button_released, "setup", "move_up"
+        )
+        self.move_down_button.connect(
+            "button-press-event", self.on_opcua_button_pressed, "setup", "move_down"
+        )
+        self.move_down_button.connect(
+            "button-release-event", self.on_opcua_button_released, "setup", "move_down"
+        )
 
     def display_camera_input_loop(self) -> None:
         """Read from camera_frame to display the most recent webcam image."""

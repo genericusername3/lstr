@@ -14,7 +14,7 @@ keyboard_needed: bool = False
 update_timer: Optional[Timer] = None
 
 UPDATE_DELAY: float = 0.1
-KEYBOARD_REACT_DELAY: float = 0.2
+KEYBOARD_REACT_DELAY: float = 0.3
 
 keyboard_revealer: Optional[Gtk.Revealer] = None
 
@@ -93,9 +93,7 @@ def show_keyboard() -> None:
     global keyboard_shown
 
     if keyboard_revealer is None:
-        raise ValueError(
-            "You must call set_keyboard to set a keyboard revealer first."
-        )
+        raise ValueError("You must call set_keyboard to set a keyboard revealer first.")
 
     else:
         keyboard_revealer.set_reveal_child(True)
@@ -110,9 +108,7 @@ def hide_keyboard() -> None:
     global keyboard_shown
 
     if keyboard_revealer is None:
-        raise ValueError(
-            "You must call set_keyboard to set a keyboard revealer first."
-        )
+        raise ValueError("You must call set_keyboard to set a keyboard revealer first.")
 
     else:
         keyboard_revealer.set_reveal_child(False)

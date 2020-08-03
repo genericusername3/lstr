@@ -268,6 +268,10 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
         if next_page is None:
             raise ValueError(f'"{page_name}" is not a valid Page name')
 
+        # Hide previous errors
+        self.error_bar.set_revealed(False)
+        self.error_bar.set_visible(False)
+
         if prepare:
             next_page.prepare(*args, **kwargs)
         if prepare_return:
@@ -275,10 +279,6 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
 
         # Show Page
         self.page_stack.set_visible_child_name(page_name)
-
-        # Hide previous errors
-        self.error_bar.set_revealed(False)
-        GLib.timeout_add(250, self.error_bar.set_visible, False)
 
         # Adapt header bar
         self.header_bar_revealer.set_reveal_child(next_page.header_visible)

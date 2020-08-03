@@ -67,9 +67,7 @@ class Page(abc.ABC):
         """Prepare the page to be shown when returning from another page."""
         pass
 
-    def on_focus_entry(
-        self, widget: Gtk.Widget, event: Gdk.EventFocus
-    ) -> None:
+    def on_focus_entry(self, widget: Gtk.Widget, event: Gdk.EventFocus) -> None:
         """React to an entry being focused. Show an on-screen keyboard.
 
         Args:
@@ -78,9 +76,7 @@ class Page(abc.ABC):
         """
         osk_util.request_keyboard()
 
-    def on_entry_button_press(
-        self, widget: Gtk.Widget, event: Gdk.EventButton
-    ) -> None:
+    def on_entry_button_press(self, widget: Gtk.Widget, event: Gdk.EventButton) -> None:
         """React to an entry being clicked (button press).
 
         Args:
@@ -103,9 +99,7 @@ class Page(abc.ABC):
             osk_util.toggle_keyboard_request()
             del self._entries_pressed[widget]
 
-    def on_unfocus_entry(
-        self, widget: Gtk.Widget, event: Gdk.EventFocus
-    ) -> None:
+    def on_unfocus_entry(self, widget: Gtk.Widget, event: Gdk.EventFocus) -> None:
         """React to an entry being unfocused. Hide the on-screen keyboard.
 
         Args:
@@ -114,10 +108,14 @@ class Page(abc.ABC):
         """
         osk_util.unrequest_keyboard()
 
-    def on_opcua_button_clicked(
-        self, button: Gtk.Button, category: str, variable_name: str
+    def on_opcua_button_pressed(
+        self,
+        button: Gtk.Button,
+        event: Gdk.EventButton,
+        category: str,
+        variable_name: str,
     ) -> None:
-        """React to a button that is represented in OPC UA being clicked.
+        """React to a button that is represented in OPC UA being pressed.
 
         Set the boolean OPC UA variable that represents teh button (yuck) to
             True.
@@ -128,9 +126,20 @@ class Page(abc.ABC):
             category: str
             variable_name: str
             ...
+
             button.connect(
-                "clicked", page.on_opcua_button_clicked, category, variable_name
+                "button-press-event",
+                page.on_opcua_button_pressed,
+                category,
+                variable_name,
             )
+            button.connect(
+                "button-release-event",
+                page.on_opcua_button_released,
+                category,
+                variable_name,
+            )
+
 
         category and variable_name might look like this:
             Regular way of accessing variable:
@@ -141,8 +150,35 @@ class Page(abc.ABC):
 
         Args:
             button (Gtk.Button): The button that was clicked
+            event (Gdk.EventButton): The button event
             category (str): The name of the NodeCategory that the boolean
                 variable (yuck) is in
             variable_name (str): The name of the boolean variable (yuck) node
         """
-        Connection()[category][variable_name] = True
+        try:
+            Connection()[category][variable_name] = True
+        except ConnectionRefusedError:
+            self.get_toplevel().show_error("Die Liege wurde nicht erkannt")
+
+    def on_opcua_button_released(
+        self,
+        button: Gtk.Button,
+        event: Gdk.EventButton,
+        category: str,
+        variable_name: str,
+    ) -> None:
+        """React to a button that is represented in OPC UA being released.
+
+        See on_opcua_button_pressed()
+
+        Args:
+            button (Gtk.Button): The button that was clicked
+            event (Gdk.EventButton): The button event
+            category (str): The name of the NodeCategory that the boolean
+                variable (yuck) is in
+            variable_name (str): The name of the boolean variable (yuck) node
+        """
+        try:
+            Connection()[category][variable_name] = False
+        except ConnectionRefusedError:
+            self.get_toplevel().show_error("Die Liege wurde nicht erkannt")

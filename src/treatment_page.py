@@ -72,21 +72,30 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
         try:
             for key in Connection()["program"].keys():
                 Connection()["program"][key] = program[key]
+
+            self.visualising = True
+            self.visualisation_loop()
         except ConnectionRefusedError:
             self.get_toplevel().show_error("Die Liege wurde nicht erkannt")
+
+            self.visualising = False
 
         self.start_button.show()
         self.resume_button.hide()
         self.pause_button.hide()
         self.cancel_button.hide()
 
-        self.visualising = True
-        self.visualisation_loop()
-
     def prepare_return(self) -> None:
         """Prepare the page to be shown when returning from another page."""
-        self.visualising = True
-        self.visualisation_loop()
+        try:
+            Connection()
+
+            self.visualising = True
+            self.visualisation_loop()
+        except ConnectionRefusedError:
+            self.get_toplevel().show_error("Die Liege wurde nicht erkannt")
+
+            self.visualising = False
 
     def unprepare(self) -> None:
         """Prepare the page to be hidden."""
@@ -110,7 +119,16 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
         self.cancel_button.connect("clicked", self.on_cancel_clicked)
 
         self.emergency_off_button.connect(
-            "clicked", self.on_opcua_button_clicked, "main", "emergency_off_button",
+            "button-press-event",
+            self.on_opcua_button_pressed,
+            "main",
+            "emergency_off_button",
+        )
+        self.emergency_off_button.connect(
+            "button-release-event",
+            self.on_opcua_button_released,
+            "main",
+            "emergency_off_button",
         )
 
         self.visualisation_drawing_area.connect("draw", self.on_draw_visualisation)
@@ -169,6 +187,12 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
 
     def visualisation_loop(self) -> None:
         """Repeatedly render an SVG visualisation for the motor values."""
+        try:
+            Connection()
+        except ConnectionRefusedError:
+            self.get_toplevel().show_error("Die Liege wurde nicht erkannt")
+            return
+
         self.visualisation_drawing_area.queue_draw()
 
         if self.visualising:
@@ -184,7 +208,7 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
         try:
             Connection()
         except ConnectionRefusedError:
-            self.get_toplevel().show_error("Die Liege wurde nicht erkannt")
+            # self.get_toplevel().show_error("Die Liege wurde nicht erkannt")
             self.visualising = False
             return
 
