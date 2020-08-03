@@ -407,16 +407,21 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
         Args:
             button (Gtk.Button): The button that was clicked
         """
+        print("save pos")
         try:
             self.end_value_left = Connection()["setup"]["left_pusher"]
             self.end_value_right = Connection()["setup"]["right_pusher"]
+            print("succ")
         except ConnectionRefusedError:
             self.get_toplevel().show_error("Die Liege wurde nicht erkannt")
 
-            self.end_value_left = 999999
-            self.end_value_right = 999999
+            self.end_value_left = 0
+            self.end_value_right = 0
+            print("fail")
 
-        self.ok_button.set_sensitive(True)
+        if self.end_value_left is not None and self.end_value_right is not None:
+            print("sensitive")
+            self.ok_button.set_sensitive(True)
 
 
 GObject.type_ensure(SetupPage)
