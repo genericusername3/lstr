@@ -201,8 +201,8 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
             ),
             up_down=Connection()["main"]["up_down"] * UP_DOWN_FACTOR,
             rotation=Connection()["main"]["tilt"],
-            left_pusher=Connection()["main"]["left_pusher"] - 25,
-            right_pusher=Connection()["main"]["right_pusher"] - 25,
+            left_pusher=25 - Connection()["main"]["left_pusher"],
+            right_pusher=25 - Connection()["main"]["right_pusher"],
         )
 
         self.left_right_label.set_text(str(Connection()["main"]["left_right"]))
