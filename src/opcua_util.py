@@ -11,7 +11,7 @@ from opcua.common.node import Node  # type: ignore
 prefix: str = "ns=4;s=|var|CODESYS Control for Raspberry Pi SL.Application."
 
 program_prefix: str = "GVL_Tabelle.stTabelle_PrgDat."
-setup_prefix: str = "Application.GVL_Visu_Einrichten."
+setup_prefix: str = "GVL_Visu_Einrichten."
 main_prefix: str = "GVL_Visu_Haupt."
 
 # Due to some INGENIOUS programming of the backend, you might notice the word
@@ -115,8 +115,7 @@ node_ids: Dict[str, Dict[str, str]] = {
         "left_pusher": prefix + setup_prefix + "iAnzeige_Position_Pusher_A",
         "right_pusher": prefix + setup_prefix + "iAnzeige_Position_Pusher_B",
         "left_right": prefix + setup_prefix + "iAnzeige_Position_links_rechts",
-        "up_down": print(prefix + setup_prefix + "iAnzeige_Position_vor_rueck")
-        or prefix + setup_prefix + "iAnzeige_Position_vor_rueck",
+        "up_down": prefix + setup_prefix + "iAnzeige_Position_vor_rueck",
         # Mysterious button that has an int for some reason
         "fast_up_button": prefix + setup_prefix + "iBut_FF_Puscher_hoch",
         "fast_down_button": prefix + setup_prefix + "iBut_FF_Puscher_runter",
