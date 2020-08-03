@@ -26,18 +26,10 @@ node_ids: Dict[str, Dict[str, str]] = {
         "id": prefix + program_prefix + "iProgramm_Nummer",
         #
         # Distances
-        "pusher_left_distance_up": prefix
-        + program_prefix
-        + "iWeg_Puscher_A_Vor",
-        "pusher_left_distance_down": prefix
-        + program_prefix
-        + "iWeg_Puscher_A_Rueck",
-        "pusher_right_distance_up": prefix
-        + program_prefix
-        + "iWeg_Puscher_B_Vor",
-        "pusher_right_distance_down": prefix
-        + program_prefix
-        + "iWeg_Puscher_B_Rueck",
+        "pusher_left_distance_up": prefix + program_prefix + "iWeg_Puscher_A_Vor",
+        "pusher_left_distance_down": prefix + program_prefix + "iWeg_Puscher_A_Rueck",
+        "pusher_right_distance_up": prefix + program_prefix + "iWeg_Puscher_B_Vor",
+        "pusher_right_distance_down": prefix + program_prefix + "iWeg_Puscher_B_Rueck",
         #
         # Pusher speeds (apparently I'll have to calculate push time myself,
         #                so it's commented out)
@@ -48,30 +40,18 @@ node_ids: Dict[str, Dict[str, str]] = {
         # "pusher_right_speed_down": prefix + program_prefix + "",
         #
         # Push times (calculated from speed)
-        "pusher_left_push_time_up": prefix
-        + program_prefix
-        + "iZeit_Puscher_A_Vor",
-        "pusher_left_push_time_down": prefix
-        + program_prefix
-        + "iZeit_Puscher_A_Rueck",
-        "pusher_right_push_time_up": prefix
-        + program_prefix
-        + "iZeit_Puscher_B_Vor",
+        "pusher_left_push_time_up": prefix + program_prefix + "iZeit_Puscher_A_Vor",
+        "pusher_left_push_time_down": prefix + program_prefix + "iZeit_Puscher_A_Rueck",
+        "pusher_right_push_time_up": prefix + program_prefix + "iZeit_Puscher_B_Vor",
         "pusher_right_push_time_down": prefix
         + program_prefix
         + "iZeit_Puscher_B_Rueck",
         #
         # Push delays
         "pusher_left_delay_up": prefix + program_prefix + "iDelay_Puscher_A_Vor",
-        "pusher_left_delay_down": prefix
-        + program_prefix
-        + "iDelay_Puscher_A_Rueck",
-        "pusher_right_delay_up": prefix
-        + program_prefix
-        + "iDelay_puscher_B_Vor",
-        "pusher_right_delay_down": prefix
-        + program_prefix
-        + "iDelay_puscher_B_Rueck",
+        "pusher_left_delay_down": prefix + program_prefix + "iDelay_Puscher_A_Rueck",
+        "pusher_right_delay_up": prefix + program_prefix + "iDelay_puscher_B_Vor",
+        "pusher_right_delay_down": prefix + program_prefix + "iDelay_puscher_B_Rueck",
         #
         # Push wait times
         "pusher_left_stay_duration_up": prefix
@@ -135,7 +115,8 @@ node_ids: Dict[str, Dict[str, str]] = {
         "left_pusher": prefix + setup_prefix + "iAnzeige_Position_Pusher_A",
         "right_pusher": prefix + setup_prefix + "iAnzeige_Position_Pusher_B",
         "left_right": prefix + setup_prefix + "iAnzeige_Position_links_rechts",
-        "up_down": prefix + setup_prefix + "iAnzeige_Position_vor_rueck",
+        "up_down": print(prefix + setup_prefix + "iAnzeige_Position_vor_rueck")
+        or prefix + setup_prefix + "iAnzeige_Position_vor_rueck",
         # Mysterious button that has an int for some reason
         "fast_up_button": prefix + setup_prefix + "iBut_FF_Puscher_hoch",
         "fast_down_button": prefix + setup_prefix + "iBut_FF_Puscher_runter",
@@ -146,15 +127,9 @@ node_ids: Dict[str, Dict[str, str]] = {
         "tilt_up_button": prefix + setup_prefix + "xBut_Kipp_kranial",
         # Pusher buttons
         "left_move_in_button": prefix + setup_prefix + "xBut_pusher_A_hoch_5mm",
-        "left_move_out_button": prefix
-        + setup_prefix
-        + "xBut_pusher_A_runter_5mm",
-        "right_move_in_button": prefix
-        + setup_prefix
-        + "xBut_pusher_B_hoch_5mm",
-        "righ_movet_out_button": prefix
-        + setup_prefix
-        + "xBut_pusher_B_runter_5mm",
+        "left_move_out_button": prefix + setup_prefix + "xBut_pusher_A_runter_5mm",
+        "right_move_in_button": prefix + setup_prefix + "xBut_pusher_B_hoch_5mm",
+        "righ_movet_out_button": prefix + setup_prefix + "xBut_pusher_B_runter_5mm",
         # Movement buttons
         "move_left_button": prefix + setup_prefix + "xBut_links",
         "move_right_button": prefix + setup_prefix + "xBut_rechts",
@@ -182,9 +157,7 @@ node_ids: Dict[str, Dict[str, str]] = {
         # "Visibility" of different "pop-ups"
         "emergency_off": prefix + main_prefix + "xSichtbarkeit_NOTAUS_PopUp",
         "not_referenced": prefix + main_prefix + "xSichtbarkeit_NichtRef_PopUp",
-        "referencing": prefix
-        + main_prefix
-        + "xSichtbarkeit_Referenzierung_PopUp",
+        "referencing": prefix + main_prefix + "xSichtbarkeit_Referenzierung_PopUp",
     },
 }
 
@@ -196,9 +169,7 @@ class Singleton(type):
 
     def __call__(cls, *args, **kwargs):
         if cls not in cls._instances:
-            cls._instances[cls] = super(Singleton, cls).__call__(
-                *args, **kwargs
-            )
+            cls._instances[cls] = super(Singleton, cls).__call__(*args, **kwargs)
         return cls._instances[cls]
 
 
