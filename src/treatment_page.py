@@ -15,6 +15,10 @@ SVG_CODE: str = Gio.resources_lookup_data(
     "/de/linusmathieu/Liegensteuerung/treatment_preview.svg", 0
 ).get_data().decode()
 
+LEFT_RIGHT_FACTOR: float = 50.0 / 18.0
+LEFT_RIGHT_SCALE_FACTOR: float = LEFT_RIGHT_FACTOR / (1000.0 / 3.0)
+UP_DOWN_FACTOR: float = 0.5
+
 
 @Gtk.Template(resource_path="/de/linusmathieu/Liegensteuerung/treatment_page.ui")
 class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
@@ -41,9 +45,6 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
 
     emergency_off_button: Union[Gtk.Button, Gtk.Template.Child] = Gtk.Template.Child()
 
-    visualisation_scroller: Union[
-        Gtk.ScrolledWindow, Gtk.Template.Child
-    ] = Gtk.Template.Child()
     visualisation_drawing_area: Union[
         Gtk.DrawingArea, Gtk.Template.Child
     ] = Gtk.Template.Child()
@@ -61,8 +62,12 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
     def prepare(self) -> None:
         """Prepare the page to be shown."""
         program: Program = self.get_toplevel().active_program
-        # for key in Connection()["program"].keys():
-        #     Connection()["program"][key] = program[key]
+
+        try:
+            for key in Connection()["program"].keys():
+                Connection()["program"][key] = program[key]
+        except ConnectionRefusedError:
+            print("OPC UA does not seem to be running on this device")
 
         self.start_button.show()
         self.resume_button.hide()
@@ -170,20 +175,35 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
             widget (Gtk.Widget): Description
             cr (cairo.Context): Description
         """
-        import time, math
+        try:
+            Connection()
+        except ConnectionRefusedError:
+            print("OPC UA does not seem to be running on this device")
+            self.visualising = False
+            return
+
+        style_ctx: Gtk.StyleContext = widget.get_style_context()
 
         svg: str = SVG_CODE.format(
-            fg_color="#888",
-            pusher_color="#669",
-            left_right=math.sin(time.time() * 0.71) * 50,
+            fg_color=style_ctx.get_color(style_ctx.get_state()).to_string(),
+            moving_color="#eacc9a"
+            if Connection()["main"]["is_pusher_active"]
+            else "#d8d8d8",
+            left_right=Connection()["main"]["left_right"] * LEFT_RIGHT_FACTOR,
             left_right_scale=(
-                0.7 + ((50 - (math.sin(time.time() * 0.71) * 50)) / 333.3333)
+                0.85 + (Connection()["main"]["left_right"] * LEFT_RIGHT_SCALE_FACTOR)
             ),
-            up_down=math.sin(time.time() * 0.77) * 50,
-            rotation=math.sin(time.time() * 0.93) * 50,
-            left_pusher=math.sin(time.time() * 0.97) * 25,
-            right_pusher=math.sin(time.time() * 0.53) * 25,
+            up_down=Connection()["main"]["up_down"] * UP_DOWN_FACTOR,
+            rotation=Connection()["main"]["tilt"],
+            left_pusher=Connection()["main"]["left_pusher"] - 25,
+            right_pusher=Connection()["main"]["right_pusher"] - 25,
         )
+
+        self.left_right_label.set_text(Connection()["main"]["left_right"])
+        self.up_down_label.set_text(Connection()["main"]["up_down"])
+        self.tilt_label.set_text(Connection()["main"]["tilt"])
+        self.pusher_left_label.set_text(Connection()["main"]["left_pusher"])
+        self.pusher_right_label.set_text(Connection()["main"]["right_pusher"])
 
         handle = Rsvg.Handle.new_from_data(svg.encode())
 

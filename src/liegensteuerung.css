@@ -1,8 +1,8 @@
-@define-color accent darker(lightblue);
+@define-color accent darker(papayawhip);
 
-@define-color info mix(mediumspringgreen, @accent, 0.25);
-@define-color error mix(indianred, @accent, 0.25);
-@define-color warning mix(lightsalmon, @accent, 0.25);
+@define-color info mix(mediumspringgreen, @accent, 0.5);
+@define-color error mix(indianred, @accent, 0.3);
+@define-color warning mix(lightsalmon, @accent, 0.3);
 
 @define-color good mediumspringgreen;
 @define-color medium lightsalmon;
@@ -45,7 +45,7 @@ entry, button, textview, textview text {
     min-height: 32px;
     min-width: 28px;
     margin: 2px;
-    border: solid 2px alpha(mix(@accent, #888, 0.6), 0.6);
+    border: solid 2px alpha(mix(@accent, #888, 0.4), 0.6);
     background: none;
 }
 
@@ -76,6 +76,7 @@ button.suggested-action:disabled * {
 
 button.suggested-action {
     background: mix(@good, #222, 0.2);
+    border: 2px solid #888;
     color: #222;
 }
 button.suggested-action * {
@@ -94,6 +95,7 @@ button.suggested-action:active {
 
 button.destructive-action {
     background: @bad;
+    border: 2px solid #888;
     color: #fff;
 }
 button.destructive-action * {
@@ -119,13 +121,14 @@ entry:focus, button:active {
 }
 
 entry:focus {
-    border-color: mix(@accent, #999, 0.7);
+    border-color: shade(mix(@accent, #999, 0.4), 0.8);
 }
 
 *:selected, selection, row:nth-child(even):selected {
     background: alpha(mix(@accent, #bbb, 0.6), 0.8);
     color: white;
 }
+
 
 entry progress {
     border-radius: 0px;
@@ -289,6 +292,23 @@ scale highlight {
     outline: none;
 }
 
+progressbar trough {
+    min-height: 16px;
+    margin: 8px 16px;
+    border: 1px solid #888;
+    border-radius: 4px;
+    outline: none;
+}
+
+progressbar progress {
+    background-color: @accent;
+    min-height: 16px;
+    min-width: 0;
+    margin: 0;
+    border: none;
+    border-radius: 4px;
+    outline: none;
+}
 
 combobox cellview {
     margin-right: 0px;

@@ -96,48 +96,30 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
 
     page_stack: Union[Gtk.Template.Child, Gtk.Stack] = Gtk.Template.Child()
 
-    header_bar_revealer: Union[
-        Gtk.Template.Child, Gtk.Revealer
-    ] = Gtk.Template.Child()
+    header_bar_revealer: Union[Gtk.Template.Child, Gtk.Revealer] = Gtk.Template.Child()
 
-    no_patient_info_bar: Union[
-        Gtk.Template.Child, Gtk.InfoBar
-    ] = Gtk.Template.Child()
+    no_patient_info_bar: Union[Gtk.Template.Child, Gtk.InfoBar] = Gtk.Template.Child()
 
     error_bar: Union[Gtk.Template.Child, Gtk.InfoBar] = Gtk.Template.Child()
-    error_bar_label: Union[
-        Gtk.Template.Child, Gtk.Label
-    ] = Gtk.Template.Child()
+    error_bar_label: Union[Gtk.Template.Child, Gtk.Label] = Gtk.Template.Child()
 
     back_button: Union[Gtk.Template.Child, Gtk.Button] = Gtk.Template.Child()
-    back_button_revealer: Union[
-        Gtk.Template.Child, Gtk.Revealer
-    ] = Gtk.Template.Child()
+    back_button_revealer: Union[Gtk.Template.Child, Gtk.Revealer] = Gtk.Template.Child()
 
-    patient_button: Union[
-        Gtk.Template.Child, Gtk.Button
-    ] = Gtk.Template.Child()
+    patient_button: Union[Gtk.Template.Child, Gtk.Button] = Gtk.Template.Child()
     patient_button_revealer: Union[
         Gtk.Template.Child, Gtk.Revealer
     ] = Gtk.Template.Child()
 
-    shutdown_button: Union[
-        Gtk.Template.Child, Gtk.Button
-    ] = Gtk.Template.Child()
-    log_out_button: Union[
-        Gtk.Template.Child, Gtk.Button
-    ] = Gtk.Template.Child()
+    shutdown_button: Union[Gtk.Template.Child, Gtk.Button] = Gtk.Template.Child()
+    log_out_button: Union[Gtk.Template.Child, Gtk.Button] = Gtk.Template.Child()
 
     users_button: Union[Gtk.Template.Child, Gtk.Button] = Gtk.Template.Child()
-    change_password_button: Union[
-        Gtk.Template.Child, Gtk.Button
-    ] = Gtk.Template.Child()
+    change_password_button: Union[Gtk.Template.Child, Gtk.Button] = Gtk.Template.Child()
 
     title_label: Union[Gtk.Template.Child, Gtk.Label] = Gtk.Template.Child()
 
-    main_area_overlay: Union[
-        Gtk.Template.Child, Gtk.Overlay
-    ] = Gtk.Template.Child()
+    main_area_overlay: Union[Gtk.Template.Child, Gtk.Overlay] = Gtk.Template.Child()
     shutdown_button_compact: Union[
         Gtk.Template.Child, Gtk.Button
     ] = Gtk.Template.Child()
@@ -145,9 +127,7 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
         Gtk.Template.Child, Gtk.Revealer
     ] = Gtk.Template.Child()
 
-    keyboard_revealer: Union[
-        Gtk.Template.Child, Gtk.Revealer
-    ] = Gtk.Template.Child()
+    keyboard_revealer: Union[Gtk.Template.Child, Gtk.Revealer] = Gtk.Template.Child()
 
     active_user: Optional[str] = None
     active_user_password: Optional[str] = None
@@ -187,9 +167,7 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
 
         self.main_area_overlay.add_overlay(self.shutdown_compact_revealer)
 
-        self.change_password_button.connect(
-            "clicked", self.on_change_password_clicked
-        )
+        self.change_password_button.connect("clicked", self.on_change_password_clicked)
         self.users_button.connect("clicked", self.on_users_clicked)
 
         self.log_out_button.connect("clicked", self.on_log_out_clicked)
@@ -235,15 +213,11 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
         """
         self.page_history.append(page_name)
 
-        self._show_page(
-            page_name, animation_direction=1, args=args, kwargs=kwargs
-        )
+        self._show_page(page_name, animation_direction=1, args=args, kwargs=kwargs)
 
     def go_back(self) -> None:
         """Switch to the last visited Page."""
-        self.page_stack.set_transition_type(
-            Gtk.StackTransitionType.SLIDE_RIGHT
-        )
+        self.page_stack.set_transition_type(Gtk.StackTransitionType.SLIDE_RIGHT)
 
         self.page_history.pop()
 
@@ -281,15 +255,11 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
         self.page_stack.get_visible_child().unprepare()
 
         if animation_direction == -1:
-            self.page_stack.set_transition_type(
-                Gtk.StackTransitionType.SLIDE_RIGHT
-            )
+            self.page_stack.set_transition_type(Gtk.StackTransitionType.SLIDE_RIGHT)
         elif animation_direction == 0:
             self.page_stack.set_transition_type(Gtk.StackTransitionType.NONE)
         elif animation_direction == 1:
-            self.page_stack.set_transition_type(
-                Gtk.StackTransitionType.SLIDE_LEFT
-            )
+            self.page_stack.set_transition_type(Gtk.StackTransitionType.SLIDE_LEFT)
         else:
             raise ValueError("animation_direction must be -1, 0 or 1")
 
@@ -308,12 +278,11 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
 
         # Hide previous errors
         self.error_bar.set_revealed(False)
+        GLib.timeout_add(250, self.error_bar.set_visible, False)
 
         # Adapt header bar
         self.header_bar_revealer.set_reveal_child(next_page.header_visible)
-        self.shutdown_compact_revealer.set_reveal_child(
-            not next_page.header_visible
-        )
+        self.shutdown_compact_revealer.set_reveal_child(not next_page.header_visible)
 
         self.update_title()
 
@@ -333,8 +302,7 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
         self.users_button.set_visible(is_admin or is_doctor)
 
         self.patient_button_revealer.set_reveal_child(
-            self.active_patient is not None
-            and not next_page.is_patient_info_page
+            self.active_patient is not None and not next_page.is_patient_info_page
         )
 
     def clear_history(self) -> None:

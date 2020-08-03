@@ -4,7 +4,7 @@
   Parameters:
 
     fg_color (currently {fg_color}): The foreground color used for everything except pusher fills
-    pusher_color (currently {pusher_color}): The color to use for the pushers
+    moving_color (currently {moving_color}): The color to use for moving parts
 
     up_down (currently {up_down}): The box's vertical translation from -50 to 50
     left_right (currently {left_right}): The box's horizontal translation from -50 to 50
@@ -17,36 +17,30 @@
 -->
 
 <svg viewBox="0 0 2000 1250" width="20em" height="12.5em" xmlns="http://www.w3.org/2000/svg">
-  <circle cx="250" cy="368" r="100" fill="{fg_color}"/>
+  <circle cx="250" cy="368" r="100" fill="{fg_color}" opacity="0.75"/>
   <polyline
     points="500,368 1150,368 1450,200 1750,368"
-    stroke-width="200" stroke="{fg_color}" stroke-linecap="round"
-    stroke-linejoin="miter" fill="none"
+    stroke-width="200" stroke="{fg_color}" fill="none" opacity="0.75"
+    stroke-linecap="round" stroke-linejoin="miter"
   />
-  <line
-    x1="212.5" y1="618" x2="650" y2="618"
-    stroke-width="125" stroke="{fg_color}" stroke-linecap="round" fill="none"
+  <path
+    d="M212.5,618 L650,618 M350,625 L350,1050"
+    stroke-width="125" stroke="{fg_color}" fill="none" opacity="0.75"
+    stroke-linecap="round"
   />
-  <line
-    x1="350" y1="618" x2="350" y2="1050"
-    stroke-width="125" stroke="{fg_color}" stroke-linecap="round" fill="none"
-  />
-  <line
-    x1="1350" y1="618" x2="1787.5" y2="618"
-    stroke-width="125" stroke="{fg_color}" stroke-linecap="round" fill="none"
-  />
-  <line
-    x1="1650" y1="618" x2="1650" y2="1050"
-    stroke-width="125" stroke="{fg_color}" stroke-linecap="round" fill="none"
+  <path
+    d="M1350,618 L1787.5,618 M1650,625 L1650,1050"
+    stroke-width="125" stroke="{fg_color}" fill="none" opacity="0.75"
+    stroke-linecap="round"
   />
 
   <g transform="translate({left_right}, {up_down}) rotate({rotation}, 1000, 750) translate(1000, 700) scale({left_right_scale}) translate(-1000, -700)"> <!-- translate -50 to 50 x -50 to 50 -->
-    <rect x="1012.5" y="550" width="75" height="100" rx="25" fill="{pusher_color}"
+    <rect x="1012.5" y="550" width="75" height="100" rx="25" fill="{moving_color}"
       transform="translate(0, {right_pusher})"
     />  <!-- translate 0 to 0 x -25 to 25 -->
-    <rect x="875" y="600" width="250" height="250" fill="{fg_color}" rx="25"/>
+    <rect x="875" y="600" width="250" height="250" fill="{moving_color}" rx="25"/>
     <rect
-      x="912.5" y="550" width="75" height="100" rx="25" fill="{pusher_color}"
+      x="912.5" y="550" width="75" height="100" rx="25" fill="{moving_color}"
       transform="translate(0, {left_pusher})"
     />  <!-- translate 0 to 0 x -25 to 25 -->
   </g>

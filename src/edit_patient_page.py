@@ -36,9 +36,7 @@ MONTHS = {
 }
 
 
-@Gtk.Template(
-    resource_path="/de/linusmathieu/Liegensteuerung/edit_patient_page.ui"
-)
+@Gtk.Template(resource_path="/de/linusmathieu/Liegensteuerung/edit_patient_page.ui")
 class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
     """A page that prompts the user to view, edit or create a patient.
 
@@ -86,37 +84,25 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
         Gtk.Template.Child, Gtk.InfoBar
     ] = Gtk.Template.Child()
 
-    first_name_entry: Union[
-        Gtk.Entry, Gtk.Template.Child
-    ] = Gtk.Template.Child()
+    first_name_entry: Union[Gtk.Entry, Gtk.Template.Child] = Gtk.Template.Child()
     last_name_entry: Union[Gtk.Entry, Gtk.Template.Child] = Gtk.Template.Child()
 
     gender_combobox_text: Union[
         Gtk.ComboBoxText, Gtk.Template.Child
     ] = Gtk.Template.Child()
 
-    birth_date_day_entry: Union[
-        Gtk.Entry, Gtk.Template.Child
-    ] = Gtk.Template.Child()
-    birth_date_month_entry: Union[
-        Gtk.Entry, Gtk.Template.Child
-    ] = Gtk.Template.Child()
-    birth_date_year_entry: Union[
-        Gtk.Entry, Gtk.Template.Child
-    ] = Gtk.Template.Child()
+    birth_date_day_entry: Union[Gtk.Entry, Gtk.Template.Child] = Gtk.Template.Child()
+    birth_date_month_entry: Union[Gtk.Entry, Gtk.Template.Child] = Gtk.Template.Child()
+    birth_date_year_entry: Union[Gtk.Entry, Gtk.Template.Child] = Gtk.Template.Child()
 
-    treatment_list_box: Union[
-        Gtk.ListBox, Gtk.Template.Child
-    ] = Gtk.Template.Child()
+    treatment_list_box: Union[Gtk.ListBox, Gtk.Template.Child] = Gtk.Template.Child()
     header_box: Union[Gtk.Box, Gtk.Template.Child] = Gtk.Template.Child()
 
     weight_entry: Union[Gtk.Entry, Gtk.Template.Child] = Gtk.Template.Child()
 
     comment_entry: Union[Gtk.Entry, Gtk.Template.Child] = Gtk.Template.Child()
 
-    patient_tabs_stack: Union[
-        Gtk.Stack, Gtk.Template.Child
-    ] = Gtk.Template.Child()
+    patient_tabs_stack: Union[Gtk.Stack, Gtk.Template.Child] = Gtk.Template.Child()
 
     patient_tabs_stack_switcher: Union[
         Gtk.StackSwitcher, Gtk.Template.Child
@@ -141,6 +127,9 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
         self.patient_tabs_stack.set_visible_child_name("patient")
 
         self.first_name_entry.grab_focus()
+
+        self.export_success_info_bar.hide()
+        self.export_success_info_bar.set_revealed(False)
 
         if patient is not None:
             self.title = f"{patient.first_name} {patient.last_name}"
@@ -219,26 +208,20 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
         if self.get_parent() is None:
             return
 
-        self.export_success_info_bar.connect(
-            "response", self.on_info_bar_response
-        )
+        self.export_success_info_bar.connect("response", self.on_info_bar_response)
 
         self.export_button.connect("clicked", self.on_export_clicked)
 
         # Name entries
         self.first_name_entry.connect("focus-in-event", self.on_focus_entry)
-        self.first_name_entry.connect(
-            "button-press-event", self.on_entry_button_press
-        )
+        self.first_name_entry.connect("button-press-event", self.on_entry_button_press)
         self.first_name_entry.connect(
             "button-release-event", self.on_entry_button_release
         )
         self.first_name_entry.connect("focus-out-event", self.on_unfocus_entry)
 
         self.last_name_entry.connect("focus-in-event", self.on_focus_entry)
-        self.last_name_entry.connect(
-            "button-press-event", self.on_entry_button_press
-        )
+        self.last_name_entry.connect("button-press-event", self.on_entry_button_press)
         self.last_name_entry.connect(
             "button-release-event", self.on_entry_button_release
         )
@@ -255,14 +238,10 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
         self.birth_date_day_entry.connect(
             "focus-out-event", self.on_unfocus_num_entry, 2, 1, self.max_day,
         )
-        self.birth_date_day_entry.connect(
-            "insert-text", self.on_num_entry_insert
-        )
+        self.birth_date_day_entry.connect("insert-text", self.on_num_entry_insert)
 
         # Month entry
-        self.birth_date_month_entry.connect(
-            "focus-in-event", self.on_focus_entry
-        )
+        self.birth_date_month_entry.connect("focus-in-event", self.on_focus_entry)
         self.birth_date_month_entry.connect(
             "button-press-event", self.on_entry_button_press
         )
@@ -272,14 +251,10 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
         self.birth_date_month_entry.connect(
             "focus-out-event", self.on_unfocus_num_entry, 2, 1, 12
         )
-        self.birth_date_month_entry.connect(
-            "insert-text", self.on_num_entry_insert
-        )
+        self.birth_date_month_entry.connect("insert-text", self.on_num_entry_insert)
 
         # Year entry
-        self.birth_date_year_entry.connect(
-            "focus-in-event", self.on_focus_entry
-        )
+        self.birth_date_year_entry.connect("focus-in-event", self.on_focus_entry)
         self.birth_date_year_entry.connect(
             "button-press-event", self.on_entry_button_press
         )
@@ -294,18 +269,12 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
             today_year,
             True,
         )
-        self.birth_date_year_entry.connect(
-            "insert-text", self.on_num_entry_insert
-        )
+        self.birth_date_year_entry.connect("insert-text", self.on_num_entry_insert)
 
         # Weight entry
         self.weight_entry.connect("focus-in-event", self.on_focus_entry)
-        self.weight_entry.connect(
-            "button-press-event", self.on_entry_button_press
-        )
-        self.weight_entry.connect(
-            "button-release-event", self.on_entry_button_release
-        )
+        self.weight_entry.connect("button-press-event", self.on_entry_button_press)
+        self.weight_entry.connect("button-release-event", self.on_entry_button_release)
         self.weight_entry.connect(
             "focus-out-event", self.on_unfocus_num_entry, 2, 0, 999.9
         )
@@ -313,12 +282,8 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
 
         # Comment entry
         self.comment_entry.connect("focus-in-event", self.on_focus_entry)
-        self.comment_entry.connect(
-            "button-press-event", self.on_entry_button_press
-        )
-        self.comment_entry.connect(
-            "button-release-event", self.on_entry_button_release
-        )
+        self.comment_entry.connect("button-press-event", self.on_entry_button_press)
+        self.comment_entry.connect("button-release-event", self.on_entry_button_release)
         self.comment_entry.connect("focus-out-event", self.on_unfocus_entry)
 
         # Entries that are date input
@@ -344,9 +309,7 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
 
         self.delete_button.connect("clicked", self.on_delete_clicked)
 
-        self.header_box.pack_start(
-            TreatmentHeader(), fill=True, expand=True, padding=0
-        )
+        self.header_box.pack_start(TreatmentHeader(), fill=True, expand=True, padding=0)
         self.header_box.show_all()
 
     def update_treatments(self) -> None:
@@ -485,9 +448,7 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
 
                 value = value.quantize(q)
 
-                entry.set_text(
-                    str(value).replace(".", ",").zfill(leading_zeroes + 2)
-                )
+                entry.set_text(str(value).replace(".", ",").zfill(leading_zeroes + 2))
 
             else:  # Int
                 value = int(text)
@@ -518,11 +479,7 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
         """
         if self.editable:
             self.check_input(
-                self.birth_date_year_entry,
-                4,
-                today_year - 150,
-                today_year,
-                True,
+                self.birth_date_year_entry, 4, today_year - 150, today_year, True,
             )
 
             self.check_input(self.birth_date_month_entry, 2, 1, 12)
@@ -575,9 +532,7 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
                         + "-"
                         + self.birth_date_day_entry.get_text(),
                         gender=self.gender_combobox_text.get_active_id(),
-                        weight=float(
-                            self.weight_entry.get_text().replace(",", ".")
-                        ),
+                        weight=float(self.weight_entry.get_text().replace(",", ".")),
                         comment=self.comment_entry.get_text().strip(),
                     )
 
@@ -591,9 +546,7 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
                         + "-"
                         + self.birth_date_day_entry.get_text(),
                         gender=self.gender_combobox_text.get_active_id(),
-                        weight=float(
-                            self.weight_entry.get_text().replace(",", ".")
-                        ),
+                        weight=float(self.weight_entry.get_text().replace(",", ".")),
                         comment=self.comment_entry.get_text().strip(),
                     )
 
@@ -617,9 +570,7 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
                 self.title = "Patient hinzufügen"
 
             else:
-                self.title = (
-                    f"{self.patient.first_name} {self.patient.last_name}"
-                )
+                self.title = f"{self.patient.first_name} {self.patient.last_name}"
 
             self.get_toplevel().update_title()
 
@@ -668,7 +619,6 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
             self.export_success_info_bar.set_revealed(True)
         except IOError as io_err:
             self.get_toplevel().show_error(" ".join(io_err.args))
-
 
     def on_info_bar_response(self, info_bar: Gtk.InfoBar, response: int):
         """React to the user responding to a Gtk.InfoBar.
