@@ -67,6 +67,9 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
             for key in Connection()["program"].keys():
                 Connection()["program"][key] = program[key]
         except ConnectionRefusedError:
+            import traceback
+
+            traceback.print_stack()
             print("OPC UA does not seem to be running on this device")
 
         self.start_button.show()
@@ -178,6 +181,9 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
         try:
             Connection()
         except ConnectionRefusedError:
+            import traceback
+
+            traceback.print_stack()
             print("OPC UA does not seem to be running on this device")
             self.visualising = False
             return
