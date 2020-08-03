@@ -331,10 +331,10 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
         self.right_pusher_label.set_text(str(Connection()["setup"]["right_pusher"]))
 
         self.end_pos_left_label.set_text(
-            str(self.end_value_left if self.end_value_left is not None else "-")
+            str(self.end_value_left) if self.end_value_left is not None else "-"
         )
         self.end_pos_right_label.set_text(
-            str(self.end_value_right if self.end_value_right is not None else "-")
+            str(self.end_value_right) if self.end_value_right is not None else "-"
         )
 
         if self.running:
