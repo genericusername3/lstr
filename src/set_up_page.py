@@ -179,7 +179,7 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
             "button-release-event",
             self.on_opcua_button_released,
             "setup",
-            "reset_axes",
+            "reset_axes_button",
         )
 
         # Tilt buttons
@@ -219,43 +219,43 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
             "button-release-event",
             self.on_opcua_button_released,
             "setup",
-            "left_move_in",
+            "left_move_in_button",
         )
         self.left_move_out_button.connect(
             "button-press-event",
             self.on_opcua_button_pressed,
             "setup",
-            "left_move_out",
+            "left_move_out_button",
         )
         self.left_move_out_button.connect(
             "button-release-event",
             self.on_opcua_button_released,
             "setup",
-            "left_move_out",
+            "left_move_out_button",
         )
         self.right_move_in_button.connect(
             "button-press-event",
             self.on_opcua_button_pressed,
             "setup",
-            "right_move_in",
+            "right_move_in_button",
         )
         self.right_move_in_button.connect(
             "button-release-event",
             self.on_opcua_button_released,
             "setup",
-            "right_move_in",
+            "right_move_in_button",
         )
         self.right_move_out_button.connect(
             "button-press-event",
             self.on_opcua_button_pressed,
             "setup",
-            "right_move_out",
+            "right_move_out_button",
         )
         self.right_move_out_button.connect(
             "button-release-event",
             self.on_opcua_button_released,
             "setup",
-            "right_move_out",
+            "right_move_out_button",
         )
 
         # Movement buttons
@@ -281,7 +281,7 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
             "button-release-event",
             self.on_opcua_button_released,
             "setup",
-            "move_right",
+            "move_right_button",
         )
         self.move_up_button.connect(
             "button-press-event",
