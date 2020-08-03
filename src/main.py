@@ -1,15 +1,21 @@
-"""Summary
-"""
+"""Main file of Liegensteuerung. Starts Liegensteuerung."""
+
 import sys
-import gi
-import subprocess
+import os
+import gi  # type: ignore
 
-gi.require_version('Gtk', '3.0')
-gi.require_version('Gdk', '3.0')
+gi.require_version("Gtk", "3.0")
+gi.require_version("Gdk", "3.0")
+gi.require_version("Rsvg", "2.0")
 
-from gi.repository import Gio, Gdk, Gtk
+from gi.repository import Gio, Gdk, Gtk  # type: ignore
 
 from .window import LiegensteuerungWindow
+
+
+base_path = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
+resource_path = os.path.join(base_path, "liegensteuerung.gresource")
+resource = Gio.Resource.load(resource_path)
 
 
 class LstrgApplication(Gtk.Application):
@@ -18,8 +24,8 @@ class LstrgApplication(Gtk.Application):
     def __init__(self):
         """Create a new LstrgApplication."""
         super().__init__(
-            application_id='de.linusmathieu.Liegensteuerung',
-            flags=Gio.ApplicationFlags.FLAGS_NONE
+            application_id="de.linusmathieu.Liegensteuerung",
+            flags=Gio.ApplicationFlags.FLAGS_NONE,
         )
 
         css_provider: Gtk.CssProvider = Gtk.CssProvider()
