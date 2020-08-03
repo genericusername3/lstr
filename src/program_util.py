@@ -109,10 +109,7 @@ cursor = connection.cursor()
 cursor.execute(
     "CREATE TABLE IF NOT EXISTS programs ("
     + ", ".join(
-        [
-            column + " " + datatype[1]
-            for column, datatype in PROGRAM_COLUMNS.items()
-        ]
+        [column + " " + datatype[1] for column, datatype in PROGRAM_COLUMNS.items()]
     )
     + ")"
 )
@@ -176,8 +173,7 @@ class Program(GObject.Object):
         )
 
         self.__dict["pusher_left_push_time_up"] = round(
-            self.__dict["pusher_left_distance_up"]
-            / self.__dict["pusher_left_speed_up"]
+            self.__dict["pusher_left_distance_up"] / self.__dict["pusher_left_speed_up"]
         )
         self.__dict["pusher_left_push_time_down"] = round(
             self.__dict["pusher_left_distance_down"]
@@ -205,11 +201,7 @@ class Program(GObject.Object):
         program_dict = program_dict.copy()
 
         program_dict["id"] = (
-            int(
-                cursor.execute("SELECT MAX(id) FROM programs").fetchone()[0]
-                or 0
-            )
-            + 1
+            int(cursor.execute("SELECT MAX(id) FROM programs").fetchone()[0] or 0) + 1
         )
 
         program: Program = Program(program_dict)
@@ -234,14 +226,6 @@ class Program(GObject.Object):
         for attribute in kwargs:
             if attribute not in PROGRAM_COLUMNS:
                 raise ValueError(f"{attribute} is not a valid attribute")
-
-        print(
-            f"""
-                UPDATE programs
-                SET {', '.join([attribute + ' = ?' for attribute in kwargs])}
-                WHERE id=?
-            """
-        )
 
         cursor.execute(
             f"""
@@ -344,9 +328,7 @@ if __name__ == "__main__":
     import random
 
     for i in range(5):
-        Program.add(
-            {column: random.randint(0, 60) for column in PROGRAM_COLUMNS}
-        )
+        Program.add({column: random.randint(0, 60) for column in PROGRAM_COLUMNS})
 
         print("added " + str(i))
 
