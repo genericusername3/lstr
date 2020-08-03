@@ -192,7 +192,11 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
 
         print(svg)
 
+        start_time = time.time()
         handle = Rsvg.Handle.new_from_data(svg.encode())
+
+        print("RSVG:", time.time() - start_time)
+        start_time = time.time()
 
         dimensions = handle.get_dimensions()
 
@@ -221,13 +225,24 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
 
         ctx.scale(scale, scale)
 
+        print("CTX:", time.time() - start_time)
+        start_time = time.time()
+
         handle.render_cairo(ctx)
+
+        print("RENDER:", time.time() - start_time)
+        start_time = time.time()
 
         pixbuf = Gdk.pixbuf_get_from_surface(
             svg_surface, src_x=0, src_y=0, width=width, height=height,
         )
 
+        print("PIXBUF:", time.time() - start_time)
+        start_time = time.time()
+
         self.visualisation_image.set_from_pixbuf(pixbuf)
+
+        print("SET:", time.time() - start_time)
 
 
 # Make TreatmentPage accessible via .ui files
