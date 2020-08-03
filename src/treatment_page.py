@@ -73,10 +73,7 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
             for key in Connection()["program"].keys():
                 Connection()["program"][key] = program[key]
         except ConnectionRefusedError:
-            import traceback
-
-            traceback.print_exc()
-            print("OPC UA does not seem to be running on this device")
+            self.get_toplevel().show_error("Die Liege wurde nicht erkannt")
 
         self.start_button.show()
         self.resume_button.hide()
@@ -187,10 +184,7 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
         try:
             Connection()
         except ConnectionRefusedError:
-            import traceback
-
-            traceback.print_exc()
-            print("OPC UA does not seem to be running on this device")
+            self.get_toplevel().show_error("Die Liege wurde nicht erkannt")
             self.visualising = False
             return
 
@@ -211,11 +205,11 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
             right_pusher=Connection()["main"]["right_pusher"] - 25,
         )
 
-        self.left_right_label.set_text(Connection()["main"]["left_right"])
-        self.up_down_label.set_text(Connection()["main"]["up_down"])
-        self.tilt_label.set_text(Connection()["main"]["tilt"])
-        self.left_pusher_label.set_text(Connection()["main"]["left_pusher"])
-        right_self.pright_label.set_text(Connection()["main"]["right_pusher"])
+        self.left_right_label.set_text(str(Connection()["main"]["left_right"]))
+        self.up_down_label.set_text(str(Connection()["main"]["up_down"]))
+        self.tilt_label.set_text(str(Connection()["main"]["tilt"]))
+        self.left_pusher_label.set_text(str(Connection()["main"]["left_pusher"]))
+        self.right_pusher_label.set_text(str(Connection()["main"]["right_pusher"]))
 
         handle = Rsvg.Handle.new_from_data(svg.encode())
 
