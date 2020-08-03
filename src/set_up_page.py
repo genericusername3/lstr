@@ -77,8 +77,8 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
     running: bool = True
     cam_available: bool = True
 
-    end_value_left: int = 0
-    end_value_right: int = 0
+    end_value_left: Optional[int] = None
+    end_value_right: Optional[int] = None
 
     def __init__(self, **kwargs):
         """Create a new SetupPage.
@@ -97,8 +97,8 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
 
         self.running = True
 
-        self.end_value_left = 0
-        self.end_value_right = 0
+        self.end_value_left = None
+        self.end_value_right = None
 
         read_thread = Thread(target=self.read_camera_input_loop)
         read_thread.start()
@@ -330,8 +330,12 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
         self.left_pusher_label.set_text(str(Connection()["setup"]["left_pusher"]))
         self.right_pusher_label.set_text(str(Connection()["setup"]["right_pusher"]))
 
-        self.end_pos_left_label.set_text(str(self.end_value_left or "-"))
-        self.end_pos_right_label.set_text(str(self.end_value_right or "-"))
+        self.end_pos_left_label.set_text(
+            str(self.end_value_left if self.end_value_left is not None else "-")
+        )
+        self.end_pos_right_label.set_text(
+            str(self.end_value_right if self.end_value_right is not None else "-")
+        )
 
         if self.running:
             GLib.timeout_add(1000 / 5, self.display_camera_input_loop)
@@ -409,9 +413,6 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
 
             self.end_value_left = 999999
             self.end_value_right = 999999
-
-        self.end_pos_left_label.set_text(str(self.end_value_left or "-"))
-        self.end_pos_right_label.set_text(str(self.end_value_right or "-"))
 
         self.ok_button.set_sensitive(True)
 
