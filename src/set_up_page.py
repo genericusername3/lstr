@@ -411,12 +411,12 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
         try:
             self.end_value_left = Connection()["setup"]["left_pusher"]
             self.end_value_right = Connection()["setup"]["right_pusher"]
-            print("succ")
+            print("succ", self.end_value_left, self.end_value_right)
         except ConnectionRefusedError:
             self.get_toplevel().show_error("Die Liege wurde nicht erkannt")
 
-            self.end_value_left = 0
-            self.end_value_right = 0
+            self.end_value_left = 99999999999
+            self.end_value_right = 99999999999
             print("fail")
 
         if self.end_value_left is not None and self.end_value_right is not None:
