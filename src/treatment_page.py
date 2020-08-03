@@ -49,6 +49,12 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
         Gtk.DrawingArea, Gtk.Template.Child
     ] = Gtk.Template.Child()
 
+    left_right_label: Union[Gtk.Button, Gtk.Template.Child] = Gtk.Template.Child()
+    up_down_label: Union[Gtk.Button, Gtk.Template.Child] = Gtk.Template.Child()
+    tilt_label: Union[Gtk.Button, Gtk.Template.Child] = Gtk.Template.Child()
+    left_pusher_label: Union[Gtk.Button, Gtk.Template.Child] = Gtk.Template.Child()
+    right_pusher_label: Union[Gtk.Button, Gtk.Template.Child] = Gtk.Template.Child()
+
     visualising: bool = False
 
     def __init__(self, **kwargs):
@@ -208,8 +214,8 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
         self.left_right_label.set_text(Connection()["main"]["left_right"])
         self.up_down_label.set_text(Connection()["main"]["up_down"])
         self.tilt_label.set_text(Connection()["main"]["tilt"])
-        self.pusher_left_label.set_text(Connection()["main"]["left_pusher"])
-        self.pusher_right_label.set_text(Connection()["main"]["right_pusher"])
+        self.left_pusher_label.set_text(Connection()["main"]["left_pusher"])
+        right_self.pright_label.set_text(Connection()["main"]["right_pusher"])
 
         handle = Rsvg.Handle.new_from_data(svg.encode())
 
