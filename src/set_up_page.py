@@ -330,8 +330,6 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
         self.left_pusher_label.set_text(str(Connection()["setup"]["left_pusher"]))
         self.right_pusher_label.set_text(str(Connection()["setup"]["right_pusher"]))
 
-        print(self.end_value_left, self.end_value_right)
-
         self.end_pos_left_label.set_text(
             str(self.end_value_left) if self.end_value_left is not None else "-"
         )
@@ -340,7 +338,7 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
         )
 
         if self.running:
-            GLib.timeout_add(1000 / 10, self.display_camera_input_loop)
+            GLib.timeout_add(1000 / 10, self.update_labels_loop)
 
     def do_destroy(self) -> None:
         """When the window is destroyed, stop all threads and quit."""
@@ -407,20 +405,16 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
         Args:
             button (Gtk.Button): The button that was clicked
         """
-        print("save pos")
         try:
             self.end_value_left = Connection()["setup"]["left_pusher"]
             self.end_value_right = Connection()["setup"]["right_pusher"]
-            print("succ", self.end_value_left, self.end_value_right)
         except ConnectionRefusedError:
             self.get_toplevel().show_error("Die Liege wurde nicht erkannt")
 
             self.end_value_left = 99999999999
             self.end_value_right = 99999999999
-            print("fail")
 
         if self.end_value_left is not None and self.end_value_right is not None:
-            print("sensitive")
             self.ok_button.set_sensitive(True)
 
 
