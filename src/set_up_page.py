@@ -330,6 +330,8 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
         self.left_pusher_label.set_text(str(Connection()["setup"]["left_pusher"]))
         self.right_pusher_label.set_text(str(Connection()["setup"]["right_pusher"]))
 
+        str = lambda x: [print(x), str(x)][1]
+
         self.end_pos_left_label.set_text(
             str(self.end_value_left) if self.end_value_left is not None else "-"
         )
@@ -338,7 +340,7 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
         )
 
         if self.running:
-            GLib.timeout_add(1000 / 5, self.display_camera_input_loop)
+            GLib.timeout_add(1000 / 10, self.display_camera_input_loop)
 
     def do_destroy(self) -> None:
         """When the window is destroyed, stop all threads and quit."""
