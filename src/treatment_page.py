@@ -69,7 +69,7 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
         except ConnectionRefusedError:
             import traceback
 
-            traceback.print_stack()
+            traceback.print_exc()
             print("OPC UA does not seem to be running on this device")
 
         self.start_button.show()
@@ -183,7 +183,7 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
         except ConnectionRefusedError:
             import traceback
 
-            traceback.print_stack()
+            traceback.print_exc()
             print("OPC UA does not seem to be running on this device")
             self.visualising = False
             return
