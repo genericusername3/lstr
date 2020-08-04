@@ -414,6 +414,9 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
             self.end_value_left = 99999999999
             self.end_value_right = 99999999999
 
+            self.end_pos_left_label.set_text(str(self.end_value_left))
+            self.end_pos_right_label.set_text(str(self.end_value_right))
+
         if self.end_value_left is not None and self.end_value_right is not None:
             self.ok_button.set_sensitive(True)
 
