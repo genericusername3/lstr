@@ -1,12 +1,13 @@
 @define-color accent slateblue;
 @define-color accent-contrast #fff;
+@define-color accent-contrast-contrast #000;
 
-@define-color error red;
+@define-color error orangered;
 @define-color warning gold;
 
 @define-color good lime;
 @define-color medium gold;
-@define-color bad red;
+@define-color bad orangered;
 
 entry, button {
     border-radius: 10px;
@@ -38,30 +39,57 @@ entry.error:focus, entry.error:focus * {
 }
 
 
-headerbar {
-    background: #222;
+button.suggested-action:disabled {
+    border: none;
+    background: @good;
+    color: #222;
+    opacity: 0.4;
+}
+button.suggested-action:disabled * {
+    color: #222;
+}
+
+button.suggested-action {
+    background: @good;
+    border: 2px solid #888;
+    color: #222;
+}
+button.suggested-action * {
+    color: #222;
+}
+
+button.suggested-action:hover {
+    background: shade(@good, 0.9);
+    color: #222;
+}
+
+button.suggested-action:active {
+    background: shade(@good, 0.8);
+    color: #222;
+}
+
+button.destructive-action {
+    background: @bad;
+    border: 2px solid #888;
+    color: #fff;
+}
+button.destructive-action * {
     color: #fff;
 }
 
-headerbar button {
-    border: solid 2px alpha(#fff, 0.5);
+button.destructive-action:hover {
+    background: shade(@bad, 0.9);
     color: #fff;
 }
 
-headerbar button:hover {
-    background: rgba(255, 255, 255, 0.1);
+button.destructive-action:active {
+    background: shade(@bad, 0.8);
     color: #fff;
 }
-
-headerbar button:active {
-    background: rgba(255, 255, 255, 0.2);
-    color: #fff;
-}
-
 
 
 stackswitcher {
-    background-color: rgba(128, 128, 128, 0.2);
+    background-color: @accent-contrast;
     padding: 4px
 }
 
@@ -141,4 +169,8 @@ grid.keyboard button.key.locked {
     background: @accent;
     color: #fff;
     border: none;
+}
+
+popover {
+    box-shadow: 0px 0px 4px rgb(128, 128, 128);
 }

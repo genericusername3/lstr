@@ -1,5 +1,6 @@
 @define-color accent bisque;
 @define-color accent-contrast #222;
+@define-color accent-contrast-contrast #ddd;
 
 @define-color info mix(mediumspringgreen, @accent, 0.5);
 @define-color error mix(indianred, @accent, 0.3);
@@ -183,8 +184,8 @@ entry.error selection {
 }
 
 headerbar {
-    background: #ddd;
-    color: #222;
+    background: @accent-contrast;
+    color: @accent-contrast-contrast;
     padding: 0px 2px;
     border: none;
     outline: none;
@@ -192,8 +193,8 @@ headerbar {
 
 headerbar button {
     background: none;
-    color: #222;
-    border: solid 2px alpha(black, 0.1);
+    color: @accent-contrast-contrast;
+    border: solid 2px alpha(@accent, 0.3);
     margin: 4px 2px;
 }
 
@@ -203,13 +204,13 @@ headerbar button:not(.image-button) {
 }
 
 headerbar button:hover {
-    background: rgba(0, 0, 0, 0.1);
-    color: #222;
+    background: alpha(@accent-contrast-contrast, 0.1);
+    color: @accent-contrast-contrast;
 }
 
 headerbar button:active {
-    background: rgba(0, 0, 0, 0.2);
-    color: #111;
+    background: alpha(@accent-contrast-contrast, 0.2);
+    color: @accent-contrast-contrast;
 }
 
 window {
@@ -447,4 +448,8 @@ grid.keyboard button.key.locked {
     background: mix(@accent, @accent-contrast, 0.2);
     color: @accent-contrast;
     border: none;
+}
+
+popover {
+    box-shadow: 2px 2px 6px rgba(128, 128, 128, 0.75);
 }
