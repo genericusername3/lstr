@@ -1,4 +1,5 @@
-@define-color accent darker(papayawhip);
+@define-color accent bisque;
+@define-color accent-contrast #222;
 
 @define-color info mix(mediumspringgreen, @accent, 0.5);
 @define-color error mix(indianred, @accent, 0.3);
@@ -10,6 +11,8 @@
 
 * {
     box-shadow: none;
+    text-shadow: none;
+    -gtk-icon-shadow: none;
 }
 
 row {
@@ -21,23 +24,23 @@ row {
 }
 
 row:nth-child(even) {
-    background-color: alpha(mix(@accent, #888, 0.5), 0.1);
+    background-color: alpha(mix(@accent, @accent-contrast, 0.4), 0.1);
 }
 
 row.activatable:not(:selected):hover {
-    background: alpha(mix(@accent, #bbb, 0.4), 0.2);
+    background: alpha(mix(@accent, @accent-contrast, 0.5), 0.2);
 }
 
 row.activatable:not(:selected):nth-child(even):hover {
-    background: alpha(mix(@accent, #bbb, 0.3), 0.2);
+    background: alpha(mix(@accent, @accent-contrast, 0.4), 0.2);
 }
 
 row.activatable:not(:selected):active {
-    background: alpha(mix(@accent, #bbb, 0.4), 0.3);
+    background: alpha(mix(@accent, @accent-contrast, 0.5), 0.3);
 }
 
 row.activatable:not(:selected):nth-child(even):active {
-    background: alpha(mix(@accent, #bbb, 0.3), 0.3);
+    background: alpha(mix(@accent, @accent-contrast, 0.4), 0.3);
 }
 
 entry, button, textview, textview text {
@@ -45,7 +48,7 @@ entry, button, textview, textview text {
     min-height: 32px;
     min-width: 28px;
     margin: 2px;
-    border: solid 2px alpha(mix(@accent, #888, 0.4), 0.6);
+    border: solid 2px alpha(mix(@accent, @accent-contrast, 0.5), 0.4);
     background: none;
 }
 
@@ -121,20 +124,20 @@ button.destructive-action:active {
 }
 
 entry:hover, button:hover {
-    background: alpha(mix(@accent, #bbb, 0.6), 0.1);
+    background: alpha(mix(@accent, @accent-contrast, 0.6), 0.1);
 }
 
 entry:focus, button:active {
-    background: alpha(mix(@accent, #bbb, 0.6), 0.2);
+    background: alpha(mix(@accent, @accent-contrast, 0.6), 0.2);
 }
 
 entry:focus {
-    border-color: shade(mix(@accent, #999, 0.4), 0.8);
+    border-color: mix(@accent, @accent-contrast, 0.5);
 }
 
 *:selected, selection, row:nth-child(even):selected {
-    background: @accent, 0.8;
-    color: #222;
+    background: @accent;
+    color: @accent-contrast;
 }
 
 
@@ -284,7 +287,7 @@ scale fill {
 scale slider {
     background-image: none;
     border-radius: 5px;
-    background-color: @accent;
+    background-color: mix(@accent, @accent-contrast, 0.15);
     min-width: 12px;
     min-height: 12px;
     margin: -8px;
@@ -292,7 +295,7 @@ scale slider {
     outline: none;
 }
 scale highlight {
-    background-color: @accent;
+    background-color: mix(@accent, @accent-contrast, 0.15);
     border-radius: 4px;
     margin-top: 12px;
     margin-bottom: 12px;
@@ -309,7 +312,7 @@ progressbar trough {
 }
 
 progressbar progress {
-    background-color: @accent;
+    background-color: mix(@accent, @accent-contrast, 0.15);
     min-height: 16px;
     min-width: 0;
     margin: 0;
@@ -336,7 +339,7 @@ combobox arrow {
 
 combobox:disabled>box>button:disabled {
     background: none;
-    border: 2px solid alpha(mix(@accent, #888, 0.8), 0.4);
+    border: 2px solid alpha(mix(@accent, @accent-contrast, 0.5), 0.3);
     color: #888;
 }
 combobox:disabled>box>button:disabled * {
@@ -355,7 +358,7 @@ combobox:disabled arrow {
 
 
 stackswitcher {
-    background-color: rgba(128, 128, 128, 0.1);
+    background-color: alpha(@accent-contrast, 0.6);
     padding: 4px
 }
 
@@ -363,6 +366,7 @@ stackswitcher button {
     padding-top: 0px;
     padding-bottom: 0px;
     border-color: @accent;
+    color: @accent;
 }
 
 stackswitcher button:not(:first-child):not(:last-child) {
@@ -388,7 +392,7 @@ stackswitcher button:last-child {
 stackswitcher button:checked {
     background-color: @accent;
     border-color: @accent;
-    color: #222;
+    color: @accent-contrast;
 }
 
 spinbutton entry {
@@ -440,6 +444,7 @@ grid.keyboard button.key.implicit.active, grid.keyboard button.key.implicit:acti
 }
 
 grid.keyboard button.key.locked {
-    background: mix(@accent, #333, 0.5);
+    background: mix(@accent, @accent-contrast, 0.2);
+    color: @accent-contrast;
     border: none;
 }

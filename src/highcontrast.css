@@ -1,4 +1,5 @@
-@define-color accent royalblue;
+@define-color accent slateblue;
+@define-color accent-contrast #fff;
 
 @define-color error red;
 @define-color warning gold;
@@ -58,6 +59,86 @@ headerbar button:active {
 }
 
 
+
+stackswitcher {
+    background-color: rgba(128, 128, 128, 0.2);
+    padding: 4px
+}
+
+stackswitcher button {
+    padding-top: 0px;
+    padding-bottom: 0px;
+    border-color: @accent;
+}
+
+stackswitcher button:not(:first-child):not(:last-child) {
+    border-radius: 0px;
+    border-left-width: 1px;
+    border-right-width: 1px;
+}
+
+stackswitcher button:first-child {
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    margin-right: 0px;
+    border-left-width: 2px;
+}
+
+stackswitcher button:last-child {
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    margin-left: 0px;
+    border-right-width: 2px;
+}
+
+stackswitcher button:checked {
+    background-color: @accent;
+    border-color: @accent;
+    color: #fff;
+}
+
+
 infobar button {
     border-color: alpha(#000, 0.5);
+}
+
+*:selected, selection, row:nth-child(even):selected {
+    background: @accent;
+    color: #fff;
+}
+
+
+
+grid.keyboard {
+    background: #111;
+}
+
+grid.keyboard button.key:not(.implicit) {
+    color: #fff;
+}
+
+grid.keyboard button.key.implicit {
+    background: #666;
+    color: #fff;
+}
+
+grid.keyboard button.key {
+    background: #444;
+    border: none;
+}
+
+grid.keyboard button.key.active, grid.keyboard button.key:active {
+    background: #666;
+    border: none;
+}
+
+grid.keyboard button.key.implicit.active, grid.keyboard button.key.implicit:active {
+    background: #888;
+    border: none;
+}
+
+grid.keyboard button.key.locked {
+    background: @accent;
+    color: #fff;
+    border: none;
 }
