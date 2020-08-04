@@ -6,6 +6,8 @@ import time
 
 from gi.repository import GObject, GLib, Gdk, Gtk  # type: ignore
 
+from . import osk_util
+
 
 # If shift is pressed twice in this time (seconds), activate caps lock
 CAPS_DOUBLE_CLICK_TIME: float = 1
@@ -72,6 +74,8 @@ class OnscreenKeyboard(Gtk.Grid):
     bksp_button: Union[Gtk.Button, Gtk.Template.Child] = Gtk.Template.Child()
 
     space_button: Union[Gtk.Button, Gtk.Template.Child] = Gtk.Template.Child()
+
+    close_button: Union[Gtk.Button, Gtk.Template.Child] = Gtk.Template.Child()
 
     shift_active: bool = False
     shift_lock: bool = False
@@ -176,6 +180,8 @@ class OnscreenKeyboard(Gtk.Grid):
         self.bksp_button.connect("button-press-event", self.on_bksp_pressed)
         self.bksp_button.connect("button-release-event", self.on_bksp_released)
 
+        self.close_button.connect("clicked", self.on_close_clicked)
+
     def on_key_clicked(self, button: Gtk.Button) -> None:
         """React to a button (key) being clicked.
 
@@ -203,9 +209,7 @@ class OnscreenKeyboard(Gtk.Grid):
 
         if isinstance(focus_widget, Gtk.Editable):
             focus_widget.insert_text(insert_text, focus_widget.get_position())
-            focus_widget.set_position(
-                focus_widget.get_position() + len(insert_text)
-            )
+            focus_widget.set_position(focus_widget.get_position() + len(insert_text))
 
         if not self.shift_lock:
             self.shift_active = False
@@ -241,9 +245,7 @@ class OnscreenKeyboard(Gtk.Grid):
 
         self.update_labels()
 
-    def on_bksp_pressed(
-        self, button: Gtk.Button, event: Gdk.EventButton
-    ) -> None:
+    def on_bksp_pressed(self, button: Gtk.Button, event: Gdk.EventButton) -> None:
         """Rect to the backspace button (key) being pressed.
 
         Args:
@@ -281,13 +283,9 @@ class OnscreenKeyboard(Gtk.Grid):
                     focus_widget.get_position() - 1, focus_widget.get_position()
                 )
 
-            GLib.timeout_add(
-                int(BKSP_REPEAT_INTERVAL * 1000), self.on_bksp_hold
-            )
+            GLib.timeout_add(int(BKSP_REPEAT_INTERVAL * 1000), self.on_bksp_hold)
 
-    def on_bksp_released(
-        self, button: Gtk.Button, event: Gdk.EventButton
-    ) -> None:
+    def on_bksp_released(self, button: Gtk.Button, event: Gdk.EventButton) -> None:
         """Rect to the backspace button (key) being released.
 
         Args:
@@ -296,6 +294,15 @@ class OnscreenKeyboard(Gtk.Grid):
                 signal
         """
         self.bksp_pressed = False
+
+    def on_close_clicked(self, button: Gtk.Button):
+        """React to the user clicking the close button. Close the OSK.
+
+        Args:
+            button (Gtk.Button): The close button
+        """
+        osk_util.keyboard_show = True
+        osk_util.unrequest_keyboard()
 
     def update_labels(self):
         """Update the key labels according to modifiers."""

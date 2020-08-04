@@ -13,8 +13,8 @@ keyboard_needed: bool = False
 
 update_timer: Optional[Timer] = None
 
-UPDATE_DELAY: float = 0.1
-KEYBOARD_REACT_DELAY: float = 0.3
+UPDATE_DELAY: float = 0.15
+KEYBOARD_REACT_DELAY: float = 0.2
 
 keyboard_revealer: Optional[Gtk.Revealer] = None
 
