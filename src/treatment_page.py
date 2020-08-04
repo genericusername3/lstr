@@ -146,6 +146,8 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
         self.pause_button.show()
         self.cancel_button.show()
 
+        self.on_opcua_button_pressed(button, None, "main", "start_button")
+
     def on_pause_clicked(self, button: Gtk.Button) -> None:
         """React to the "Pause" button being clicked.
 
@@ -158,6 +160,8 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
         self.resume_button.show()
         self.pause_button.hide()
         self.cancel_button.show()
+
+        self.on_opcua_button_pressed(button, None, "main", "power_button")
 
     def on_resume_clicked(self, button: Gtk.Button) -> None:
         """React to the "Resume" button being clicked.
@@ -172,6 +176,8 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
         self.pause_button.show()
         self.cancel_button.show()
 
+        self.on_opcua_button_pressed(button, None, "main", "power_button")
+
     def on_cancel_clicked(self, button: Gtk.Button) -> None:
         """React to the "Cancel" button being clicked.
 
@@ -184,6 +190,8 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
         self.resume_button.hide()
         self.pause_button.hide()
         self.cancel_button.hide()
+
+        self.on_opcua_button_pressed(button, None, "main", "reset_button")
 
     def visualisation_loop(self) -> None:
         """Repeatedly render an SVG visualisation for the motor values."""

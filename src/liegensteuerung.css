@@ -49,6 +49,14 @@ entry, button, textview, textview text {
     background: none;
 }
 
+.clickable {
+    min-height: 32px;
+    min-width: 28px;
+    margin: 2px;
+    border: none;
+    background: none;
+}
+
 entry.smaller, button.smaller, textview.smaller, textview.smaller text {
     min-height: 24px;
     min-width: 24px;
@@ -125,8 +133,8 @@ entry:focus {
 }
 
 *:selected, selection, row:nth-child(even):selected {
-    background: alpha(mix(@accent, #bbb, 0.6), 0.8);
-    color: white;
+    background: @accent, 0.8;
+    color: #222;
 }
 
 

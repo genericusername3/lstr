@@ -16,6 +16,8 @@ from . import patient_util
 from .treatment_util import Treatment
 from .treatment_row import TreatmentRow, TreatmentHeader
 
+from . import touchcombobox
+
 
 today_year: int = date.today().year
 today_century: int = int(today_year / 100) * 100
@@ -53,7 +55,7 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
         last_name_entry (Union[Gtk.Entry, Gtk.Template.Child]) A Gtk.Entry for
             the patient's last name
 
-        gender_combobox_text (Union[Gtk.ComboBoxText, Gtk.Template.Child]) A
+        gender_touch_combobox (Union[touchcombobox.TouchComboBox, Gtk.Template.Child]) A
             Gtk.ComboBoxText for the patient's gender
 
         birth_date_day_entry (Union[Gtk.Entry, Gtk.Template.Child]) A Gtk.Entry
@@ -87,8 +89,8 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
     first_name_entry: Union[Gtk.Entry, Gtk.Template.Child] = Gtk.Template.Child()
     last_name_entry: Union[Gtk.Entry, Gtk.Template.Child] = Gtk.Template.Child()
 
-    gender_combobox_text: Union[
-        Gtk.ComboBoxText, Gtk.Template.Child
+    gender_touch_combobox: Union[
+        touchcombobox.TouchComboBox, Gtk.Template.Child
     ] = Gtk.Template.Child()
 
     birth_date_day_entry: Union[Gtk.Entry, Gtk.Template.Child] = Gtk.Template.Child()
@@ -126,7 +128,7 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
 
         self.patient_tabs_stack.set_visible_child_name("patient")
 
-        self.first_name_entry.grab_focus()
+        self.first_name_entry.grab_focus_without_selecting()
 
         self.export_success_info_bar.hide()
         self.export_success_info_bar.set_revealed(False)
@@ -137,8 +139,10 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
             self.first_name_entry.set_text(patient.first_name)
             self.last_name_entry.set_text(patient.last_name)
 
-            if not self.gender_combobox_text.set_active_id(patient.gender):
-                self.gender_combobox_text.set_active_id(None)
+            try:
+                self.gender_touch_combobox.set_active_id(patient.gender)
+            except KeyError:
+                self.gender_touch_combobox.set_active_id(None)
 
             # Thank god for ISO 8601
             (
@@ -171,7 +175,7 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
             self.first_name_entry.set_text("")
             self.last_name_entry.set_text("")
 
-            self.gender_combobox_text.set_active_id(None)
+            self.gender_touch_combobox.set_active_id(None)
 
             self.birth_date_day_entry.set_text("")
             self.birth_date_month_entry.set_text("")
@@ -207,6 +211,9 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
         """
         if self.get_parent() is None:
             return
+
+        for gender in patient_util.GENDERS:
+            self.gender_touch_combobox.add_item(gender, patient_util.GENDERS[gender])
 
         self.export_success_info_bar.connect("response", self.on_info_bar_response)
 
@@ -296,7 +303,7 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
         self.all_fields: Tuple[Gtk.Entry, ...] = (
             self.first_name_entry,
             self.last_name_entry,
-            self.gender_combobox_text,
+            self.gender_touch_combobox,
             self.birth_date_day_entry,
             self.birth_date_month_entry,
             self.birth_date_year_entry,
@@ -519,7 +526,7 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
                 and self.birth_date_year_entry.get_text() != ""
                 and self.birth_date_month_entry.get_text() != ""
                 and self.birth_date_day_entry.get_text() != ""
-                and self.gender_combobox_text.get_active_id() is not None
+                and self.gender_touch_combobox.get_active_id() is not None
                 and self.weight_entry.get_text().replace(",", ".") != ""
             ):
                 if self.patient is not None:
@@ -531,7 +538,7 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
                         + self.birth_date_month_entry.get_text()
                         + "-"
                         + self.birth_date_day_entry.get_text(),
-                        gender=self.gender_combobox_text.get_active_id(),
+                        gender=self.gender_touch_combobox.get_active_id(),
                         weight=float(self.weight_entry.get_text().replace(",", ".")),
                         comment=self.comment_entry.get_text().strip(),
                     )
@@ -545,7 +552,7 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
                         + self.birth_date_month_entry.get_text()
                         + "-"
                         + self.birth_date_day_entry.get_text(),
-                        gender=self.gender_combobox_text.get_active_id(),
+                        gender=self.gender_touch_combobox.get_active_id(),
                         weight=float(self.weight_entry.get_text().replace(",", ".")),
                         comment=self.comment_entry.get_text().strip(),
                     )

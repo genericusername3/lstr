@@ -106,6 +106,8 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
     back_button: Union[Gtk.Template.Child, Gtk.Button] = Gtk.Template.Child()
     back_button_revealer: Union[Gtk.Template.Child, Gtk.Revealer] = Gtk.Template.Child()
 
+    more_popover: Union[Gtk.Template.Child, Gtk.Popover] = Gtk.Template.Child()
+
     patient_button: Union[Gtk.Template.Child, Gtk.Button] = Gtk.Template.Child()
     patient_button_revealer: Union[
         Gtk.Template.Child, Gtk.Revealer
@@ -347,6 +349,8 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
         Args:
             button (Gtk.Button): The clicked button
         """
+        self.more_popover.popdown()
+
         assert self.active_user is not None
 
         self.switch_page(
@@ -362,6 +366,8 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
         Args:
             button (Gtk.Button): The clicked button
         """
+        self.more_popover.popdown()
+
         self.switch_page("users")
 
     def on_log_out_clicked(self, button: Gtk.Button) -> None:
@@ -370,6 +376,7 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
         Args:
             button (Gtk.Button): The clicked button
         """
+        self.more_popover.popdown()
         self.log_out()
 
     def on_shutdown_clicked(self, button: Gtk.Button) -> None:
@@ -378,6 +385,8 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
         Args:
             button (Gtk.Button): The clicked button
         """
+        self.more_popover.popdown()
+
         dialog = Gtk.MessageDialog(
             self.get_toplevel(),
             Gtk.DialogFlags.MODAL,

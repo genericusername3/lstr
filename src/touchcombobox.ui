@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.36.0 -->
+<interface>
+  <requires lib="gtk+" version="3.20"/>
+  <template class="TouchComboBox" parent="GtkBox">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="orientation">vertical</property>
+    <child>
+      <object class="GtkMenuButton" id="menu_button">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="focus_on_click">False</property>
+        <property name="receives_default">True</property>
+        <property name="border_width">0</property>
+        <property name="popover">popover</property>
+        <child>
+          <object class="GtkBox">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="spacing">8</property>
+            <child>
+              <object class="GtkLabel" id="active_label">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="valign">center</property>
+                <property name="xalign">0</property>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkImage">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="halign">center</property>
+                <property name="valign">center</property>
+                <property name="icon_name">go-down-symbolic</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="pack_type">end</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+        </child>
+        <style>
+          <class name="smaller"/>
+        </style>
+      </object>
+      <packing>
+        <property name="expand">True</property>
+        <property name="fill">True</property>
+        <property name="position">0</property>
+      </packing>
+    </child>
+  </template>
+  <object class="GtkSizeGroup" id="label_size_group">
+    <widgets>
+      <widget name="item_list_box"/>
+      <widget name="active_label"/>
+    </widgets>
+  </object>
+  <object class="GtkPopover" id="popover">
+    <property name="can_focus">False</property>
+    <property name="border_width">4</property>
+    <property name="relative_to">menu_button</property>
+    <property name="position">bottom</property>
+    <child>
+      <object class="GtkListBox" id="item_list_box">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="border_width">8</property>
+        <property name="activate_on_single_click">False</property>
+      </object>
+    </child>
+  </object>
+  <object class="GtkSizeGroup" id="total_size_group">
+    <widgets>
+      <widget name="popover"/>
+      <widget name="menu_button"/>
+    </widgets>
+  </object>
+</interface>

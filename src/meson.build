@@ -46,6 +46,8 @@ liegensteuerung_sources = [
   'treatment_page.py',
   'users_page.py',
 
+  'touchcombobox.py',
+
   'patient_row.py',
   'program_row.py',
   'user_row.py',

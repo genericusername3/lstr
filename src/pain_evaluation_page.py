@@ -6,10 +6,12 @@ from gi.repository import GObject, Gtk  # type: ignore
 
 from .page import Page, PageClass
 
+from . import patient_util
 
-@Gtk.Template(
-    resource_path="/de/linusmathieu/Liegensteuerung/pain_evaluation_page.ui"
-)
+from . import touchcombobox
+
+
+@Gtk.Template(resource_path="/de/linusmathieu/Liegensteuerung/pain_evaluation_page.ui")
 class PainEvaluationPage(Gtk.Box, Page, metaclass=PageClass):
     """A page that prompts the user to input the patient's pain values.
 
@@ -21,8 +23,8 @@ class PainEvaluationPage(Gtk.Box, Page, metaclass=PageClass):
             (only available after confirming)
         pain_scale (Gtk.Scale or Gtk.Template.Child): A Gtk.Scale for pain
             intensity (0-10)
-        pain_location_combobox_text (Gtk.ComboBoxText or Gtk.Template.Child): A
-            Gtk.ComboBoxText that offers the following options:
+        pain_location_touch_combobox (touchcombobox.TouchComboBox or Gtk.Template.Child): A
+            touchcombobox.TouchComboBox that offers the following options:
                 left
                 left-right
                 both
@@ -37,11 +39,9 @@ class PainEvaluationPage(Gtk.Box, Page, metaclass=PageClass):
     header_visible: bool = True
     title: str = "Schmerzen erfassen"
 
-    pain_scale: Union[
-        Gtk.Scale, Gtk.Template.Child
-    ] = Gtk.Template.Child()
-    pain_location_combobox_text: Union[
-        Gtk.ComboBoxText, Gtk.Template.Child
+    pain_scale: Union[Gtk.Scale, Gtk.Template.Child] = Gtk.Template.Child()
+    pain_location_touch_combobox: Union[
+        touchcombobox.TouchComboBox, Gtk.Template.Child
     ] = Gtk.Template.Child()
 
     save_button: Union[Gtk.Button, Gtk.Template.Child] = Gtk.Template.Child()
@@ -64,11 +64,11 @@ class PainEvaluationPage(Gtk.Box, Page, metaclass=PageClass):
 
         self.pain_scale.set_value(0)
 
-        self.pain_location_combobox_text.set_active_id(None)
+        self.pain_location_touch_combobox.set_active_id(None)
 
         self.save_button.set_sensitive(False)
 
-        self.pain_location_combobox_text.grab_focus()
+        self.pain_location_touch_combobox.grab_focus()
 
     def do_parent_set(self, old_parent: Optional[Gtk.Widget]) -> None:
         """React to the parent being set.
@@ -84,16 +84,23 @@ class PainEvaluationPage(Gtk.Box, Page, metaclass=PageClass):
 
         self.save_button.connect("clicked", self.on_save_clicked)
 
-        self.pain_location_combobox_text.connect("changed", self.on_pain_location_changed)
+        for pain_location in patient_util.PAIN_LOCATIONS:
+            self.pain_location_touch_combobox.add_item(
+                pain_location, patient_util.PAIN_LOCATIONS[pain_location].capitalize()
+            )
 
-    def on_pain_location_changed(self, combobox: Gtk.ComboBox):
+        self.pain_location_touch_combobox.connect(
+            "changed", self.on_pain_location_changed
+        )
+
+    def on_pain_location_changed(self, combobox: Gtk.ComboBox, new_id: str):
         """React to the selection of the pain location changing.
 
         Args:
             combobox (Gtk.ComboBox): The pain location combobox
+            new_id (str): The ID of the new pain location
         """
         self.save_button.set_sensitive(True)
-
 
     def on_save_clicked(self, button: Gtk.Button) -> None:
         """React to the save button being clicked.
@@ -107,14 +114,14 @@ class PainEvaluationPage(Gtk.Box, Page, metaclass=PageClass):
             window.treatment_timestamp = window.active_patient.add_pain_entry(
                 window.active_user,
                 self.pain_scale.get_value(),
-                self.pain_location_combobox_text.get_active_id(),
+                self.pain_location_touch_combobox.get_active_id(),
             )
         else:
             window.treatment_timestamp = window.active_patient.modify_pain_entry(
                 window.treatment_timestamp,
                 window.active_user,
                 self.pain_scale.get_value(),
-                self.pain_location_combobox_text.get_active_id(),
+                self.pain_location_touch_combobox.get_active_id(),
             )
 
         window.switch_page("setup")
