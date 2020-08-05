@@ -1,6 +1,6 @@
-@define-color accent bisque;
-@define-color accent-contrast #222;
-@define-color accent-contrast-contrast #ddd;
+@define-color accent slateblue;
+@define-color accent-contrast #ddd;
+@define-color accent-contrast-contrast #222;
 
 @define-color info mix(mediumspringgreen, @accent, 0.5);
 @define-color error mix(indianred, @accent, 0.3);
@@ -137,7 +137,7 @@ entry:focus {
 }
 
 *:selected, selection, row:nth-child(even):selected {
-    background: @accent;
+    background: shade(@accent, 0.85);
     color: @accent-contrast;
 }
 
