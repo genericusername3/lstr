@@ -1,12 +1,12 @@
-@define-color accent shade(aquamarine, 0.75);
+@define-color accent mix(#888, aqua, 0.7);
 @define-color accent-contrast #222;
 @define-color accent-contrast-contrast #ddd;
 
-@define-color info mix(mediumspringgreen, @accent, 0.3);
+@define-color info @accent;
 @define-color error mix(indianred, @accent, 0.1);
 @define-color warning mix(lightsalmon, @accent, 0.1);
 
-@define-color good mix(mediumspringgreen, @accent, 0.3);
+@define-color good @accent;
 @define-color medium mix(lightsalmon, @accent, 0.1);
 @define-color bad mix(indianred, @accent, 0.1);
 
@@ -238,7 +238,7 @@ infobar.warning {
 }
 
 infobar.info {
-    background: alpha(@info, 0.8);
+    background: @info;
     color: #222;
 }
 
