@@ -1,14 +1,14 @@
-@define-color accent slateblue;
-@define-color accent-contrast #ddd;
-@define-color accent-contrast-contrast #222;
+@define-color accent shade(aquamarine, 0.75);
+@define-color accent-contrast #222;
+@define-color accent-contrast-contrast #ddd;
 
-@define-color info mix(mediumspringgreen, @accent, 0.5);
-@define-color error mix(indianred, @accent, 0.3);
-@define-color warning mix(lightsalmon, @accent, 0.3);
+@define-color info mix(mediumspringgreen, @accent, 0.3);
+@define-color error mix(indianred, @accent, 0.1);
+@define-color warning mix(lightsalmon, @accent, 0.1);
 
-@define-color good mediumspringgreen;
-@define-color medium lightsalmon;
-@define-color bad indianred;
+@define-color good mix(mediumspringgreen, @accent, 0.3);
+@define-color medium mix(lightsalmon, @accent, 0.1);
+@define-color bad mix(indianred, @accent, 0.1);
 
 * {
     box-shadow: none;
@@ -359,7 +359,7 @@ combobox:disabled arrow {
 
 
 stackswitcher {
-    background-color: alpha(@accent-contrast, 0.6);
+    background-color: alpha(@accent-contrast, 0.8);
     padding: 4px
 }
 

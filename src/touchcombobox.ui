@@ -8,6 +8,7 @@
     <property name="orientation">vertical</property>
     <child>
       <object class="GtkMenuButton" id="menu_button">
+        <property name="height_request">40</property>
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <property name="focus_on_click">False</property>

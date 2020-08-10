@@ -227,10 +227,6 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
         #     moving_color="#eacc9a"
         #     if Connection()["main"]["is_pusher_active"]
         #     else "#d8d8d8",
-        #     left_right=Connection()["main"]["left_right"] * LEFT_RIGHT_FACTOR,
-        #     left_right_scale=(
-        #         0.85 + (Connection()["main"]["left_right"] * LEFT_RIGHT_SCALE_FACTOR)
-        #     ),
         #     up_down=Connection()["main"]["up_down"] * UP_DOWN_FACTOR,
         #     rotation=Connection()["main"]["tilt"],
         #     left_pusher=25 - Connection()["main"]["left_pusher"],
@@ -241,8 +237,6 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
         svg: str = SVG_CODE.format(
             fg_color=style_ctx.get_color(style_ctx.get_state()).to_string(),
             moving_color="#eacc9a",
-            left_right=math.sin(time.time()) * 50,
-            left_right_scale=(0.85 + (math.sin(time.time()) * 0.15)),
             up_down=math.sin(time.time()) * 50,
             rotation=math.sin(time.time()) * 30,
             left_pusher=math.sin(time.time() / 2.0) * 25 + 25,
