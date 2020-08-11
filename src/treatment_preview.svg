@@ -34,12 +34,12 @@
 
   <g transform="translate(0, {up_down}) rotate({rotation}, 1000, 750)"> <!-- translate -50 to 50 -->
     <rect x="1012.5" y="550" width="75" height="100" rx="25" fill="{moving_color}"
-      transform="translate(0, {right_pusher})"
+      transform="translate(0, {right_pusher})" opacity="0.8"
     />  <!-- translate 0 to 0 x -25 to 25 -->
-    <rect x="875" y="600" width="250" height="250" fill="{moving_color}" rx="25"/>
     <rect
       x="912.5" y="550" width="75" height="100" rx="25" fill="{moving_color}"
-      transform="translate(0, {left_pusher})"
+      transform="translate(0, {left_pusher})" opacity="0.8"
     />  <!-- translate 0 to 0 x -25 to 25 -->
+    <rect x="875" y="600" width="250" height="250" fill="{moving_color}" rx="25"/>
   </g>
 </svg>

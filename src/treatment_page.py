@@ -224,7 +224,7 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
 
         # svg: str = SVG_CODE.format(
         #     fg_color=style_ctx.get_color(style_ctx.get_state()).to_string(),
-        #     moving_color="#eacc9a"
+        #     moving_color="teal"
         #     if Connection()["main"]["is_pusher_active"]
         #     else "#d8d8d8",
         #     up_down=Connection()["main"]["up_down"] * UP_DOWN_FACTOR,
@@ -236,7 +236,7 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
 
         svg: str = SVG_CODE.format(
             fg_color=style_ctx.get_color(style_ctx.get_state()).to_string(),
-            moving_color="#eacc9a",
+            moving_color="teal",
             up_down=math.sin(time.time()) * 50,
             rotation=math.sin(time.time()) * 30,
             left_pusher=math.sin(time.time() / 2.0) * 25 + 25,
