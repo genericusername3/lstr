@@ -207,8 +207,7 @@ class Patient(GObject.Object):
         """
         patient = Patient(
             patient_id=int(
-                cursor.execute("SELECT MAX(id) FROM patients").fetchone()[0]
-                or 0
+                cursor.execute("SELECT MAX(id) FROM patients").fetchone()[0] or 0
             )
             + 1,
             first_name=first_name,
@@ -364,9 +363,7 @@ class Patient(GObject.Object):
 
     @staticmethod
     def get_for_query(
-        query: str,
-        sort_key_func: Optional[Callable] = None,
-        reverse: bool = False,
+        query: str, sort_key_func: Optional[Callable] = None, reverse: bool = False,
     ) -> Generator["Patient", None, None]:
         """Yield all patients in the database.
 
@@ -467,9 +464,7 @@ class Patient(GObject.Object):
             ValueError: If the pain values provided are invalid
         """
         if pain_intensity not in range(11):
-            raise ValueError(
-                "pain_intensity must be between 0 and 10 (inclusive)"
-            )
+            raise ValueError("pain_intensity must be between 0 and 10 (inclusive)")
         if int(pain_intensity) != pain_intensity:
             raise ValueError("pain_intensity must be an int")
 
@@ -488,13 +483,7 @@ class Patient(GObject.Object):
                 VALUES
                     (?, ?, ?, ?, ?)
             """,
-            (
-                self.patient_id,
-                timestamp,
-                username,
-                pain_intensity,
-                pain_location,
-            ),
+            (self.patient_id, timestamp, username, pain_intensity, pain_location,),
         )
         connection.commit()
 
@@ -532,11 +521,7 @@ class Patient(GObject.Object):
         return new_timestamp
 
     def modify_pain_entry(
-        self,
-        timestamp: int,
-        username: str,
-        pain_intensity: int,
-        pain_location: str,
+        self, timestamp: int, username: str, pain_intensity: int, pain_location: str,
     ) -> int:
         """Modify a pain entry in the database.
 
@@ -571,13 +556,7 @@ class Patient(GObject.Object):
                 SET pain_intensity = ?, pain_location = ?, timestamp = ?
                 WHERE patient_id=? AND timestamp=?
             """,
-            (
-                pain_intensity,
-                pain_location,
-                new_timestamp,
-                self.patient_id,
-                timestamp,
-            ),
+            (pain_intensity, pain_location, new_timestamp, self.patient_id, timestamp,),
         )
         connection.commit()
 
@@ -598,6 +577,7 @@ class Patient(GObject.Object):
             )
         except Exception:
             import traceback
+
             print(traceback.format_exc())
             raise IOError("Export fehlgeschlagen")
 
@@ -609,10 +589,7 @@ class Patient(GObject.Object):
         """
         with open(path, mode="w") as patient_file:
             patient_writer = csv.writer(
-                patient_file,
-                delimiter=",",
-                quotechar='"',
-                quoting=csv.QUOTE_MINIMAL,
+                patient_file, delimiter=",", quotechar='"', quoting=csv.QUOTE_MINIMAL,
             )
 
             patient_writer.writerow(
@@ -648,7 +625,7 @@ class Patient(GObject.Object):
             )
 
             for treatment_row in cursor.execute(
-                f"""
+                """
                     SELECT
                         timestamp,
                         program_id,
@@ -706,9 +683,7 @@ if __name__ == "__main__":
         timestamp = p.add_pain_entry(
             "root",
             random.randint(0, 10),
-            random.choice(
-                ("left", "left-right", "both", "right-left", "right")
-            ),
+            random.choice(("left", "left-right", "both", "right-left", "right")),
         )
 
         p.add_treatment_entry(
