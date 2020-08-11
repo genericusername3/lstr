@@ -15,7 +15,7 @@ import atexit
 
 from gi.repository import GObject, Gio  # type: ignore
 
-from . import auth_util
+from .patient_util import Patient
 
 
 try:
@@ -91,6 +91,34 @@ class Treatment(GObject.Object):
                     username
                 FROM treatment_entries
             """
+        ).fetchall():
+            (
+                timestamp,
+                program_id,
+                pain_intensity,
+                pain_location,
+                username,
+            ) = treatment_row
+
+            yield Treatment(
+                timestamp, program_id, pain_intensity, pain_location, username
+            )
+
+    @staticmethod
+    def get_for_patient(patient: Patient) -> Generator["Treatment", None, None]:
+        """Yield all users in the database."""
+        for treatment_row in cursor.execute(
+            """
+                SELECT
+                    timestamp,
+                    program_id,
+                    pain_intensity,
+                    pain_location,
+                    username
+                FROM treatment_entries
+                WHERE patient_id = ?
+            """,
+            (patient.patient_id,),
         ).fetchall():
             (
                 timestamp,

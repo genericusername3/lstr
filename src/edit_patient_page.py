@@ -321,8 +321,11 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
 
     def update_treatments(self) -> None:
         """Re-query all treatments."""
+        assert self.patient is not None
+
         self.treatment_list_box.bind_model(
-            Treatment.iter_to_model(Treatment.get_all()), TreatmentRow,
+            Treatment.iter_to_model(Treatment.get_for_patient(self.patient)),
+            TreatmentRow,
         )
         self.treatment_list_box.show_all()
 
