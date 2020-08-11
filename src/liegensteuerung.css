@@ -221,7 +221,7 @@ window {
 
 messagedialog {
     border: 1px #888 solid;
-    border-radius: 0px;
+    border-radius: 8px;
 }
 
 messagedialog>* {
@@ -452,4 +452,8 @@ grid.keyboard button.key.locked {
 
 popover {
     box-shadow: 2px 2px 6px rgba(128, 128, 128, 0.75);
+}
+
+window.has-dialog {
+    opacity: 0.8;
 }

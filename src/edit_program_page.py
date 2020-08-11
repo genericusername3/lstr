@@ -12,9 +12,7 @@ from . import program_util
 from . import auth_util
 
 
-@Gtk.Template(
-    resource_path="/de/linusmathieu/Liegensteuerung/edit_program_page.ui"
-)
+@Gtk.Template(resource_path="/de/linusmathieu/Liegensteuerung/edit_program_page.ui")
 class EditProgramPage(Gtk.Box, Page, metaclass=PageClass):
     """A page that prompts the user to view, edit or create a program.
 
@@ -33,12 +31,8 @@ class EditProgramPage(Gtk.Box, Page, metaclass=PageClass):
 
     program: Optional[program_util.Program] = None
 
-    angle_change_down_entry: Union[
-        Gtk.Entry, Gtk.Template.Child
-    ] = Gtk.Template.Child()
-    angle_change_up_entry: Union[
-        Gtk.Entry, Gtk.Template.Child
-    ] = Gtk.Template.Child()
+    angle_change_down_entry: Union[Gtk.Entry, Gtk.Template.Child] = Gtk.Template.Child()
+    angle_change_up_entry: Union[Gtk.Entry, Gtk.Template.Child] = Gtk.Template.Child()
 
     distance_correction_down_left_entry: Union[
         Gtk.Entry, Gtk.Template.Child
@@ -56,27 +50,15 @@ class EditProgramPage(Gtk.Box, Page, metaclass=PageClass):
     move_distance_down_entry: Union[
         Gtk.Entry, Gtk.Template.Child
     ] = Gtk.Template.Child()
-    move_distance_up_entry: Union[
-        Gtk.Entry, Gtk.Template.Child
-    ] = Gtk.Template.Child()
+    move_distance_up_entry: Union[Gtk.Entry, Gtk.Template.Child] = Gtk.Template.Child()
 
-    pass_count_down_entry: Union[
-        Gtk.Entry, Gtk.Template.Child
-    ] = Gtk.Template.Child()
-    pass_count_up_entry: Union[
-        Gtk.Entry, Gtk.Template.Child
-    ] = Gtk.Template.Child()
+    pass_count_down_entry: Union[Gtk.Entry, Gtk.Template.Child] = Gtk.Template.Child()
+    pass_count_up_entry: Union[Gtk.Entry, Gtk.Template.Child] = Gtk.Template.Child()
 
-    pass_count_total_entry: Union[
-        Gtk.Entry, Gtk.Template.Child
-    ] = Gtk.Template.Child()
+    pass_count_total_entry: Union[Gtk.Entry, Gtk.Template.Child] = Gtk.Template.Child()
 
-    push_count_down_entry: Union[
-        Gtk.Entry, Gtk.Template.Child
-    ] = Gtk.Template.Child()
-    push_count_up_entry: Union[
-        Gtk.Entry, Gtk.Template.Child
-    ] = Gtk.Template.Child()
+    push_count_down_entry: Union[Gtk.Entry, Gtk.Template.Child] = Gtk.Template.Child()
+    push_count_up_entry: Union[Gtk.Entry, Gtk.Template.Child] = Gtk.Template.Child()
 
     pusher_delay_down_left_entry: Union[
         Gtk.Entry, Gtk.Template.Child
@@ -146,9 +128,7 @@ class EditProgramPage(Gtk.Box, Page, metaclass=PageClass):
     save_box: Union[Gtk.Box, Gtk.Template.Child] = Gtk.Template.Child()
     delete_button: Union[Gtk.Button, Gtk.Template.Child] = Gtk.Template.Child()
     save_button: Union[Gtk.Button, Gtk.Template.Child] = Gtk.Template.Child()
-    save_new_button: Union[
-        Gtk.Button, Gtk.Template.Child
-    ] = Gtk.Template.Child()
+    save_new_button: Union[Gtk.Button, Gtk.Template.Child] = Gtk.Template.Child()
 
     editable: bool = False
 
@@ -179,8 +159,7 @@ class EditProgramPage(Gtk.Box, Page, metaclass=PageClass):
 
         is_admin: bool = (
             self.get_toplevel().active_user is not None
-            and auth_util.get_access_level(self.get_toplevel().active_user)
-            == "admin"
+            and auth_util.get_access_level(self.get_toplevel().active_user) == "admin"
         )
 
         for entry in self.entries:
@@ -499,11 +478,7 @@ class EditProgramPage(Gtk.Box, Page, metaclass=PageClass):
             )
 
             entry.connect(
-                "insert-text",
-                self.on_num_entry_insert,
-                places,
-                minimum,
-                maximum,
+                "insert-text", self.on_num_entry_insert, places, minimum, maximum,
             )
 
             entry.connect_after("changed", self.on_after_entry_changed)
@@ -635,9 +610,7 @@ class EditProgramPage(Gtk.Box, Page, metaclass=PageClass):
 
                 value = value.quantize(q)
 
-                entry.set_text(
-                    str(value).replace(".", ",").zfill(leading_zeroes + 2)
-                )
+                entry.set_text(str(value).replace(".", ",").zfill(leading_zeroes + 2))
 
             else:  # Int
                 value = int(text)
@@ -695,6 +668,8 @@ class EditProgramPage(Gtk.Box, Page, metaclass=PageClass):
         """
         assert self.program is not None
 
+        self.get_toplevel().get_style_context().add_class("has-dialog")
+
         dialog = Gtk.MessageDialog(
             self.get_toplevel(),
             Gtk.DialogFlags.MODAL,
@@ -705,6 +680,8 @@ class EditProgramPage(Gtk.Box, Page, metaclass=PageClass):
         dialog.set_decorated(False)
         response: int = dialog.run()
         dialog.destroy()
+
+        self.get_toplevel().get_style_context().remove_class("has-dialog")
 
         if response == Gtk.ResponseType.YES:
             self.program.delete()
@@ -723,9 +700,7 @@ class EditProgramPage(Gtk.Box, Page, metaclass=PageClass):
 
         self.program.modify(
             **{
-                self.entries[entry]["column"]: float(
-                    entry.get_text().replace(",", ".")
-                )
+                self.entries[entry]["column"]: float(entry.get_text().replace(",", "."))
                 for entry in self.entries
                 if not self.entries[entry]["calculated_column"]
             }

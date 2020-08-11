@@ -387,6 +387,8 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
         """
         self.more_popover.popdown()
 
+        self.get_style_context().add_class("has-dialog")
+
         dialog = Gtk.MessageDialog(
             self.get_toplevel(),
             Gtk.DialogFlags.MODAL,
@@ -397,6 +399,8 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
         dialog.set_decorated(False)
         response: int = dialog.run()
         dialog.destroy()
+
+        self.get_style_context().remove_class("has-dialog")
 
         if response == Gtk.ResponseType.YES:
             subprocess.call(("shutdown", "-h", "now"))

@@ -591,6 +591,8 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
         """
         assert self.patient is not None
 
+        self.get_toplevel().get_style_context().add_class("has-dialog")
+
         dialog = Gtk.MessageDialog(
             self.get_toplevel(),
             Gtk.DialogFlags.MODAL,
@@ -604,6 +606,8 @@ class EditPatientPage(Gtk.Box, Page, metaclass=PageClass):
         dialog.set_decorated(False)
         response: int = dialog.run()
         dialog.destroy()
+
+        self.get_toplevel().get_style_context().remove_class("has-dialog")
 
         if response == Gtk.ResponseType.YES:
             self.patient.delete()

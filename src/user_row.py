@@ -101,9 +101,7 @@ class UserRow(Gtk.Box):
 
         # Password button
         if size_groups.get("PASSWORD_BUTTON", None) is None:
-            size_groups["PASSWORD_BUTTON"] = Gtk.SizeGroup(
-                Gtk.SizeGroupMode.BOTH
-            )
+            size_groups["PASSWORD_BUTTON"] = Gtk.SizeGroup(Gtk.SizeGroupMode.BOTH)
 
         change_password_button: Union[Gtk.Button, Gtk.Box]
 
@@ -113,9 +111,7 @@ class UserRow(Gtk.Box):
             )
             change_password_button.set_label("Passwort ändern")
             change_password_button.set_always_show_image(True)
-            change_password_button.connect(
-                "clicked", self.on_change_password_clicked
-            )
+            change_password_button.connect("clicked", self.on_change_password_clicked)
         else:
             change_password_button = Gtk.Box()
 
@@ -125,15 +121,11 @@ class UserRow(Gtk.Box):
 
         size_groups["PASSWORD_BUTTON"].add_widget(change_password_button)
 
-        h_box.pack_start(
-            change_password_button, expand=False, fill=False, padding=4
-        )
+        h_box.pack_start(change_password_button, expand=False, fill=False, padding=4)
 
         # Delete button
         if size_groups.get("DELETE_BUTTON", None) is None:
-            size_groups["DELETE_BUTTON"] = Gtk.SizeGroup(
-                Gtk.SizeGroupMode.BOTH
-            )
+            size_groups["DELETE_BUTTON"] = Gtk.SizeGroup(Gtk.SizeGroupMode.BOTH)
 
         delete_button: Union[Gtk.Button, Gtk.Box]
 
@@ -171,6 +163,8 @@ class UserRow(Gtk.Box):
         Args:
             button (Gtk.Button): The clicked button
         """
+        self.get_toplevel().get_style_context().add_class("has-dialog")
+
         dialog = Gtk.MessageDialog(
             self.get_toplevel(),
             Gtk.DialogFlags.MODAL,
@@ -181,6 +175,8 @@ class UserRow(Gtk.Box):
         dialog.set_decorated(False)
         response: int = dialog.run()
         dialog.destroy()
+
+        self.get_toplevel().get_style_context().remove_class("has-dialog")
 
         if response == Gtk.ResponseType.YES:
             auth_util.delete_user(
@@ -233,9 +229,7 @@ class UserHeader(Gtk.Box):
 
         # Password button
         if size_groups.get("PASSWORD_BUTTON", None) is None:
-            size_groups["PASSWORD_BUTTON"] = Gtk.SizeGroup(
-                Gtk.SizeGroupMode.BOTH
-            )
+            size_groups["PASSWORD_BUTTON"] = Gtk.SizeGroup(Gtk.SizeGroupMode.BOTH)
 
         password_button_dummy: Gtk.Button = Gtk.Box()
         password_button_dummy.set_size_request(40, 40)
@@ -244,15 +238,11 @@ class UserHeader(Gtk.Box):
 
         size_groups["PASSWORD_BUTTON"].add_widget(password_button_dummy)
 
-        self.pack_start(
-            password_button_dummy, expand=False, fill=False, padding=4
-        )
+        self.pack_start(password_button_dummy, expand=False, fill=False, padding=4)
 
         # Delete button
         if size_groups.get("DELETE_BUTTON", None) is None:
-            size_groups["DELETE_BUTTON"] = Gtk.SizeGroup(
-                Gtk.SizeGroupMode.BOTH
-            )
+            size_groups["DELETE_BUTTON"] = Gtk.SizeGroup(Gtk.SizeGroupMode.BOTH)
 
         delete_button_dummy: Gtk.Button = Gtk.Box()
         delete_button_dummy.set_size_request(40, 40)
@@ -261,8 +251,6 @@ class UserHeader(Gtk.Box):
 
         size_groups["DELETE_BUTTON"].add_widget(delete_button_dummy)
 
-        self.pack_start(
-            delete_button_dummy, expand=False, fill=False, padding=4
-        )
+        self.pack_start(delete_button_dummy, expand=False, fill=False, padding=4)
 
         self.show_all()
