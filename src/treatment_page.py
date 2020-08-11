@@ -266,6 +266,7 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
         handle.render_cairo(cr)
 
         print("FPS:", 1 / (time.time() - last_render_time))
+        last_render_time = time.time()
 
 
 # Make TreatmentPage accessible via .ui files
