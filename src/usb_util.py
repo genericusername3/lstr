@@ -18,9 +18,7 @@ def get_usb_dirs() -> List[str]:
     Returns:
         List[str]: A list of paths that USB partitions are mounted to.
     """
-    p = subprocess.Popen(
-        ["df", "-h"], stdout=subprocess.PIPE, stderr=subprocess.PIPE
-    )
+    p = subprocess.Popen(["df", "-h"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     output, err = p.communicate()
 
     drives: List[str]
@@ -36,7 +34,7 @@ def get_usb_dirs() -> List[str]:
     usb_mount_points: List[str] = []
 
     for d in usb_drives:
-        usb_mount_points.append(d[title_row.lower().index("mounted on") :])
+        usb_mount_points.append(d[title_row.lower().index("%") + 2 :])
 
     return usb_mount_points
 
