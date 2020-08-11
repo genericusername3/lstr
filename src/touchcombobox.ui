@@ -77,6 +77,7 @@
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="border_width">8</property>
+        <property name="selection_mode">browse</property>
         <property name="activate_on_single_click">False</property>
       </object>
     </child>
