@@ -11,6 +11,12 @@ from .program_util import Program
 from .opcua_util import Connection
 
 
+# Performance tracking
+import time
+
+last_render_time = 0
+
+
 SVG_CODE: str = Gio.resources_lookup_data(
     "/de/linusmathieu/Liegensteuerung/treatment_preview.svg", 0
 ).get_data().decode()
@@ -258,6 +264,8 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
         cr.scale(scale, scale)
 
         handle.render_cairo(cr)
+
+        print("FPS:", 1 / (time.time() - last_render_time))
 
 
 # Make TreatmentPage accessible via .ui files
