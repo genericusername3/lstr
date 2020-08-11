@@ -222,25 +222,15 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
 
         style_ctx: Gtk.StyleContext = widget.get_style_context()
 
-        # svg: str = SVG_CODE.format(
-        #     fg_color=style_ctx.get_color(style_ctx.get_state()).to_string(),
-        #     moving_color="teal"
-        #     if Connection()["main"]["is_pusher_active"]
-        #     else "#d8d8d8",
-        #     up_down=Connection()["main"]["up_down"] * UP_DOWN_FACTOR,
-        #     rotation=Connection()["main"]["tilt"],
-        #     left_pusher=25 - Connection()["main"]["left_pusher"],
-        #     right_pusher=25 - Connection()["main"]["right_pusher"],
-        # )
-        import math, time
-
         svg: str = SVG_CODE.format(
             fg_color=style_ctx.get_color(style_ctx.get_state()).to_string(),
-            moving_color="teal",
-            up_down=math.sin(time.time()) * 50,
-            rotation=math.sin(time.time()) * 30,
-            left_pusher=math.sin(time.time() / 2.0) * 25 + 25,
-            right_pusher=math.sin(time.time() / 2.0) * 25 + 25,
+            moving_color="teal"
+            if Connection()["main"]["is_pusher_active"]
+            else "#d8d8d8",
+            up_down=Connection()["main"]["up_down"] * UP_DOWN_FACTOR,
+            rotation=Connection()["main"]["tilt"],
+            left_pusher=25 - Connection()["main"]["left_pusher"],
+            right_pusher=25 - Connection()["main"]["right_pusher"],
         )
 
         self.left_right_label.set_text(str(Connection()["main"]["left_right"]))
