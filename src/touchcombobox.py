@@ -154,8 +154,11 @@ class TouchComboBox(Gtk.Box):
         if item_id in self.items:
             self.item_list_box.select_row(self.item_widgets[item_id])
         elif item_id is None:
+            self.item_list_box.select_row(list(self.item_widgets.values())[0])
             self.active_label.set_text("")
-            self.item_list_box.unselect_all()
+            self.active_id = item_id
+
+            self.emit("changed", None)
         else:
             raise KeyError(f'"{item_id}" is not an item of this TouchComboBox')
 
