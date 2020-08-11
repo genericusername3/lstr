@@ -221,7 +221,7 @@ window {
 
 messagedialog {
     border: 1px #888 solid;
-    border-radius: 8px;
+    border-radius: 0px;
 }
 
 messagedialog>* {
@@ -454,6 +454,6 @@ popover {
     box-shadow: 2px 2px 6px rgba(128, 128, 128, 0.75);
 }
 
-window.has-dialog {
+window.has-dialog>* {
     opacity: 0.8;
 }
