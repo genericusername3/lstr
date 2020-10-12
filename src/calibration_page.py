@@ -86,13 +86,15 @@ class CalibrationPage(Gtk.Box, Page, metaclass=PageClass):
         self.on_opcua_button_pressed(button, None, "main", "reset")
 
         try:
-            if opcua_util.Connection()["main"]["reset"]:
-                button.set_always_show_image(True)
-                button.get_image().start()
+            # Confirm connection
+            opcua_util.Connection()["main"]["reset"]
 
-                self.emergency_off_revealer.set_reveal_child(True)
+            button.set_always_show_image(True)
+            button.get_image().start()
 
-                if_done_switch_to_next()
+            self.emergency_off_revealer.set_reveal_child(True)
+
+            if_done_switch_to_next()
 
         except ConnectionRefusedError:
             self.get_toplevel().show_error("Die Liege wurde nicht erkannt")
