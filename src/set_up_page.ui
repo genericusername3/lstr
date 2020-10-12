@@ -51,6 +51,7 @@
     <property name="valign">center</property>
     <property name="hexpand">True</property>
     <property name="icon_name">emblem-ok-symbolic</property>
+    <property name="icon_size">3</property>
   </object>
   <object class="GtkImage" id="reset_icon">
     <property name="visible">True</property>
@@ -59,6 +60,7 @@
     <property name="valign">center</property>
     <property name="hexpand">True</property>
     <property name="icon_name">edit-undo-symbolic</property>
+    <property name="icon_size">3</property>
   </object>
   <object class="GtkImage" id="right_move_in_icon">
     <property name="visible">True</property>
@@ -79,6 +81,7 @@
     <property name="can_focus">False</property>
     <property name="valign">center</property>
     <property name="icon_name">document-save-symbolic</property>
+    <property name="icon_size">3</property>
   </object>
   <object class="GtkImage" id="tilt_down_icon">
     <property name="visible">True</property>

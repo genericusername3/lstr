@@ -71,12 +71,8 @@ class LoginPage(Gtk.Box, Page, metaclass=PageClass):
         self.username_entry.connect("focus-out-event", self.on_unfocus_entry)
         self.password_entry.connect("focus-out-event", self.on_unfocus_entry)
 
-        self.username_entry.connect(
-            "button-press-event", self.on_entry_button_press
-        )
-        self.password_entry.connect(
-            "button-press-event", self.on_entry_button_press
-        )
+        self.username_entry.connect("button-press-event", self.on_entry_button_press)
+        self.password_entry.connect("button-press-event", self.on_entry_button_press)
 
         self.username_entry.connect(
             "button-release-event", self.on_entry_button_release
@@ -118,7 +114,7 @@ class LoginPage(Gtk.Box, Page, metaclass=PageClass):
                     self.password_entry.get_text()
                 )
 
-                self.get_toplevel().switch_page("select_patient")
+                self.get_toplevel().switch_page("calibration")
 
                 self.get_toplevel().clear_history()
 

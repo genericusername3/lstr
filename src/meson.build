@@ -35,6 +35,7 @@ liegensteuerung_sources = [
 
   'keyboard.py',
 
+  'calibration_page.py',
   'edit_patient_page.py',
   'edit_program_page.py',
   'login_page.py',
@@ -50,17 +51,17 @@ liegensteuerung_sources = [
 
   'patient_row.py',
   'program_row.py',
-  'user_row.py',
   'treatment_row.py',
+  'user_row.py',
 
   'auth_util.py',
-  'osk_util.py',
   'opcua_util.py',
+  'osk_util.py',
   'patient_util.py',
   'program_util.py',
+  'treatment_util.py',
   'usb_util.py',
   'user_util.py',
-  'treatment_util.py',
 ]
 
 install_data(liegensteuerung_sources, install_dir: moduledir)

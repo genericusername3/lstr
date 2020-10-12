@@ -6,11 +6,13 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="icon_name">go-previous-symbolic</property>
+    <property name="icon_size">3</property>
   </object>
   <object class="GtkImage" id="more_icon">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="icon_name">view-more-symbolic</property>
+    <property name="icon_size">3</property>
   </object>
   <object class="GtkPopoverMenu" id="more_popover">
     <property name="can_focus">False</property>
@@ -41,6 +43,7 @@
                     <property name="margin_top">12</property>
                     <property name="margin_bottom">12</property>
                     <property name="icon_name">dialog-password-symbolic</property>
+                    <property name="icon_size">3</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -94,6 +97,7 @@
                     <property name="margin_top">12</property>
                     <property name="margin_bottom">12</property>
                     <property name="icon_name">system-users-symbolic</property>
+                    <property name="icon_size">3</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -147,6 +151,7 @@
                     <property name="margin_top">12</property>
                     <property name="margin_bottom">12</property>
                     <property name="icon_name">system-log-out-symbolic</property>
+                    <property name="icon_size">3</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -200,6 +205,7 @@
                     <property name="margin_top">12</property>
                     <property name="margin_bottom">12</property>
                     <property name="icon_name">system-shutdown-symbolic</property>
+                    <property name="icon_size">3</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -241,6 +247,7 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="icon_name">avatar-default-symbolic</property>
+    <property name="icon_size">3</property>
   </object>
   <template class="LiegensteuerungWindow" parent="GtkApplicationWindow">
     <property name="can_focus">False</property>
@@ -358,70 +365,6 @@
           </packing>
         </child>
         <child>
-          <object class="GtkInfoBar" id="no_patient_info_bar">
-            <property name="height_request">50</property>
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="valign">start</property>
-            <property name="spacing">12</property>
-            <property name="message_type">warning</property>
-            <child internal-child="action_area">
-              <object class="GtkButtonBox">
-                <property name="can_focus">False</property>
-                <child>
-                  <placeholder/>
-                </child>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child internal-child="content_area">
-              <object class="GtkBox">
-                <property name="can_focus">False</property>
-                <property name="spacing">16</property>
-                <child>
-                  <object class="GtkImage">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="icon_name">dialog-warning-symbolic</property>
-                    <property name="icon_size">1</property>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkLabel">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">Der Patient sollte noch nicht auf der Liege liegen</property>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">1</property>
-                  </packing>
-                </child>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">1</property>
-          </packing>
-        </child>
-        <child>
           <object class="GtkInfoBar" id="error_bar">
             <property name="can_focus">False</property>
             <property name="valign">start</property>
@@ -514,12 +457,21 @@
                   </packing>
                 </child>
                 <child>
+                  <object class="CalibrationPage">
+                    <property name="visible">True</property>
+                  </object>
+                  <packing>
+                    <property name="name">calibration</property>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
+                <child>
                   <object class="EditPatientPage">
                     <property name="visible">True</property>
                   </object>
                   <packing>
                     <property name="name">edit_patient</property>
-                    <property name="position">2</property>
+                    <property name="position">3</property>
                   </packing>
                 </child>
                 <child>
@@ -528,7 +480,7 @@
                   </object>
                   <packing>
                     <property name="name">setup</property>
-                    <property name="position">3</property>
+                    <property name="position">4</property>
                   </packing>
                 </child>
                 <child>
@@ -537,7 +489,7 @@
                   </object>
                   <packing>
                     <property name="name">select_patient</property>
-                    <property name="position">4</property>
+                    <property name="position">5</property>
                   </packing>
                 </child>
                 <child>
@@ -546,7 +498,7 @@
                   </object>
                   <packing>
                     <property name="name">pain_evaluation</property>
-                    <property name="position">5</property>
+                    <property name="position">6</property>
                   </packing>
                 </child>
                 <child>
@@ -555,7 +507,7 @@
                   </object>
                   <packing>
                     <property name="name">select_program</property>
-                    <property name="position">6</property>
+                    <property name="position">7</property>
                   </packing>
                 </child>
                 <child>
@@ -564,7 +516,7 @@
                   </object>
                   <packing>
                     <property name="name">treatment</property>
-                    <property name="position">7</property>
+                    <property name="position">8</property>
                   </packing>
                 </child>
                 <child>
@@ -573,7 +525,7 @@
                   </object>
                   <packing>
                     <property name="name">edit_program</property>
-                    <property name="position">8</property>
+                    <property name="position">9</property>
                   </packing>
                 </child>
                 <child>
@@ -582,7 +534,7 @@
                   </object>
                   <packing>
                     <property name="name">users</property>
-                    <property name="position">9</property>
+                    <property name="position">10</property>
                   </packing>
                 </child>
               </object>
@@ -626,6 +578,7 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="icon_name">system-shutdown-symbolic</property>
+    <property name="icon_size">3</property>
   </object>
   <object class="GtkRevealer" id="shutdown_compact_revealer">
     <property name="visible">True</property>

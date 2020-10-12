@@ -6,6 +6,7 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="icon_name">list-add-symbolic</property>
+    <property name="icon_size">3</property>
   </object>
   <template class="SelectPatientPage" parent="GtkBox">
     <property name="visible">True</property>

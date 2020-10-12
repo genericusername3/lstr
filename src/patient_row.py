@@ -68,9 +68,7 @@ class PatientRow(Gtk.Box):
 
             if column in patient_util.DATE_COLUMNS:
                 text = (
-                    "<tt>"
-                    + datetime.fromisoformat(text).strftime("%d.%m.%Y")
-                    + "</tt>"
+                    "<tt>" + datetime.fromisoformat(text).strftime("%d.%m.%Y") + "</tt>"
                 )
 
             cell_label = Gtk.Label(label=text, use_markup=True)
@@ -148,9 +146,7 @@ class PatientHeader(Gtk.Box):
                 col_index,
             )
 
-            cell_box = Gtk.Box(
-                orientation=Gtk.Orientation.HORIZONTAL, spacing=8
-            )
+            cell_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
 
             cell_label = Gtk.Label(label=text)
 
@@ -159,17 +155,13 @@ class PatientHeader(Gtk.Box):
             cell_label.set_margin_start(4)
             cell_label.set_xalign(0)
 
-            cell_box.pack_start(
-                cell_label, expand=False, fill=False, padding=0
-            )
+            cell_box.pack_start(cell_label, expand=False, fill=False, padding=0)
 
             cell_sort_icon = Gtk.Image()
             self.sort_icons.append(cell_sort_icon)
             # cell_sort_icon.set_no_show_all(True)
 
-            cell_box.pack_end(
-                cell_sort_icon, expand=False, fill=False, padding=0
-            )
+            cell_box.pack_end(cell_sort_icon, expand=False, fill=False, padding=0)
 
             size_groups[column].add_widget(cell_box)
 
@@ -192,9 +184,7 @@ class PatientHeader(Gtk.Box):
 
         size_groups["INFO_BUTTON"].add_widget(info_button_dummy)
 
-        self.pack_start(
-            info_button_dummy, expand=False, fill=False, padding=4
-        )
+        self.pack_start(info_button_dummy, expand=False, fill=False, padding=4)
 
         self.show_all()
 
@@ -220,8 +210,7 @@ class PatientHeader(Gtk.Box):
         """
         self.page.set_sort(
             column_index,
-            self.page.sort_column == column_index
-            and not self.page.sort_reverse,
+            self.page.sort_column == column_index and not self.page.sort_reverse,
         )
 
         self.update_sort_icons()
@@ -230,7 +219,7 @@ class PatientHeader(Gtk.Box):
         """Update the sort icons. Hide unnecessary ones, adapt the icons."""
         for image in self.sort_icons:
             image.set_opacity(0.3)
-            image.set_from_icon_name("go-down-symbolic", Gtk.IconSize.BUTTON)
+            image.set_from_icon_name("go-down-symbolic", Gtk.IconSize.LARGE_TOOLBAR)
 
         display_column_index: int = patient_util.DISPLAY_COLUMNS.index(
             patient_util.COLUMNS[self.page.sort_column]
@@ -240,7 +229,7 @@ class PatientHeader(Gtk.Box):
 
         if self.page.sort_reverse:
             self.sort_icons[display_column_index].set_from_icon_name(
-                "go-up-symbolic", Gtk.IconSize.BUTTON
+                "go-up-symbolic", Gtk.IconSize.LARGE_TOOLBAR
             )
 
         self.sort_icons[display_column_index].set_opacity(0.9)

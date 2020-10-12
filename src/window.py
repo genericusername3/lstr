@@ -13,6 +13,7 @@ from . import osk_util
 from . import page
 from . import (
     keyboard,
+    calibration_page,
     edit_patient_page,
     edit_program_page,
     login_page,
@@ -37,9 +38,6 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
         header_bar_revealer (Union[Gtk.Template.Child, Gtk.Revealer]): A
             Gtk.Revealer that contains the header bar.
 
-        no_patient_info_bar (Union[Gtk.Template.Child, Gtk.MessageBar]): A
-            Gtk.MessageBar that tells the user that the patient should not be
-            on the treatment couch yet (due to initialisation)
         error_bar (Union[Gtk.Template.Child, Gtk.MessageBar]): A Gtk.Message
             bar used to inform the user about occurring errors
         error_bar_label (Union[Gtk.Template.Child, Gtk.Label]): The Gtk.Label
@@ -97,8 +95,6 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
     page_stack: Union[Gtk.Template.Child, Gtk.Stack] = Gtk.Template.Child()
 
     header_bar_revealer: Union[Gtk.Template.Child, Gtk.Revealer] = Gtk.Template.Child()
-
-    no_patient_info_bar: Union[Gtk.Template.Child, Gtk.InfoBar] = Gtk.Template.Child()
 
     error_bar: Union[Gtk.Template.Child, Gtk.InfoBar] = Gtk.Template.Child()
     error_bar_label: Union[Gtk.Template.Child, Gtk.Label] = Gtk.Template.Child()
@@ -164,7 +160,6 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
         self.back_button.connect("clicked", self.on_back_clicked)
         self.patient_button.connect("clicked", self.on_patient_clicked)
 
-        self.no_patient_info_bar.connect("response", self.on_info_bar_response)
         self.error_bar.connect("response", self.on_info_bar_response)
 
         self.main_area_overlay.add_overlay(self.shutdown_compact_revealer)

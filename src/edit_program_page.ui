@@ -6,16 +6,19 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="icon_name">user-trash-full-symbolic</property>
+    <property name="icon_size">3</property>
   </object>
   <object class="GtkImage" id="save_as_icon">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="icon_name">document-save-as-symbolic</property>
+    <property name="icon_size">3</property>
   </object>
   <object class="GtkImage" id="save_icon">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="icon_name">document-save-symbolic</property>
+    <property name="icon_size">3</property>
   </object>
   <template class="EditProgramPage" parent="GtkBox">
     <property name="visible">True</property>

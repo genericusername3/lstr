@@ -4,6 +4,7 @@
     <file>window.ui</file>
     <file>keyboard.ui</file>
 
+    <file>calibration_page.ui</file>
     <file>edit_patient_page.ui</file>
     <file>edit_program_page.ui</file>
     <file>login_page.ui</file>
