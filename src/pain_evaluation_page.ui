@@ -126,7 +126,7 @@
     </child>
     <child>
       <object class="GtkButton" id="save_button">
-        <property name="label" translatable="yes">Speichern</property>
+        <property name="label" translatable="yes">Speichern und Motoren anschalten</property>
         <property name="width_request">224</property>
         <property name="height_request">48</property>
         <property name="visible">True</property>

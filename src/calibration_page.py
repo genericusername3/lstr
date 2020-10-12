@@ -6,6 +6,8 @@ from gi.repository import GObject, GLib, Gtk  # type: ignore
 
 from .page import Page, PageClass
 
+from . import opcua_util
+
 
 @Gtk.Template(resource_path="/de/linusmathieu/Liegensteuerung/calibration_page.ui")
 class CalibrationPage(Gtk.Box, Page, metaclass=PageClass):
@@ -71,18 +73,28 @@ class CalibrationPage(Gtk.Box, Page, metaclass=PageClass):
             button (Gtk.Button): The button that was clicked
         """
         button.set_sensitive(False)
-        button.set_always_show_image(True)
-        button.get_image().start()
-
-        self.emergency_off_revealer.set_reveal_child(True)
 
         # TODO: Wait until the calibration is done
 
-        def switch_to_next():
-            self.get_toplevel().switch_page("select_patient")
-            self.get_toplevel().clear_history()
+        def if_done_switch_to_next():
+            if opcua_util.Connection()["main"]["reset"]:
+                GLib.timeout_add(1000 / 10, if_done_switch_to_next)
+            else:
+                self.get_toplevel().switch_page("select_patient")
+                self.get_toplevel().clear_history()
 
-        GLib.timeout_add(4000, switch_to_next)
+        self.on_opcua_button_pressed(button, None, "main", "reset")
+
+        try:
+            if opcua_util.Connection()["main"]["reset"]:
+                if_done_switch_to_next()
+                button.set_always_show_image(True)
+                button.get_image().start()
+
+                self.emergency_off_revealer.set_reveal_child(True)
+
+        except ConnectionRefusedError:
+            self.get_toplevel().show_error("Die Liege wurde nicht erkannt")
 
 
 # Make CalibrationPage accessible via .ui files

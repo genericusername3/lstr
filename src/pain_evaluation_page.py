@@ -7,6 +7,7 @@ from gi.repository import GObject, Gtk  # type: ignore
 from .page import Page, PageClass
 
 from . import patient_util
+from . import opcua_util
 
 from . import touchcombobox
 
@@ -70,6 +71,10 @@ class PainEvaluationPage(Gtk.Box, Page, metaclass=PageClass):
 
         self.pain_location_touch_combobox.grab_focus()
 
+    def prepare_return(self) -> None:
+        """Prepare the page to be re-shown."""
+        self.on_opcua_button_released(None, "main", "power_button")
+
     def do_parent_set(self, old_parent: Optional[Gtk.Widget]) -> None:
         """React to the parent being set.
 
@@ -125,6 +130,8 @@ class PainEvaluationPage(Gtk.Box, Page, metaclass=PageClass):
             )
 
         window.switch_page("setup")
+
+        self.on_opcua_button_pressed(None, "main", "power_button")
 
 
 # Make PainEvaluationPage accessible via .ui files

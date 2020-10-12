@@ -148,7 +148,8 @@ node_ids: Dict[str, Dict[str, str]] = {
         #
         # Buttons
         "emergency_off_button": prefix + main_prefix + "xBut_NOTAUS",
-        # Do I need this?
+        #
+        # Power, reset and program start
         "power_button": prefix + main_prefix + "xBut_Power",
         "reset_button": prefix + main_prefix + "xBut_Reset",
         "start_button": prefix + main_prefix + "xBut_Start",
