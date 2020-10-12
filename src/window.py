@@ -284,13 +284,13 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
                 self.page_history.pop()
 
             return self._show_page(
-                self, page_name=relay_page, animation_direction=animation_direction,
+                page_name=relay_page, animation_direction=animation_direction,
             )
         elif isinstance(relay_page, tuple):
             if self.page_history[-1] == page_name:
                 self.page_history.pop()
 
-            return self._show_page(self, *relay_page)
+            return self._show_page(*relay_page)
 
         # Show Page
         self.page_stack.set_visible_child_name(page_name)
