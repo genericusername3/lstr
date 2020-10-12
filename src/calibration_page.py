@@ -77,17 +77,17 @@ class CalibrationPage(Gtk.Box, Page, metaclass=PageClass):
         # TODO: Wait until the calibration is done
 
         def if_done_switch_to_next():
-            if opcua_util.Connection()["main"]["reset"]:
+            if opcua_util.Connection()["main"]["reset_button"]:
                 GLib.timeout_add(1000 / 10, if_done_switch_to_next)
             else:
                 self.get_toplevel().switch_page("select_patient")
                 self.get_toplevel().clear_history()
 
-        self.on_opcua_button_pressed(button, None, "main", "reset")
+        self.on_opcua_button_pressed(button, None, "main", "reset_button")
 
         try:
             # Confirm connection
-            opcua_util.Connection()["main"]["reset"]
+            opcua_util.Connection()["main"]["reset_button"]
 
             button.set_always_show_image(True)
             button.get_image().start()
