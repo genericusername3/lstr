@@ -109,7 +109,9 @@ class CalibrationPage(Gtk.Box, Page, metaclass=PageClass):
     def if_done_switch_to_next(self):
         if opcua_util.Connection()["main"]["referencing"]:
             GLib.timeout_add(1000 / 10, self.if_done_switch_to_next)
+
         else:
+            print("DONE")
             self.on_opcua_button_released(None, None, "main", "power_button")
             self.get_toplevel().switch_page("select_patient")
             self.get_toplevel().clear_history()
