@@ -43,27 +43,30 @@ class CalibrationPage(Gtk.Box, Page, metaclass=PageClass):
     def prepare(self) -> None:
         """Prepare the page to be shown."""
         try:
-            # FIXME uncomment this and change the if below to elif
+            # FIXME uncomment all this and remove the "if True:"
+
             # if not opcua_util.Connection()["main"]["not_referenced"]:
             #     self.on_opcua_button_released(None, None, "main", "power_button")
 
             #     return "select_patient"
 
-            if not opcua_util.Connection()["main"]["referencing"]:
+            # elif not opcua_util.Connection()["main"]["referencing"]:
+
+            if True:
                 self.calibrate_button.set_sensitive(True)
                 self.calibrate_button.set_always_show_image(False)
                 self.calibrate_button.get_image().stop()
 
                 self.emergency_off_revealer.set_reveal_child(False)
 
-            else:
-                self.calibrate_button.set_sensitive(False)
-                self.calibrate_button.set_always_show_image(True)
-                self.calibrate_button.get_image().start()
+            # else:
+            #     self.calibrate_button.set_sensitive(False)
+            #     self.calibrate_button.set_always_show_image(True)
+            #     self.calibrate_button.get_image().start()
 
-                self.emergency_off_revealer.set_reveal_child(True)
+            #     self.emergency_off_revealer.set_reveal_child(True)
 
-                self.if_done_switch_to_next()
+            #     self.if_done_switch_to_next()
 
         except ConnectionRefusedError:
             self.get_toplevel().show_error("Die Liege wurde nicht erkannt")
