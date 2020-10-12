@@ -197,7 +197,8 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
         self.on_opcua_button_released(button, None, "main", "power_button")
         self.on_opcua_button_pressed(button, None, "main", "reset_button")
 
-        self.get_toplevel().switch_page("select_patient")
+        self.get_toplevel()._show_page("select_patient", animation_direction=-1)
+        self.get_toplevel().clear_history()
 
     def visualisation_loop(self) -> None:
         """Repeatedly render an SVG visualisation for the motor values."""
