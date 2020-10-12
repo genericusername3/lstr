@@ -102,7 +102,7 @@ class CalibrationPage(Gtk.Box, Page, metaclass=PageClass):
             return
 
         self.calibrate_button.connect("clicked", self.on_calibrate_clicked)
-        self.emergency_off_button_button.connect(
+        self.emergency_off_button.connect(
             "clicked", self.on_emergency_off_button_clicked
         )
 
@@ -125,6 +125,7 @@ class CalibrationPage(Gtk.Box, Page, metaclass=PageClass):
         button.set_sensitive(False)
 
         self.on_opcua_button_pressed(button, None, "main", "power_button")
+        opcua_util.Connection()["main"]["referencing"] = True
 
         button.set_always_show_image(True)
         button.get_image().start()
