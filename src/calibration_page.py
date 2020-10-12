@@ -102,9 +102,7 @@ class CalibrationPage(Gtk.Box, Page, metaclass=PageClass):
             return
 
         self.calibrate_button.connect("clicked", self.on_calibrate_clicked)
-        self.emergency_off_button.connect(
-            "clicked", self.on_emergency_off_button_clicked
-        )
+        self.emergency_off_button.connect("clicked", self.on_emergency_off_clicked)
 
     def if_done_switch_to_next(self):
         if opcua_util.Connection()["main"]["referencing"]:
