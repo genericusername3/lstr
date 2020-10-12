@@ -43,6 +43,8 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
     pause_button: Union[Gtk.Button, Gtk.Template.Child] = Gtk.Template.Child()
     cancel_button: Union[Gtk.Button, Gtk.Template.Child] = Gtk.Template.Child()
 
+    cancel_revealer: Union[Gtk.Revealer, Gtk.Template.Child] = Gtk.Template.Child()
+
     emergency_off_button: Union[Gtk.Button, Gtk.Template.Child] = Gtk.Template.Child()
 
     visualisation_drawing_area: Union[
@@ -83,7 +85,7 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
         self.start_button.show()
         self.resume_button.hide()
         self.pause_button.hide()
-        self.cancel_button.hide()
+        self.cancel_revealer.set_reveal_child(False)
 
     def prepare_return(self) -> None:
         """Prepare the page to be shown when returning from another page."""
@@ -144,7 +146,7 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
         self.start_button.hide()
         self.resume_button.hide()
         self.pause_button.show()
-        self.cancel_button.show()
+        self.cancel_revealer.set_reveal_child(True)
 
         self.on_opcua_button_pressed(button, None, "main", "start_button")
 
@@ -159,7 +161,7 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
         self.start_button.hide()
         self.resume_button.show()
         self.pause_button.hide()
-        self.cancel_button.show()
+        self.cancel_revealer.set_reveal_child(True)
 
         self.on_opcua_button_released(button, None, "main", "start_button")
 
@@ -174,7 +176,7 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
         self.start_button.hide()
         self.resume_button.hide()
         self.pause_button.show()
-        self.cancel_button.show()
+        self.cancel_revealer.set_reveal_child(True)
 
         self.on_opcua_button_pressed(button, None, "main", "start_button")
 
@@ -189,7 +191,7 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
         self.start_button.show()
         self.resume_button.hide()
         self.pause_button.hide()
-        self.cancel_button.hide()
+        self.cancel_revealer.set_reveal_child(False)
 
         self.on_opcua_button_released(button, None, "main", "start_button")
         self.on_opcua_button_released(button, None, "main", "power_button")

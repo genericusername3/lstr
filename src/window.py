@@ -111,6 +111,7 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
 
     shutdown_button: Union[Gtk.Template.Child, Gtk.Button] = Gtk.Template.Child()
     log_out_button: Union[Gtk.Template.Child, Gtk.Button] = Gtk.Template.Child()
+    log_out_button_compact: Union[Gtk.Template.Child, Gtk.Button] = Gtk.Template.Child()
 
     users_button: Union[Gtk.Template.Child, Gtk.Button] = Gtk.Template.Child()
     change_password_button: Union[Gtk.Template.Child, Gtk.Button] = Gtk.Template.Child()
@@ -122,6 +123,9 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
         Gtk.Template.Child, Gtk.Button
     ] = Gtk.Template.Child()
     shutdown_compact_revealer: Union[
+        Gtk.Template.Child, Gtk.Revealer
+    ] = Gtk.Template.Child()
+    log_out_compact_revealer: Union[
         Gtk.Template.Child, Gtk.Revealer
     ] = Gtk.Template.Child()
 
@@ -168,6 +172,7 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
         self.users_button.connect("clicked", self.on_users_clicked)
 
         self.log_out_button.connect("clicked", self.on_log_out_clicked)
+        self.log_out_button_compact.connect("clicked", self.on_log_out_clicked)
 
         self.shutdown_button.connect("clicked", self.on_shutdown_clicked)
         self.shutdown_button_compact.connect("clicked", self.on_shutdown_clicked)
@@ -287,6 +292,7 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
         self.back_button_revealer.set_reveal_child(len(self.page_history) > 1)
 
         self.log_out_button.set_visible(self.active_user is not None)
+        self.log_out_compact_revealer.set_reveal_child(self.active_user is not None)
 
         is_admin: bool = (
             self.active_user is not None

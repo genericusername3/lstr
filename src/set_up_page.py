@@ -411,6 +411,7 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
         except ConnectionRefusedError:
             self.get_toplevel().show_error("Die Liege wurde nicht erkannt")
 
+            # FIXME Remove this --- debug purposes only
             self.end_value_left = 99999999999
             self.end_value_right = 99999999999
 

@@ -45,6 +45,8 @@ class LoginPage(Gtk.Box, Page, metaclass=PageClass):
 
     def prepare(self) -> None:
         """Prepare the page to be shown."""
+        self.get_toplevel().active_user = None
+
         self.username_entry.set_text("")
         self.password_entry.set_text("")
 

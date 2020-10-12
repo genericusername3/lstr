@@ -96,8 +96,27 @@ class CalibrationPage(Gtk.Box, Page, metaclass=PageClass):
 
             if_done_switch_to_next()
 
+            # FIXME Remove this --- debug purposes only
+            GLib.timeout_add(
+                5000,
+                lambda: (
+                    opcua_util.Connection()["main"].set("reset_button", False),
+                    self.get_toplevel().switch_page("select_patient"),
+                    self.get_toplevel().clear_history(),
+                ),
+            )
+
         except ConnectionRefusedError:
             self.get_toplevel().show_error("Die Liege wurde nicht erkannt")
+
+            # FIXME Remove this --- debug purposes only
+            GLib.timeout_add(
+                3000,
+                lambda: (
+                    self.get_toplevel().switch_page("select_patient"),
+                    self.get_toplevel().clear_history(),
+                ),
+            )
 
 
 # Make CalibrationPage accessible via .ui files

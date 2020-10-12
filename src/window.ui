@@ -8,6 +8,12 @@
     <property name="icon_name">go-previous-symbolic</property>
     <property name="icon_size">3</property>
   </object>
+  <object class="GtkImage" id="logout_icon_compact">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="icon_name">system-log-out-symbolic</property>
+    <property name="icon_size">5</property>
+  </object>
   <object class="GtkImage" id="more_icon">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -578,7 +584,7 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="icon_name">system-shutdown-symbolic</property>
-    <property name="icon_size">3</property>
+    <property name="icon_size">5</property>
   </object>
   <object class="GtkRevealer" id="shutdown_compact_revealer">
     <property name="visible">True</property>
@@ -589,18 +595,58 @@
     <property name="margin_end">8</property>
     <property name="margin_top">8</property>
     <property name="margin_bottom">8</property>
-    <property name="transition_duration">100</property>
+    <property name="transition_duration">200</property>
     <property name="reveal_child">True</property>
     <child>
-      <object class="GtkButton" id="shutdown_button_compact">
-        <property name="width_request">40</property>
-        <property name="height_request">40</property>
+      <object class="GtkBox">
         <property name="visible">True</property>
-        <property name="can_focus">True</property>
-        <property name="focus_on_click">False</property>
-        <property name="receives_default">True</property>
-        <property name="image">shutdown_icon_compact</property>
-        <property name="always_show_image">True</property>
+        <property name="can_focus">False</property>
+        <property name="spacing">8</property>
+        <property name="homogeneous">True</property>
+        <child>
+          <object class="GtkButton" id="shutdown_button_compact">
+            <property name="width_request">40</property>
+            <property name="height_request">40</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="focus_on_click">False</property>
+            <property name="receives_default">True</property>
+            <property name="image">shutdown_icon_compact</property>
+            <property name="always_show_image">True</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkRevealer" id="log_out_compact_revealer">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="transition_type">slide-right</property>
+            <property name="transition_duration">200</property>
+            <child>
+              <object class="GtkButton" id="log_out_button_compact">
+                <property name="width_request">40</property>
+                <property name="height_request">40</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="focus_on_click">False</property>
+                <property name="receives_default">True</property>
+                <property name="image">logout_icon_compact</property>
+                <property name="always_show_image">True</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="pack_type">end</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
       </object>
     </child>
   </object>
