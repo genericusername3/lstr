@@ -44,10 +44,9 @@ class CalibrationPage(Gtk.Box, Page, metaclass=PageClass):
         """Prepare the page to be shown."""
         try:
             if not opcua_util.Connection()["main"]["not_referenced"]:
-                self.get_toplevel().switch_page("select_patient")
-                self.get_toplevel().clear_history()
-
                 print("SWITCHING ONWARDS")
+
+                return "select_patient"
 
             elif not opcua_util.Connection()["main"]["referencing"]:
                 self.calibrate_button.set_sensitive(True)

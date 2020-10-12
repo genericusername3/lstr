@@ -1,6 +1,6 @@
 """A page that prompts the user to register."""
 
-from typing import Dict
+from typing import Dict, Optional, Tuple, Iterable, Any, overload
 
 import abc
 
@@ -47,7 +47,7 @@ class Page(abc.ABC):
         """Title of this page shown in the window header bar."""
         raise NotImplementedError
 
-    @abc.abstractmethod
+    @overload
     def prepare(self, *args, **kwargs) -> None:
         """Prepare the page to be shown.
 
@@ -57,14 +57,217 @@ class Page(abc.ABC):
             *args: Arguments that the overriding method may take
             **kwargs: Keyword arguments that the overriding method may take
         """
-        raise NotImplementedError
+        pass
+
+    @overload
+    def prepare(self, *args, **kwargs) -> str:
+        """Prepare the page to be shown.
+
+        This may take any amount of arguments and keyword arguments.
+
+        Args:
+            *args: Arguments that the overriding method may take
+            **kwargs: Keyword arguments that the overriding method may take
+
+        Returns:
+            str: The name of the page to relay to
+        """
+        pass
+
+    @overload
+    def prepare(self, *args, **kwargs) -> Tuple[str]:
+        """Prepare the page to be shown.
+
+        This may take any amount of arguments and keyword arguments.
+
+        Args:
+            *args: Arguments that the overriding method may take
+            **kwargs: Keyword arguments that the overriding method may take
+
+        Returns:
+            Tuple[str]: The name of the page to relay to (in a tuple)
+        """
+        pass
+
+    @overload
+    def prepare(self, *args, **kwargs) -> Tuple[str, int]:
+        """Prepare the page to be shown.
+
+        This may take any amount of arguments and keyword arguments.
+
+        Args:
+            *args: Arguments that the overriding method may take
+            **kwargs: Keyword arguments that the overriding method may take
+
+        Returns:
+            str: The name of the page to relay to
+            int: The animation direction
+        """
+        pass
+
+    @overload
+    def prepare(self, *args, **kwargs) -> Tuple[str, int, bool]:
+        """Prepare the page to be shown.
+
+        This may take any amount of arguments and keyword arguments.
+
+        Args:
+            *args: Arguments that the overriding method may take
+            **kwargs: Keyword arguments that the overriding method may take
+
+        Returns:
+            str: The name of the page to relay to
+            int: The animation direction
+            bool: Whether to prepare the relayed page
+        """
+        pass
+
+    @overload
+    def prepare(self, *args, **kwargs) -> Tuple[str, int, bool, bool]:
+        """Prepare the page to be shown.
+
+        This may take any amount of arguments and keyword arguments.
+
+        Args:
+            *args: Arguments that the overriding method may take
+            **kwargs: Keyword arguments that the overriding method may take
+
+        Returns:
+            str: The name of the page to relay to
+            int: The animation direction
+            bool: Whether to prepare the relayed page
+            bool: Whether to prepare_return the relayed page
+        """
+        pass
+
+    @overload
+    def prepare(self, *args, **kwargs) -> Tuple[str, int, bool, bool, Iterable[Any]]:
+        """Prepare the page to be shown.
+
+        This may take any amount of arguments and keyword arguments.
+
+        Args:
+            *args: Arguments that the overriding method may take
+            **kwargs: Keyword arguments that the overriding method may take
+
+        Returns:
+            str: The name of the page to relay to
+            int: The animation direction
+            bool: Whether to prepare the relayed page
+            bool: Whether to prepare_return the relayed page
+            Iterable[Any]: Arguments passed to the relayed page
+        """
+        pass
+
+    def prepare(
+        self, *args, **kwargs
+    ) -> Tuple[str, int, bool, bool, Iterable[Any], Dict[str, Any]]:
+        """Prepare the page to be shown.
+
+        This may take any amount of arguments and keyword arguments.
+
+        Args:
+            *args: Arguments that the overriding method may take
+            **kwargs: Keyword arguments that the overriding method may take
+
+        Returns:
+            str: The name of the page to relay to
+            int: The animation direction
+            bool: Whether to prepare the relayed page
+            bool: Whether to prepare_return the relayed page
+            Iterable[Any]: Arguments passed to the relayed page
+            Dict[str, Any]: Keyword arguments passed to the relayed page
+        """
+        pass
 
     def unprepare(self) -> None:
         """Prepare the page to be hidden."""
         pass
 
-    def prepare_return(self) -> None:
+    @overload
+    def prepare_return(self, *args, **kwargs) -> None:
         """Prepare the page to be shown when returning from another page."""
+        pass
+
+    @overload
+    def prepare_return(self, *args, **kwargs) -> str:
+        """Prepare the page to be shown when returning from another page.
+
+        Returns:
+            str: The name of the page to relay to
+        """
+        pass
+
+    @overload
+    def prepare_return(self, *args, **kwargs) -> Tuple[str]:
+        """Prepare the page to be shown when returning from another page.
+
+        Returns:
+            Tuple[str]: The name of the page to relay to in a tuple
+        """
+        pass
+
+    @overload
+    def prepare_return(self, *args, **kwargs) -> Tuple[str, int]:
+        """Prepare the page to be shown when returning from another page.
+
+        Returns:
+            str: The name of the page to relay to
+            int: The animation direction
+        """
+        pass
+
+    @overload
+    def prepare_return(self, *args, **kwargs) -> Tuple[str, int, bool]:
+        """Prepare the page to be shown when returning from another page.
+
+        Returns:
+            str: The name of the page to relay to
+            int: The animation direction
+            bool: Whether to prepare the relayed page
+        """
+        pass
+
+    @overload
+    def prepare_return(self, *args, **kwargs) -> Tuple[str, int, bool, bool]:
+        """Prepare the page to be shown when returning from another page.
+
+        Returns:
+            str: The name of the page to relay to
+            int: The animation direction
+            bool: Whether to prepare the relayed page
+            bool: Whether to prepare_return the relayed page
+        """
+        pass
+
+    @overload
+    def prepare_return(
+        self, *args, **kwargs
+    ) -> Tuple[str, int, bool, bool, Iterable[Any]]:
+        """Prepare the page to be shown when returning from another page.
+
+        Returns:
+            str: The name of the page to relay to
+            int: The animation direction
+            bool: Whether to prepare the relayed page
+            bool: Whether to prepare_return the relayed page
+            Iterable[Any]: Arguments passed to the relayed page
+        """
+        pass
+
+    def prepare_return(
+        self,
+    ) -> Tuple[str, int, bool, bool, Iterable[Any], Dict[str, Any]]:
+        """Prepare the page to be shown when returning from another page.
+
+        Returns:
+            str: The name of the page to relay to
+            int: The animation direction
+            bool: Whether to prepare the relayed page
+            bool: Whether to prepare_return the relayed page
+            Iterable[Any]: Arguments passed to the relayed page
+            Dict[str, Any]: Keyword arguments passed to the relayed page
+        """
         pass
 
     def on_focus_entry(self, widget: Gtk.Widget, event: Gdk.EventFocus) -> None:

@@ -275,9 +275,22 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
         self.error_bar.set_visible(False)
 
         if prepare:
-            next_page.prepare(*args, **kwargs)
+            relay_page = next_page.prepare(*args, **kwargs)
         if prepare_return:
-            next_page.prepare_return()
+            relay_page = next_page.prepare_return()
+
+        if isinstance(relay_page, str):
+            if self.page_history[-1] == page_name:
+                self.page_history.pop()
+
+            return self._show_page(
+                self, page_name=relay_page, animation_direction=animation_direction,
+            )
+        elif isinstance(relay_page, tuple):
+            if self.page_history[-1] == page_name:
+                self.page_history.pop()
+
+            return self._show_page(self, *relay_page)
 
         # Show Page
         self.page_stack.set_visible_child_name(page_name)
