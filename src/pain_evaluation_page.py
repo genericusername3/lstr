@@ -131,7 +131,7 @@ class PainEvaluationPage(Gtk.Box, Page, metaclass=PageClass):
 
         window.switch_page("setup")
 
-        self.on_opcua_button_pressed(None, "main", "power_button")
+        self.on_opcua_button_pressed(button, None, "main", "power_button")
 
 
 # Make PainEvaluationPage accessible via .ui files
