@@ -43,12 +43,13 @@ class CalibrationPage(Gtk.Box, Page, metaclass=PageClass):
     def prepare(self) -> None:
         """Prepare the page to be shown."""
         try:
-            if not opcua_util.Connection()["main"]["not_referenced"]:
-                self.on_opcua_button_released(None, None, "main", "power_button")
+            # FIXME uncomment this and change the if below to elif
+            # if not opcua_util.Connection()["main"]["not_referenced"]:
+            #     self.on_opcua_button_released(None, None, "main", "power_button")
 
-                return "select_patient"
+            #     return "select_patient"
 
-            elif not opcua_util.Connection()["main"]["referencing"]:
+            if not opcua_util.Connection()["main"]["referencing"]:
                 self.calibrate_button.set_sensitive(True)
                 self.calibrate_button.set_always_show_image(False)
                 self.calibrate_button.get_image().stop()
@@ -132,6 +133,30 @@ class CalibrationPage(Gtk.Box, Page, metaclass=PageClass):
                 self.get_toplevel().clear_history(),
             ),
         )
+
+    def on_emergency_off_clicked(self, button: Gtk.Button) -> None:
+        """React to the emergency off button being clicked.
+
+        Args:
+            button (Gtk.Button): The button that was clicked
+        """
+        self.calibrate_button.set_sensitive(False)
+        self.calibrate_button.set_always_show_image(False)
+        self.calibrate_button.get_image().stop()
+
+        self.emergency_off_button.set_sensitive(False)
+
+        self.on_opcua_button_pressed(button, None, "main", "emergency_off_button")
+
+        def resume():
+            self.on_opcua_button_pressed(button, None, "main", "emergency_off_button")
+            GLib.timeout_add(500, reset)
+
+        def reset():
+            self.on_opcua_button_pressed(button, None, "main", "reset_button")
+            self.get_toplevel()._show_page("calibration", animation_direction=0)
+
+        GLib.timeout_add(1000, resume)
 
 
 # Make CalibrationPage accessible via .ui files
