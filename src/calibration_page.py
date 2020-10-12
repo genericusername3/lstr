@@ -44,7 +44,7 @@ class CalibrationPage(Gtk.Box, Page, metaclass=PageClass):
         """Prepare the page to be shown."""
         try:
             if not opcua_util.Connection()["main"]["not_referenced"]:
-                print("SWITCHING ONWARDS")
+                self.on_opcua_button_released(None, None, "main", "power_button")
 
                 return "select_patient"
 
@@ -103,6 +103,7 @@ class CalibrationPage(Gtk.Box, Page, metaclass=PageClass):
         if opcua_util.Connection()["main"]["referencing"]:
             GLib.timeout_add(1000 / 10, self.if_done_switch_to_next)
         else:
+            self.on_opcua_button_released(None, None, "main", "power_button")
             self.get_toplevel().switch_page("select_patient")
             self.get_toplevel().clear_history()
 
@@ -114,7 +115,7 @@ class CalibrationPage(Gtk.Box, Page, metaclass=PageClass):
         """
         button.set_sensitive(False)
 
-        self.on_opcua_button_pressed(button, None, "main", "reset_button")
+        self.on_opcua_button_pressed(button, None, "main", "power_button")
 
         button.set_always_show_image(True)
         button.get_image().start()
@@ -127,7 +128,6 @@ class CalibrationPage(Gtk.Box, Page, metaclass=PageClass):
         GLib.timeout_add(
             5000,
             lambda: (
-                opcua_util.Connection()["main"].__setitem__("reset_button", False),
                 self.get_toplevel().switch_page("select_patient"),
                 self.get_toplevel().clear_history(),
             ),
