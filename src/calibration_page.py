@@ -100,7 +100,7 @@ class CalibrationPage(Gtk.Box, Page, metaclass=PageClass):
             GLib.timeout_add(
                 5000,
                 lambda: (
-                    opcua_util.Connection()["main"].set("reset_button", False),
+                    opcua_util.Connection()["main"].__setitem__("reset_button", False),
                     self.get_toplevel().switch_page("select_patient"),
                     self.get_toplevel().clear_history(),
                 ),
