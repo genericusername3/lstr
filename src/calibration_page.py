@@ -42,11 +42,43 @@ class CalibrationPage(Gtk.Box, Page, metaclass=PageClass):
 
     def prepare(self) -> None:
         """Prepare the page to be shown."""
-        self.calibrate_button.set_sensitive(True)
-        self.calibrate_button.set_always_show_image(False)
-        self.calibrate_button.get_image().stop()
+        try:
+            if not opcua_util.Connection()["main"]["not_referenced"]:
+                self.get_toplevel().switch_page("select_patient")
+                self.get_toplevel().clear_history()
 
-        self.emergency_off_revealer.set_reveal_child(False)
+            elif not opcua_util.Connection()["main"]["referencing"]:
+                self.calibrate_button.set_sensitive(True)
+                self.calibrate_button.set_always_show_image(False)
+                self.calibrate_button.get_image().stop()
+
+                self.emergency_off_revealer.set_reveal_child(False)
+
+            else:
+                self.calibrate_button.set_sensitive(False)
+                self.calibrate_button.set_always_show_image(True)
+                self.calibrate_button.get_image().start()
+
+                self.emergency_off_revealer.set_reveal_child(True)
+
+                self.if_done_switch_to_next()
+
+        except ConnectionRefusedError:
+            self.get_toplevel().show_error("Die Liege wurde nicht erkannt")
+            self.calibrate_button.set_sensitive(False)
+            self.calibrate_button.set_always_show_image(False)
+            self.calibrate_button.get_image().stop()
+
+            self.emergency_off_revealer.set_reveal_child(False)
+
+            # FIXME Remove this --- debug purposes only
+            GLib.timeout_add(
+                3000,
+                lambda: (
+                    self.get_toplevel().switch_page("select_patient"),
+                    self.get_toplevel().clear_history(),
+                ),
+            )
 
     def prepare_return(self) -> None:
         """Prepare the page to be shown."""
@@ -66,6 +98,13 @@ class CalibrationPage(Gtk.Box, Page, metaclass=PageClass):
 
         self.calibrate_button.connect("clicked", self.on_calibrate_clicked)
 
+    def if_done_switch_to_next(self):
+        if opcua_util.Connection()["main"]["referencing"]:
+            GLib.timeout_add(1000 / 10, self.if_done_switch_to_next)
+        else:
+            self.get_toplevel().switch_page("select_patient")
+            self.get_toplevel().clear_history()
+
     def on_calibrate_clicked(self, button: Gtk.Button) -> None:
         """React to the calibrate button being clicked.
 
@@ -74,49 +113,24 @@ class CalibrationPage(Gtk.Box, Page, metaclass=PageClass):
         """
         button.set_sensitive(False)
 
-        # TODO: Wait until the calibration is done
-
-        def if_done_switch_to_next():
-            if opcua_util.Connection()["main"]["reset_button"]:
-                GLib.timeout_add(1000 / 10, if_done_switch_to_next)
-            else:
-                self.get_toplevel().switch_page("select_patient")
-                self.get_toplevel().clear_history()
-
         self.on_opcua_button_pressed(button, None, "main", "reset_button")
 
-        try:
-            # Confirm connection
-            opcua_util.Connection()["main"]["reset_button"]
+        button.set_always_show_image(True)
+        button.get_image().start()
 
-            button.set_always_show_image(True)
-            button.get_image().start()
+        self.emergency_off_revealer.set_reveal_child(True)
 
-            self.emergency_off_revealer.set_reveal_child(True)
+        self.if_done_switch_to_next()
 
-            if_done_switch_to_next()
-
-            # FIXME Remove this --- debug purposes only
-            GLib.timeout_add(
-                5000,
-                lambda: (
-                    opcua_util.Connection()["main"].__setitem__("reset_button", False),
-                    self.get_toplevel().switch_page("select_patient"),
-                    self.get_toplevel().clear_history(),
-                ),
-            )
-
-        except ConnectionRefusedError:
-            self.get_toplevel().show_error("Die Liege wurde nicht erkannt")
-
-            # FIXME Remove this --- debug purposes only
-            GLib.timeout_add(
-                3000,
-                lambda: (
-                    self.get_toplevel().switch_page("select_patient"),
-                    self.get_toplevel().clear_history(),
-                ),
-            )
+        # FIXME Remove this --- debug purposes only
+        GLib.timeout_add(
+            5000,
+            lambda: (
+                opcua_util.Connection()["main"].__setitem__("reset_button", False),
+                self.get_toplevel().switch_page("select_patient"),
+                self.get_toplevel().clear_history(),
+            ),
+        )
 
 
 # Make CalibrationPage accessible via .ui files
