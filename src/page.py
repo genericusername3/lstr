@@ -11,6 +11,8 @@ from gi.repository import Gdk, Gtk  # type: ignore
 from . import osk_util
 from .opcua_util import Connection
 
+from . import const
+
 
 LONG_PRESS_TIME = 0.5  # seconds
 
@@ -361,7 +363,7 @@ class Page(abc.ABC):
         try:
             Connection()[category][variable_name] = True
         except ConnectionRefusedError:
-            self.get_toplevel().show_error("Die Liege wurde nicht erkannt")
+            self.get_toplevel().show_error(const.CONNECTION_ERROR_TEXT)
 
     def on_opcua_button_released(
         self,
@@ -384,4 +386,4 @@ class Page(abc.ABC):
         try:
             Connection()[category][variable_name] = False
         except ConnectionRefusedError:
-            self.get_toplevel().show_error("Die Liege wurde nicht erkannt")
+            self.get_toplevel().show_error(const.CONNECTION_ERROR_TEXT)

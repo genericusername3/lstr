@@ -3,7 +3,7 @@
 
 from typing import Union, Optional
 
-from gi.repository import GObject, Gtk  # type: ignore
+from gi.repository import GObject, GLib, Gtk  # type: ignore
 
 from .page import Page, PageClass
 
@@ -35,6 +35,8 @@ class LoginPage(Gtk.Box, Page, metaclass=PageClass):
     password_entry: Union[Gtk.Entry, Gtk.Template.Child] = Gtk.Template.Child()
     log_in_button: Union[Gtk.Button, Gtk.Template.Child] = Gtk.Template.Child()
 
+    unsuccessful_tries: int = 0
+
     def __init__(self, **kwargs):
         """Create a new LoginPage.
 
@@ -51,6 +53,8 @@ class LoginPage(Gtk.Box, Page, metaclass=PageClass):
         self.password_entry.set_text("")
 
         self.username_entry.grab_focus()
+
+        self.unsuccessful_tries = 0
 
     def do_parent_set(self, old_parent: Optional[Gtk.Widget]) -> None:
         """React to the parent being set.
@@ -121,10 +125,32 @@ class LoginPage(Gtk.Box, Page, metaclass=PageClass):
                 self.get_toplevel().clear_history()
 
             else:
-                self.password_entry.get_style_context().add_class("error")
-                self.password_entry.grab_focus_without_selecting()
-        except ValueError as e:
-            print(e)
+                # Wait three seconds to prevent brute-forcing (even though that's unlikely to happen)
+                button.set_always_show_image(True)
+                button.get_image().start()
+
+                button.set_sensitive(False)
+                self.username_entry.set_sensitive(False)
+                self.password_entry.set_sensitive(False)
+
+                def reenable():
+                    button.set_always_show_image(False)
+                    button.get_image().stop()
+
+                    button.set_sensitive(True)
+                    self.username_entry.set_sensitive(True)
+                    self.password_entry.set_sensitive(True)
+
+                    self.password_entry.get_style_context().add_class("error")
+                    self.password_entry.grab_focus_without_selecting()
+
+                self.unsuccessful_tries += 1
+
+                GLib.timeout_add_seconds(
+                    min(int(1.5 ** self.unsuccessful_tries), 60), reenable
+                )
+
+        except ValueError:
             self.username_entry.get_style_context().add_class("error")
             self.username_entry.grab_focus_without_selecting()
 

@@ -7,6 +7,7 @@ from gi.repository import GObject, GLib, Gtk  # type: ignore
 from .page import Page, PageClass
 
 from . import opcua_util
+from . import const
 
 
 @Gtk.Template(resource_path="/de/linusmathieu/Liegensteuerung/calibration_page.ui")
@@ -43,47 +44,51 @@ class CalibrationPage(Gtk.Box, Page, metaclass=PageClass):
     def prepare(self) -> None:
         """Prepare the page to be shown."""
         try:
-            # FIXME uncomment all this and remove the "if True:"
-
-            # if not opcua_util.Connection()["main"]["not_referenced"]:
-            #     self.on_opcua_button_released(None, None, "main", "power_button")
-
-            #     return "select_patient"
-
-            # elif not opcua_util.Connection()["main"]["referencing"]:
-
-            if True:
+            if const.DEBUG:
                 self.calibrate_button.set_sensitive(True)
                 self.calibrate_button.set_always_show_image(False)
                 self.calibrate_button.get_image().stop()
 
                 self.emergency_off_revealer.set_reveal_child(False)
 
-            # else:
-            #     self.calibrate_button.set_sensitive(False)
-            #     self.calibrate_button.set_always_show_image(True)
-            #     self.calibrate_button.get_image().start()
+            else:
+                if not opcua_util.Connection()["main"]["not_referenced"]:
+                    self.on_opcua_button_released(None, None, "main", "power_button")
 
-            #     self.emergency_off_revealer.set_reveal_child(True)
+                    return "select_patient"
 
-            #     self.if_done_switch_to_next()
+                elif not opcua_util.Connection()["main"]["referencing"]:
+                    self.calibrate_button.set_sensitive(True)
+                    self.calibrate_button.set_always_show_image(False)
+                    self.calibrate_button.get_image().stop()
+
+                    self.emergency_off_revealer.set_reveal_child(False)
+
+                else:
+                    self.calibrate_button.set_sensitive(False)
+                    self.calibrate_button.set_always_show_image(True)
+                    self.calibrate_button.get_image().start()
+
+                    self.emergency_off_revealer.set_reveal_child(True)
+
+                    self.if_done_switch_to_next()
 
         except ConnectionRefusedError:
-            self.get_toplevel().show_error("Die Liege wurde nicht erkannt")
+            self.get_toplevel().show_error(const.CONNECTION_ERROR_TEXT)
             self.calibrate_button.set_sensitive(False)
             self.calibrate_button.set_always_show_image(False)
             self.calibrate_button.get_image().stop()
 
             self.emergency_off_revealer.set_reveal_child(False)
 
-            # FIXME Remove this --- debug purposes only
-            GLib.timeout_add(
-                3000,
-                lambda: (
-                    self.get_toplevel().switch_page("select_patient"),
-                    self.get_toplevel().clear_history(),
-                ),
-            )
+            if const.DEBUG:
+                GLib.timeout_add(
+                    3000,
+                    lambda: (
+                        self.get_toplevel().switch_page("select_patient"),
+                        self.get_toplevel().clear_history(),
+                    ),
+                )
 
     def prepare_return(self) -> None:
         """Prepare the page to be shown."""
@@ -105,14 +110,20 @@ class CalibrationPage(Gtk.Box, Page, metaclass=PageClass):
         self.emergency_off_button.connect("clicked", self.on_emergency_off_clicked)
 
     def if_done_switch_to_next(self):
-        if opcua_util.Connection()["main"]["referencing"]:
-            GLib.timeout_add(1000 / 10, self.if_done_switch_to_next)
+        try:
+            if opcua_util.Connection()["main"]["referencing"]:
+                GLib.timeout_add(1000 / 10, self.if_done_switch_to_next)
 
-        else:
-            print("DONE", opcua_util.Connection()["main"]["referencing"])
-            self.on_opcua_button_released(None, None, "main", "power_button")
-            self.get_toplevel().switch_page("select_patient")
-            self.get_toplevel().clear_history()
+            else:
+                print("DONE", opcua_util.Connection()["main"]["referencing"])
+                self.on_opcua_button_released(None, None, "main", "power_button")
+                self.get_toplevel().switch_page("select_patient")
+                self.get_toplevel().clear_history()
+
+        except ConnectionRefusedError:
+            self.get_toplevel().show_error(const.CONNECTION_ERROR_TEXT)
+
+            GLib.timeout_add(1000 / 10, self.if_done_switch_to_next)
 
     def on_calibrate_clicked(self, button: Gtk.Button) -> None:
         """React to the calibrate button being clicked.
@@ -123,7 +134,21 @@ class CalibrationPage(Gtk.Box, Page, metaclass=PageClass):
         button.set_sensitive(False)
 
         self.on_opcua_button_pressed(button, None, "main", "power_button")
-        opcua_util.Connection()["main"]["referencing"] = True
+
+        try:
+            opcua_util.Connection()["main"]["referencing"] = True
+
+        except ConnectionRefusedError:
+            if const.DEBUG:
+                GLib.timeout_add(
+                    5000,
+                    lambda: (
+                        self.get_toplevel().switch_page("select_patient"),
+                        self.get_toplevel().clear_history(),
+                    ),
+                )
+            else:
+                return
 
         button.set_always_show_image(True)
         button.get_image().start()
@@ -131,15 +156,6 @@ class CalibrationPage(Gtk.Box, Page, metaclass=PageClass):
         self.emergency_off_revealer.set_reveal_child(True)
 
         self.if_done_switch_to_next()
-
-        # FIXME Remove this --- debug purposes only
-        GLib.timeout_add(
-            5000,
-            lambda: (
-                self.get_toplevel().switch_page("select_patient"),
-                self.get_toplevel().clear_history(),
-            ),
-        )
 
     def on_emergency_off_clicked(self, button: Gtk.Button) -> None:
         """React to the emergency off button being clicked.

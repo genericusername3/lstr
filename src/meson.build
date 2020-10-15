@@ -62,6 +62,8 @@ liegensteuerung_sources = [
   'treatment_util.py',
   'usb_util.py',
   'user_util.py',
+
+  'const.py',
 ]
 
 install_data(liegensteuerung_sources, install_dir: moduledir)

@@ -15,7 +15,7 @@ setup_prefix: str = "GVL_Visu_Einrichten."
 main_prefix: str = "GVL_Visu_Haupt."
 
 # Due to some INGENIOUS programming of the backend, you might notice the word
-# "pusher" being spelled any of the following ways:
+# "pusher" being spelled each of the following ways:
 #     pusher
 #     Pusher (which makes sense when using casing iFoo_Bar (for some reason))
 #     puscher (with a german "sch")

@@ -18,6 +18,8 @@ from threading import Thread  # type: ignore
 from .page import Page, PageClass
 from .opcua_util import Connection
 
+from . import const
+
 
 @Gtk.Template(resource_path="/de/linusmathieu/Liegensteuerung/set_up_page.ui")
 class SetupPage(Gtk.Box, Page, metaclass=PageClass):
@@ -93,7 +95,7 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
         try:
             Connection()
         except ConnectionRefusedError:
-            self.get_toplevel().show_error("Die Liege wurde nicht erkannt")
+            self.get_toplevel().show_error(const.CONNECTION_ERROR_TEXT)
 
         self.running = True
 
@@ -113,7 +115,7 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
         try:
             Connection()
         except ConnectionRefusedError:
-            self.get_toplevel().show_error("Die Liege wurde nicht erkannt")
+            self.get_toplevel().show_error(const.CONNECTION_ERROR_TEXT)
 
         self.running = True
 
@@ -321,7 +323,7 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
         try:
             Connection()
         except ConnectionRefusedError:
-            self.get_toplevel().show_error("Die Liege wurde nicht erkannt")
+            self.get_toplevel().show_error(const.CONNECTION_ERROR_TEXT)
             return
 
         self.up_down_label.set_text(str(Connection()["setup"]["up_down"]))
@@ -409,11 +411,11 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
             self.end_value_left = Connection()["setup"]["left_pusher"]
             self.end_value_right = Connection()["setup"]["right_pusher"]
         except ConnectionRefusedError:
-            self.get_toplevel().show_error("Die Liege wurde nicht erkannt")
+            self.get_toplevel().show_error(const.CONNECTION_ERROR_TEXT)
 
-            # FIXME Remove this --- debug purposes only
-            self.end_value_left = 99999999999
-            self.end_value_right = 99999999999
+            if const.DEBUG:
+                self.end_value_left = 99999999999
+                self.end_value_right = 99999999999
 
             self.end_pos_left_label.set_text(str(self.end_value_left))
             self.end_pos_right_label.set_text(str(self.end_value_right))
