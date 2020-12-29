@@ -263,6 +263,9 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
                     1500, offer_reset,
                 )
 
+                if const.DEBUG:
+                    self.started = False
+
             else:
                 self.start_button.set_sensitive(True)
                 self.resume_button.set_sensitive(True)
@@ -274,6 +277,9 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
 
                 self.emergency_off_button.get_style_context().add_class(
                     "destructive-action"
+                )
+                self.emergency_off_button.get_style_context().remove_class(
+                    "suggested-action",
                 )
                 self.emergency_off_button.set_label("NOT AUS")
                 self.emergency_off_button.set_always_show_image(True)
@@ -345,9 +351,18 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
 
         style_ctx: Gtk.StyleContext = widget.get_style_context()
 
+        print(style_ctx.get_color(style_ctx.get_state()))
+        fg_color = style_ctx.get_color(style_ctx.get_state())
+
         svg: str = SVG_CODE.format(
-            fg_color=style_ctx.get_color(style_ctx.get_state()).to_string(),
-            moving_color="teal" if is_pusher_active else "#d8d8d8",
+            fg_color=f"rgb({fg_color.red}, {fg_color.green}, {fg_color.blue})",
+            moving_color="teal"
+            if is_pusher_active
+            else "#dd4444"
+            if self.emergency_off
+            else f"rgb({(fg_color.red + 1) / 3}, "
+            + f"{(fg_color.green + 1) / 3}, "
+            + f"{(fg_color.blue + 1) / 3})",
             up_down=up_down * UP_DOWN_FACTOR,
             rotation=tilt,
             left_pusher=25 - left_pusher,
