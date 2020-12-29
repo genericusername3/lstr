@@ -73,7 +73,7 @@ class PainEvaluationPage(Gtk.Box, Page, metaclass=PageClass):
 
     def prepare_return(self) -> None:
         """Prepare the page to be re-shown."""
-        self.on_opcua_button_released(None, "main", "power_button")
+        self.on_opcua_button_released(None, None, "main", "power_button")
 
     def do_parent_set(self, old_parent: Optional[Gtk.Widget]) -> None:
         """React to the parent being set.
