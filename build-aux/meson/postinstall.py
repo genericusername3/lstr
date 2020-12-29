@@ -32,7 +32,7 @@ if not destdir:
             "pip",
             "install",
             "numpy",
-            "opencv-python",
+            # "opencv-python",  # needs to be installed through apt
             "passwordmeter",
             "pycairo",
             "opcua",
