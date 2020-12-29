@@ -133,7 +133,25 @@ class CalibrationPage(Gtk.Box, Page, metaclass=PageClass):
         """
         button.set_sensitive(False)
 
-        self.on_opcua_button_pressed(button, None, "main", "power_button")
+        self.on_opcua_button_released(button, None, "main", "emergency_off_button")
+        
+        GLib.timeout_add(
+            100,
+            self.on_opcua_button_pressed,
+            *(button, None, "main", "reset_button")
+        )
+        
+        GLib.timeout_add(
+            200,
+            self.on_opcua_button_released,
+            *(button, None, "main", "reset_button")
+        )
+        
+        GLib.timeout_add(
+            300,
+            self.on_opcua_button_pressed,
+            *(button, None, "main", "power_button")
+        )
 
         try:
             opcua_util.Connection()["main"]["referencing"] = True
@@ -170,16 +188,8 @@ class CalibrationPage(Gtk.Box, Page, metaclass=PageClass):
         self.emergency_off_button.set_sensitive(False)
 
         self.on_opcua_button_pressed(button, None, "main", "emergency_off_button")
-
-        def resume():
-            self.on_opcua_button_pressed(button, None, "main", "emergency_off_button")
-            GLib.timeout_add(500, reset)
-
-        def reset():
-            self.on_opcua_button_pressed(button, None, "main", "reset_button")
-            self.get_toplevel()._show_page("calibration", animation_direction=0)
-
-        GLib.timeout_add(1000, resume)
+        
+        self.get_toplevel()._show_page("calibration", animation_direction=0)
 
 
 # Make CalibrationPage accessible via .ui files
