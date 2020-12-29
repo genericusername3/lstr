@@ -14,7 +14,7 @@ program_prefix: str = "GVL_Tabelle.stTabelle_PrgDat."
 setup_prefix: str = "GVL_Visu_Einrichten."
 main_prefix: str = "GVL_Visu_Haupt."
 
-# Due to some INGENIOUS programming of the backend, you might notice the word
+# you might notice the word
 # "pusher" being spelled each of the following ways:
 #     pusher
 #     Pusher (which makes sense when using casing iFoo_Bar (for some reason))
