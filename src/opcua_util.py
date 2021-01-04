@@ -111,7 +111,7 @@ node_ids: Dict[str, Dict[str, str]] = {
         # Power, reset and program start
         "power_button": prefix + main_prefix + "xBut_Power",
         "reset_button": prefix + main_prefix + "xBut_Reset",
-        "start_button": prefix + all_axes_prefix + "xBut_Start",
+        "start_button": prefix + all_axes_prefix + "xStart",
         "setup_mode": prefix + all_axes_prefix + "xEinrichtbetrieb",
         "done_referencing": prefix + init_prefix + "xInit_OK",
         "reset_axes_button": prefix + all_axes_prefix + "xStart_Grundstellung",
