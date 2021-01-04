@@ -47,12 +47,8 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
 
     emergency_off_button: Union[Gtk.Button, Gtk.Template.Child] = Gtk.Template.Child()
 
-    visualisation_drawing_area: Union[
-        Gtk.DrawingArea, Gtk.Template.Child
-    ] = Gtk.Template.Child()
-    program_progress_bar: Union[
-        Gtk.ProgressBar, Gtk.Template.Child
-    ] = Gtk.Template.Child()
+    visualisation_drawing_area: Union[Gtk.DrawingArea, Gtk.Template.Child] = Gtk.Template.Child()
+    program_progress_bar: Union[Gtk.ProgressBar, Gtk.Template.Child] = Gtk.Template.Child()
 
     left_right_label: Union[Gtk.Button, Gtk.Template.Child] = Gtk.Template.Child()
     up_down_label: Union[Gtk.Button, Gtk.Template.Child] = Gtk.Template.Child()
@@ -226,9 +222,7 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
 
         try:
             if self.emergency_off:
-                self.on_opcua_button_pressed(
-                    button, None, "main", "emergency_off_button"
-                )
+                self.on_opcua_button_pressed(button, None, "main", "emergency_off_button")
 
                 self.start_button.set_sensitive(False)
                 self.resume_button.set_sensitive(False)
@@ -244,9 +238,7 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
                     self.emergency_off_button.get_style_context().remove_class(
                         "destructive-action",
                     )
-                    self.emergency_off_button.get_style_context().add_class(
-                        "suggested-action",
-                    )
+                    self.emergency_off_button.get_style_context().add_class("suggested-action",)
 
                 GLib.timeout_add(
                     500, offer_reset,
@@ -272,13 +264,17 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
         try:
             # TODO: Does this calculation add up and is "main/passes" is even the right variable?
             # Calculate progress
-            self.program_progress_bar.set_fraction(
-                Connection()["main"]["passes"]
-                / (
-                    self.get_toplevel().active_program.pass_count_sum
-                    * self.get_toplevel().active_program.repeat_count
-                )
-            )
+            # self.program_progress_bar.set_fraction(
+            #     Connection()["main"]["passes"]
+            #     / (
+            #         self.get_toplevel().active_program.pass_count_sum
+            #         * self.get_toplevel().active_program.repeat_count
+            #     )
+            # )
+            print("================= START =================")
+            for key in Connection()["counters"].keys():
+                print(key, Connection()["counters"][key])
+            print("================== END ==================")
 
         except ConnectionRefusedError:
             self.get_toplevel().show_error(const.CONNECTION_ERROR_TEXT)
@@ -367,8 +363,7 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
         scale = min(available_width / width, available_height / height)
 
         cr.translate(
-            (available_width - width * scale) / 2.0,
-            (available_height - height * scale) / 2.0,
+            (available_width - width * scale) / 2.0, (available_height - height * scale) / 2.0,
         )
         cr.scale(scale, scale)
 

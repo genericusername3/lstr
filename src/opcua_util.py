@@ -22,6 +22,7 @@ main_prefix: str = "GVL_Visu_Haupt."
 init_prefix: str = "GVL_INIT."
 emergency_off_prefix: str = "GVL_NOTAUS."
 all_axes_prefix: str = "GVL_Moves."
+counters_prefix: str = "POU_Run."
 axes_prefix: str = "GVL_Ax"
 axes: Tuple[str, str, str, str, str] = (
     "pusher_L",
@@ -116,6 +117,17 @@ node_ids: Dict[str, Dict[str, str]] = {
         "done_referencing": prefix + init_prefix + "xInit_OK",
         "reset_axes_button": prefix + all_axes_prefix + "xStart_Grundstellung",
     },
+    "counters": {
+        "pushes_lr": prefix + counters_prefix + "iPushCounter_L_R",
+        "pushes_lv": prefix + counters_prefix + "iPushCounter_L_V",
+        "pushes_rr": prefix + counters_prefix + "iPushCounter_R_R",
+        "pushes_rv": prefix + counters_prefix + "iPushCounter_R_V",
+        "passes_from": prefix + counters_prefix + "iVorschub_Zaehler_Rueck",
+        "passes_to": prefix + counters_prefix + "iVorschub_Zaehler_Vor",
+        "repeat_from": prefix + counters_prefix + "iWdhCounter_Durchlauf_Rueck",
+        "repeat_to": prefix + counters_prefix + "iWdhCounter_Durchlauf_Vor",
+        "repeat_total": prefix + counters_prefix + "iWdhCounter_Gesamt",
+    },
     **{
         f"axis{index}": {
             "current_position": (f"{prefix}{axes_prefix}{index + 1}_{axis}.i_Ist_position"),
@@ -124,7 +136,6 @@ node_ids: Dict[str, Dict[str, str]] = {
             ),
             "move_positive": (f"{prefix}{axes_prefix}{index + 1}_{axis}.x_Mode_endless_pos"),
             "move_negative": (f"{prefix}{axes_prefix}{index + 1}_{axis}.x_Mode_endless_neg"),
-            "start": (f"{prefix}{axes_prefix}{index + 1}_{axis}.x_Start"),
             "has_error": (f"{prefix}{axes_prefix}{index + 1}_{axis}.x_Fehler"),  # Error States soon
             "ready": (f"{prefix}{axes_prefix}{index + 1}_{axis}.x_Achse_befehlsbereit"),
         }
