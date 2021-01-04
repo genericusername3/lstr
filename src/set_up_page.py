@@ -264,6 +264,9 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
         if self.resetting:
             self.resetting = Connection()["main"]["start_button"]
 
+            if not self.resetting:
+                Connection()["main"]["reset_axes_button"] = False
+
         self.move_up_button.set_sensitive(
             Connection()["axis3"]["ready"]
             or Connection()["axis3"]["move_positive"]
