@@ -39,7 +39,7 @@ class CalibrationPage(Gtk.Box, Page, metaclass=PageClass):
         """
         super().__init__(**kwargs)
 
-    def prepare(self) -> None:
+    def prepare(self) -> Optional[str]:
         """Prepare the page to be shown."""
         try:
             if const.DEBUG:
@@ -96,6 +96,9 @@ class CalibrationPage(Gtk.Box, Page, metaclass=PageClass):
             if not opcua_util.Connection()["main"]["done_referencing"]:
                 GLib.timeout_add(1000 / 10, self.if_done_reset)
 
+            elif opcua_util.Connection()["main"]["emergency_off_button"]:
+                return
+
             else:
                 opcua_util.Connection()["main"]["reset_axes_button"] = True
                 opcua_util.Connection()["main"]["start_button"] = True
@@ -116,6 +119,9 @@ class CalibrationPage(Gtk.Box, Page, metaclass=PageClass):
         try:
             if opcua_util.Connection()["main"]["start_button"]:
                 GLib.timeout_add(1000 / 10, self.if_done_switch_to_next)
+
+            elif opcua_util.Connection()["main"]["emergency_off_button"]:
+                return
 
             else:
                 self.on_opcua_button_released(None, None, "main", "reset_axes_button")

@@ -105,9 +105,7 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
     more_popover: Union[Gtk.Template.Child, Gtk.Popover] = Gtk.Template.Child()
 
     patient_button: Union[Gtk.Template.Child, Gtk.Button] = Gtk.Template.Child()
-    patient_button_revealer: Union[
-        Gtk.Template.Child, Gtk.Revealer
-    ] = Gtk.Template.Child()
+    patient_button_revealer: Union[Gtk.Template.Child, Gtk.Revealer] = Gtk.Template.Child()
 
     shutdown_button: Union[Gtk.Template.Child, Gtk.Button] = Gtk.Template.Child()
     log_out_button: Union[Gtk.Template.Child, Gtk.Button] = Gtk.Template.Child()
@@ -119,15 +117,9 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
     title_label: Union[Gtk.Template.Child, Gtk.Label] = Gtk.Template.Child()
 
     main_area_overlay: Union[Gtk.Template.Child, Gtk.Overlay] = Gtk.Template.Child()
-    shutdown_button_compact: Union[
-        Gtk.Template.Child, Gtk.Button
-    ] = Gtk.Template.Child()
-    shutdown_compact_revealer: Union[
-        Gtk.Template.Child, Gtk.Revealer
-    ] = Gtk.Template.Child()
-    log_out_compact_revealer: Union[
-        Gtk.Template.Child, Gtk.Revealer
-    ] = Gtk.Template.Child()
+    shutdown_button_compact: Union[Gtk.Template.Child, Gtk.Button] = Gtk.Template.Child()
+    shutdown_compact_revealer: Union[Gtk.Template.Child, Gtk.Revealer] = Gtk.Template.Child()
+    log_out_compact_revealer: Union[Gtk.Template.Child, Gtk.Revealer] = Gtk.Template.Child()
 
     keyboard_revealer: Union[Gtk.Template.Child, Gtk.Revealer] = Gtk.Template.Child()
 
@@ -183,21 +175,13 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
             self._show_page(
                 "register",
                 animation_direction=-1,
-                kwargs={
-                    "new_user": True,
-                    "access_level": "admin",
-                    "next_page": "calibration",
-                },
+                kwargs={"new_user": True, "access_level": "admin", "next_page": "calibration",},
             )
         elif not auth_util.does_doctor_exist():
             self._show_page(
                 "register",
                 animation_direction=-1,
-                kwargs={
-                    "new_user": True,
-                    "access_level": "doctor",
-                    "next_page": "calibration",
-                },
+                kwargs={"new_user": True, "access_level": "doctor", "next_page": "calibration",},
             )
         else:
             self._show_page("login", animation_direction=-1)
@@ -224,10 +208,7 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
         self.page_history.pop()
 
         self._show_page(
-            self.page_history[-1],
-            animation_direction=-1,
-            prepare=False,
-            prepare_return=True,
+            self.page_history[-1], animation_direction=-1, prepare=False, prepare_return=True,
         )
 
     def _show_page(
@@ -280,14 +261,13 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
             relay_page = next_page.prepare_return()
 
         if isinstance(relay_page, str):
-            if self.page_history[-1] == page_name:
+            if len(self.page_history) and self.page_history[-1] == page_name:
                 self.page_history.pop()
 
-            return self._show_page(
-                page_name=relay_page, animation_direction=animation_direction,
-            )
+            return self._show_page(page_name=relay_page, animation_direction=animation_direction,)
+
         elif isinstance(relay_page, tuple):
-            if self.page_history[-1] == page_name:
+            if len(self.page_history) and self.page_history[-1] == page_name:
                 self.page_history.pop()
 
             return self._show_page(*relay_page)
@@ -308,8 +288,7 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
         self.log_out_compact_revealer.set_reveal_child(self.active_user is not None)
 
         is_admin: bool = (
-            self.active_user is not None
-            and auth_util.get_access_level(self.active_user) == "admin"
+            self.active_user is not None and auth_util.get_access_level(self.active_user) == "admin"
         )
         is_doctor: bool = (
             self.active_user is not None
