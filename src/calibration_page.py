@@ -103,6 +103,7 @@ class CalibrationPage(Gtk.Box, Page, metaclass=PageClass):
                 )
 
                 opcua_util.Connection()["main"]["reset_axes_button"] = True
+                opcua_util.Connection()["main"]["start_button"] = True
 
                 self.if_done_switch_to_next()
 
@@ -118,13 +119,13 @@ class CalibrationPage(Gtk.Box, Page, metaclass=PageClass):
 
     def if_done_switch_to_next(self):
         try:
-            if opcua_util.Connection()["main"]["reset_axes_button"]:
+            if opcua_util.Connection()["main"]["start_button"]:
                 GLib.timeout_add(1000 / 10, self.if_done_switch_to_next)
 
             else:
                 print(
                     "Done resetting, switching to next page",
-                    not opcua_util.Connection()["main"]["reset_axes_button"],
+                    not opcua_util.Connection()["main"]["start_button"],
                 )
                 self.on_opcua_button_released(None, None, "main", "power_button")
                 self.get_toplevel().switch_page("select_patient")
