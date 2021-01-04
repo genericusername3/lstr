@@ -419,8 +419,9 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
             button (Gtk.Button): The button that was clicked
         """
         try:
-            self.end_value_left = Connection()["setup"]["left_pusher"]
-            self.end_value_right = Connection()["setup"]["right_pusher"]
+            self.end_value_left = Connection()["axis0"]["current_position"]
+            self.end_value_right = Connection()["axis1"]["current_position"]
+
         except ConnectionRefusedError:
             self.get_toplevel().show_error(const.CONNECTION_ERROR_TEXT)
 
