@@ -28,9 +28,7 @@ class CalibrationPage(Gtk.Box, Page, metaclass=PageClass):
 
     calibrate_button: Union[Gtk.Button, Gtk.Template.Child] = Gtk.Template.Child()
 
-    emergency_off_revealer: Union[
-        Gtk.Revealer, Gtk.Template.Child
-    ] = Gtk.Template.Child()
+    emergency_off_revealer: Union[Gtk.Revealer, Gtk.Template.Child] = Gtk.Template.Child()
     emergency_off_button: Union[Gtk.Button, Gtk.Template.Child] = Gtk.Template.Child()
 
     def __init__(self, **kwargs):
@@ -151,10 +149,7 @@ class CalibrationPage(Gtk.Box, Page, metaclass=PageClass):
         button.set_sensitive(False)
 
         opcua_action_queue: List[Tuple[Callable, Tuple[Any, ...]]] = [
-            (
-                self.on_opcua_button_released,
-                (button, None, "main", "emergency_off_button"),
-            ),
+            (self.on_opcua_button_released, (button, None, "main", "emergency_off_button"),),
             (self.on_opcua_button_pressed, (button, None, "main", "reset_button")),
             (self.on_opcua_button_released, (button, None, "main", "reset_button")),
             (self.on_opcua_button_pressed, (button, None, "main", "power_button")),
@@ -165,9 +160,10 @@ class CalibrationPage(Gtk.Box, Page, metaclass=PageClass):
             """Work through the action queue with an interval of 400ms."""
             if opcua_action_queue:
                 fn, args = opcua_action_queue.pop(0)
+                print(fn, args)
                 fn(*args)
 
-                GLib.timeout_add(400, work_action_queue)
+                GLib.timeout_add(500, work_action_queue)
 
         work_action_queue()
 
