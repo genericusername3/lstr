@@ -16,7 +16,7 @@ import numpy  # type: ignore
 from threading import Thread  # type: ignore
 
 from .page import Page, PageClass
-from .opcua_util import Connection
+from .opcua_util import Connection, axes
 
 from . import const
 
@@ -93,7 +93,7 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
     def prepare(self) -> None:
         """Prepare the page to be shown."""
         try:
-            Connection()
+            Connection()["main"]["setup_mode"] = True
         except ConnectionRefusedError:
             self.get_toplevel().show_error(const.CONNECTION_ERROR_TEXT)
 
@@ -108,12 +108,12 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
         self.ok_button.set_sensitive(False)
 
         self.display_camera_input_loop()
-        self.update_labels_loop()
+        self.update_values_loop()
 
     def prepare_return(self) -> None:
         """Prepare the page to be shown."""
         try:
-            Connection()
+            Connection()["main"]["setup_mode"] = True
         except ConnectionRefusedError:
             self.get_toplevel().show_error(const.CONNECTION_ERROR_TEXT)
 
@@ -123,11 +123,16 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
         read_thread.start()
 
         self.display_camera_input_loop()
-        self.update_labels_loop()
+        self.update_values_loop()
 
     def unprepare(self):
         """Prepare the page to be hidden."""
         self.running = False
+
+        try:
+            Connection()["main"]["setup_mode"] = False
+        except ConnectionRefusedError:
+            self.get_toplevel().show_error(const.CONNECTION_ERROR_TEXT)
 
     def read_camera_input_loop(self) -> None:
         """Try to store an image from the webcam in camera_frame.
@@ -174,140 +179,136 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
         self.reset_axes_button.connect(
             "button-press-event",
             self.on_opcua_button_pressed,
-            "setup",
+            "main",
             "reset_axes_button",
         )
-        self.reset_axes_button.connect(
-            "button-release-event",
-            self.on_opcua_button_released,
-            "setup",
-            "reset_axes_button",
-        )
+
+        # FIXME: Swap `positive' and `negative' if necessary
 
         # Tilt buttons
         self.tilt_down_button.connect(
             "button-press-event",
             self.on_opcua_button_pressed,
-            "setup",
-            "tilt_down_button",
+            "axis4",
+            "move_positive",
         )
         self.tilt_down_button.connect(
             "button-release-event",
             self.on_opcua_button_released,
-            "setup",
-            "tilt_down_button",
+            "axis4",
+            "move_positive",
         )
         self.tilt_up_button.connect(
             "button-press-event",
             self.on_opcua_button_pressed,
-            "setup",
-            "tilt_up_button",
+            "axis4",
+            "move_negative",
         )
         self.tilt_up_button.connect(
             "button-release-event",
             self.on_opcua_button_released,
-            "setup",
-            "tilt_up_button",
+            "axis4",
+            "move_negative",
         )
 
         # Pusher buttons
         self.left_move_in_button.connect(
             "button-press-event",
             self.on_opcua_button_pressed,
-            "setup",
-            "left_move_in_button",
+            "axis0",
+            "move_positive",
         )
         self.left_move_in_button.connect(
             "button-release-event",
             self.on_opcua_button_released,
-            "setup",
-            "left_move_in_button",
+            "axis0",
+            "move_positive",
         )
         self.left_move_out_button.connect(
             "button-press-event",
             self.on_opcua_button_pressed,
-            "setup",
-            "left_move_out_button",
+            "axis0",
+            "move_negative",
         )
         self.left_move_out_button.connect(
             "button-release-event",
             self.on_opcua_button_released,
-            "setup",
-            "left_move_out_button",
+            "axis0",
+            "move_negative",
         )
         self.right_move_in_button.connect(
             "button-press-event",
             self.on_opcua_button_pressed,
-            "setup",
-            "right_move_in_button",
+            "axis1",
+            "move_positive",
         )
         self.right_move_in_button.connect(
             "button-release-event",
             self.on_opcua_button_released,
-            "setup",
-            "right_move_in_button",
+            "axis1",
+            "move_positive",
         )
         self.right_move_out_button.connect(
             "button-press-event",
             self.on_opcua_button_pressed,
-            "setup",
-            "right_move_out_button",
+            "axis1",
+            "move_negative",
         )
         self.right_move_out_button.connect(
             "button-release-event",
             self.on_opcua_button_released,
-            "setup",
-            "right_move_out_button",
+            "axis1",
+            "move_negative",
         )
 
-        # Movement buttons
+        # Left/RIght/Up/Down buttons
         self.move_left_button.connect(
             "button-press-event",
             self.on_opcua_button_pressed,
-            "setup",
-            "move_left_button",
+            "axis2",
+            "move_positive",
         )
         self.move_left_button.connect(
             "button-release-event",
             self.on_opcua_button_released,
-            "setup",
-            "move_left_button",
+            "axis2",
+            "move_positive",
         )
         self.move_right_button.connect(
             "button-press-event",
             self.on_opcua_button_pressed,
-            "setup",
-            "move_right_button",
+            "axis2",
+            "move_negative",
         )
         self.move_right_button.connect(
             "button-release-event",
             self.on_opcua_button_released,
-            "setup",
-            "move_right_button",
+            "axis2",
+            "move_negative",
         )
         self.move_up_button.connect(
             "button-press-event",
             self.on_opcua_button_pressed,
-            "setup",
-            "move_up_button",
+            "axis3",
+            "move_positive",
         )
         self.move_up_button.connect(
             "button-release-event",
             self.on_opcua_button_released,
-            "setup",
-            "move_up_button",
+            "axis3",
+            "move_positive",
         )
         self.move_down_button.connect(
             "button-press-event",
             self.on_opcua_button_pressed,
-            "setup",
-            "move_down_button",
+            "axis3",
+            "move_negative",
         )
         self.move_down_button.connect(
             "button-release-event",
             self.on_opcua_button_released,
-            "setup",
-            "move_down_button",
+            "axis3",
+            "move_negative",
         )
 
     def display_camera_input_loop(self) -> None:
@@ -318,7 +319,7 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
         if self.running:
             GLib.timeout_add(1000 / 60, self.display_camera_input_loop)
 
-    def update_labels_loop(self) -> None:
+    def update_values_loop(self) -> None:
         """Read OPC UA values to display current motor status."""
         try:
             Connection()
@@ -326,11 +327,38 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
             self.get_toplevel().show_error(const.CONNECTION_ERROR_TEXT)
             return
 
-        self.up_down_label.set_text(str(Connection()["setup"]["up_down"]))
-        self.left_right_label.set_text(str(Connection()["setup"]["left_right"]))
-        self.tilt_label.set_text(str(Connection()["setup"]["tilt"]))
-        self.left_pusher_label.set_text(str(Connection()["setup"]["left_pusher"]))
-        self.right_pusher_label.set_text(str(Connection()["setup"]["right_pusher"]))
+        self.move_up_button.set_sensitive(Connection()["axis3"]["ready"])
+        self.move_down_button.set_sensitive(Connection()["axis3"]["ready"])
+        self.up_down_label.set_text(str(Connection()["axis3"]["current_position"]))
+
+        self.move_left_button.set_sensitive(Connection()["axis2"]["ready"])
+        self.move_right_button.set_sensitive(Connection()["axis2"]["ready"])
+        self.left_right_label.set_text(str(Connection()["axis2"]["current_position"]))
+
+        self.tilt_up_button.set_sensitive(Connection()["axis4"]["ready"])
+        self.tilt_down_button.set_sensitive(Connection()["axis4"]["ready"])
+        self.tilt_label.set_text(str(Connection()["axis4"]["current_position"]))
+
+        self.left_move_in_button.set_sensitive(Connection()["axis0"]["ready"])
+        self.left_move_out_button.set_sensitive(Connection()["axis0"]["ready"])
+        self.left_pusher_label.set_text(str(Connection()["axis0"]["current_position"]))
+
+        self.right_move_in_button.set_sensitive(Connection()["axis0"]["ready"])
+        self.right_move_out_button.set_sensitive(Connection()["axis0"]["ready"])
+        self.right_pusher_label.set_text(str(Connection()["axis1"]["current_position"]))
+
+        all_ready: bool = all(
+            [Connection()[f"axis{index}"]["ready"] for index in range(len(axes))]
+        )
+
+        self.reset_axes_button.set_sensitive(all_ready)
+        self.save_position_button.set_sensitive(all_ready)
+
+        self.ok_button.set_sensitive(
+            all_ready
+            and self.end_value_left is not None
+            and self.end_value_right is not None
+        )
 
         self.end_pos_left_label.set_text(
             str(self.end_value_left) if self.end_value_left is not None else "-"
@@ -340,7 +368,7 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
         )
 
         if self.running:
-            GLib.timeout_add(1000 / 10, self.update_labels_loop)
+            GLib.timeout_add(1000 / 10, self.update_values_loop)
 
     def do_destroy(self) -> None:
         """When the window is destroyed, stop all threads and quit."""
@@ -399,7 +427,7 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
         """
         self.get_toplevel().switch_page(
             "select_program", self.end_value_left, self.end_value_right
-        )  # TODO: Use actual values
+        )
 
     def on_save_pos_clicked(self, button: Gtk.Button) -> None:
         """React to the "Save position" button being clicked.
@@ -414,8 +442,8 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
             self.get_toplevel().show_error(const.CONNECTION_ERROR_TEXT)
 
             if const.DEBUG:
-                self.end_value_left = 99999999999
-                self.end_value_right = 99999999999
+                self.end_value_left = 999
+                self.end_value_right = 999
 
             self.end_pos_left_label.set_text(str(self.end_value_left))
             self.end_pos_right_label.set_text(str(self.end_value_right))

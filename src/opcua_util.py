@@ -4,15 +4,9 @@ Abstraction layer on top of the opcua Python module.
 Also specifies all used variable names.
 """
 
-from typing import Dict, Any, Optional, List
+from typing import Dict, Any, Optional, List, Tuple
 from opcua import Client  # type: ignore
 from opcua.common.node import Node  # type: ignore
-
-prefix: str = "ns=4;s=|var|CODESYS Control for Raspberry Pi SL.Application."
-
-program_prefix: str = "GVL_Tabelle.stTabelle_PrgDat."
-setup_prefix: str = "GVL_Visu_Einrichten."
-main_prefix: str = "GVL_Visu_Haupt."
 
 # you might notice the word
 # "pusher" being spelled each of the following ways:
@@ -20,6 +14,22 @@ main_prefix: str = "GVL_Visu_Haupt."
 #     Pusher (which makes sense when using casing iFoo_Bar (for some reason))
 #     puscher (with a german "sch")
 #     Puscher
+
+prefix: str = "ns=4;s=|var|CODESYS Control for Raspberry Pi SL.Application."
+
+program_prefix: str = "GVL_Tabelle.stTabelle_PrgDat."
+main_prefix: str = "GVL_Visu_Haupt."
+init_prefix: str = "GVL_INIT."
+emergency_off_prefix: str = "GVL_NOTAUS."
+all_axes_prefix: str = "GVL_Moves."
+axes_prefix: str = "GVL_Ax"
+axes: Tuple[str, str, str, str, str] = (
+    "pusher_L",
+    "pusher_R",
+    "quer",
+    "laengs",
+    "kipp",
+)
 
 node_ids: Dict[str, Dict[str, str]] = {
     "program": {
@@ -107,57 +117,42 @@ node_ids: Dict[str, Dict[str, str]] = {
         "push_count_down": prefix + program_prefix + "iAnzahl_Vorschuebe_Rueck",
         "pass_count_up": prefix + program_prefix + "iWiederholungen_Vor",
         "pass_count_down": prefix + program_prefix + "iWiederholungen_Rueck",
-        "pass_count_sum": prefix + program_prefix + "iWiederholungen_Gesamt",
-    },
-    "setup": {
-        # Displayed values
-        "tilt": prefix + setup_prefix + "iAnzeige_Kippwinkel",
-        "left_pusher": prefix + setup_prefix + "iAnzeige_Position_Pusher_A",
-        "right_pusher": prefix + setup_prefix + "iAnzeige_Position_Pusher_B",
-        "left_right": prefix + setup_prefix + "iAnzeige_Position_links_rechts",
-        "up_down": prefix + setup_prefix + "iAnzeige_Position_vor_rueck",
-        # Mysterious button that has an int for some reason
-        "fast_up_button": prefix + setup_prefix + "iBut_FF_Puscher_hoch",
-        "fast_down_button": prefix + setup_prefix + "iBut_FF_Puscher_runter",
-        # Reset button
-        "reset_axes_button": prefix + setup_prefix + "xBut_Grundstellung",
-        # Tilt buttons
-        "tilt_down_button": prefix + setup_prefix + "xBut_Kipp_kaudal",
-        "tilt_up_button": prefix + setup_prefix + "xBut_Kipp_kranial",
-        # Pusher buttons
-        "left_move_in_button": prefix + setup_prefix + "xBut_pusher_A_hoch_5mm",
-        "left_move_out_button": prefix + setup_prefix + "xBut_pusher_A_runter_5mm",
-        "right_move_in_button": prefix + setup_prefix + "xBut_pusher_B_hoch_5mm",
-        "right_move_out_button": prefix + setup_prefix + "xBut_pusher_B_runter_5mm",
-        # Movement buttons
-        "move_left_button": prefix + setup_prefix + "xBut_links",
-        "move_right_button": prefix + setup_prefix + "xBut_rechts",
-        "move_up_button": prefix + setup_prefix + "xBut_rueck_5mm",
-        "move_down_button": prefix + setup_prefix + "xBut_vor_5mm",
+        "repeat_count": prefix + program_prefix + "iWiederholungen_Gesamt",
     },
     "main": {
-        #
-        # Displayed values
-        "passes": prefix + main_prefix + "iAnzeige_Gesamt_Durchlauf",
-        "tilt": prefix + main_prefix + "iAnzeige_Kippwinkel",
-        "left_pusher": prefix + main_prefix + "iAnzeige_Position_Pusher_A",
-        "right_pusher": prefix + main_prefix + "iAnzeige_Position_Pusher_B",
-        "left_right": prefix + main_prefix + "iAnzeige_Position_links_rechts",
-        "up_down": prefix + main_prefix + "iAnzeige_Position_vor_rueck",
         "is_pusher_active": prefix + main_prefix + "xAlarm_Pfeil",
         #
         # Buttons
-        "emergency_off_button": prefix + main_prefix + "xBut_NOTAUS",
+        "emergency_off_button": prefix + emergency_off_prefix + "xNOTAUS",
         #
         # Power, reset and program start
         "power_button": prefix + main_prefix + "xBut_Power",
         "reset_button": prefix + main_prefix + "xBut_Reset",
-        "start_button": prefix + main_prefix + "xBut_Start",
-        #
-        # "Visibility" of different "pop-ups"
-        "emergency_off": prefix + main_prefix + "xSichtbarkeit_NOTAUS_PopUp",
-        "not_referenced": prefix + main_prefix + "xSichtbarkeit_NichtRef_PopUp",
-        "referencing": prefix + main_prefix + "xSichtbarkeit_Referenzierung_PopUp",
+        "start_button": prefix + all_axes_prefix + "xBut_Start",
+        "setup_mode": prefix + all_axes_prefix + "xEinrichtbetrieb",
+        "done_referencing": prefix + init_prefix + "xInit_OK",
+        "reset_axes_button": prefix + all_axes_prefix + "xStart_Grundstellung",
+    },
+    **{
+        "axis{index}": {
+            "current_position": (
+                f"{prefix}{axes_prefix}{index + 1}_{axis}.i_Ist_position"
+            ),
+            "requested_speed": (
+                f"{prefix}{axes_prefix}{index + 1}_{axis}.i_Soll_geschwindigkeit_man"
+            ),
+            "move_positive": (
+                f"{prefix}{axes_prefix}{index + 1}_{axis}.i_Mode_endless_pos"
+            ),
+            "move_negative": (
+                f"{prefix}{axes_prefix}{index + 1}_{axis}.i_Mode_endless_neg"
+            ),
+            "has_error": (
+                f"{prefix}{axes_prefix}{index + 1}_{axis}.x_Fehler"  # Error States soon
+            ),
+            "ready": (f"{prefix}{axes_prefix}{index + 1}_{axis}.x_Achse_befehlsbereit"),
+        }
+        for index, axis in enumerate(axes)
     },
 }
 

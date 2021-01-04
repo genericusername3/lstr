@@ -214,7 +214,7 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
             self.started = False
 
     def on_emergency_off_clicked(self, button: Gtk.Button) -> None:
-        """React to the "Cancel" button being clicked.
+        """React to the "Emergency Off" button being clicked.
 
         Interrupt the treatment.
 
@@ -226,26 +226,15 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
 
         try:
             if self.emergency_off:
+                self.on_opcua_button_pressed(
+                    button, None, "main", "emergency_off_button"
+                )
+
                 self.start_button.set_sensitive(False)
                 self.resume_button.set_sensitive(False)
                 self.pause_button.set_sensitive(False)
                 self.cancel_button.set_sensitive(False)
                 self.emergency_off_button.set_sensitive(False)
-
-                self.on_opcua_button_pressed(
-                    button, None, "main", "emergency_off_button"
-                )
-                self.on_opcua_button_released(button, None, "main", "start_button")
-                self.on_opcua_button_released(button, None, "main", "power_button")
-
-                GLib.timeout_add(
-                    1000,
-                    self.on_opcua_button_released,
-                    button,
-                    None,
-                    "main",
-                    "emergency_off_button",
-                )
 
                 def offer_reset():
                     self.emergency_off_button.set_sensitive(True)
@@ -260,7 +249,7 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
                     )
 
                 GLib.timeout_add(
-                    1500, offer_reset,
+                    500, offer_reset,
                 )
 
                 if const.DEBUG:
@@ -272,17 +261,7 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
                 self.pause_button.set_sensitive(True)
                 self.cancel_button.set_sensitive(True)
 
-                self.on_opcua_button_pressed(button, None, "main", "reset_button")
-                self.get_toplevel()._show_page("treatment", animation_direction=0)
-
-                self.emergency_off_button.get_style_context().add_class(
-                    "destructive-action"
-                )
-                self.emergency_off_button.get_style_context().remove_class(
-                    "suggested-action",
-                )
-                self.emergency_off_button.set_label("NOT AUS")
-                self.emergency_off_button.set_always_show_image(True)
+                self.get_toplevel()._show_page("calibration", animation_direction=-1)
 
         except ConnectionRefusedError:
             print("NOTAUS failed")
@@ -296,8 +275,8 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
             self.program_progress_bar.set_fraction(
                 Connection()["main"]["passes"]
                 / (
-                    self.get_toplevel().active_program.push_count_sum
-                    * self.get_toplevel().active_program.pass_count_sum
+                    self.get_toplevel().active_program.pass_count_sum
+                    * self.get_toplevel().active_program.repeat_count
                 )
             )
 
@@ -328,6 +307,7 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
             left_pusher = Connection()["main"]["left_pusher"]
             right_pusher = Connection()["main"]["right_pusher"]
             is_pusher_active = Connection()["main"]["is_pusher_active"]
+
         except ConnectionRefusedError:
             if const.DEBUG:
                 import math
@@ -351,7 +331,6 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
 
         style_ctx: Gtk.StyleContext = widget.get_style_context()
 
-        print(style_ctx.get_color(style_ctx.get_state()))
         fg_color = style_ctx.get_color(style_ctx.get_state())
 
         svg: str = SVG_CODE.format(
