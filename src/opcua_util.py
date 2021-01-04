@@ -117,7 +117,7 @@ node_ids: Dict[str, Dict[str, str]] = {
         "reset_axes_button": prefix + all_axes_prefix + "xStart_Grundstellung",
     },
     **{
-        "axis{index}": {
+        f"axis{index}": {
             "current_position": (f"{prefix}{axes_prefix}{index + 1}_{axis}.i_Ist_position"),
             "requested_speed": (
                 f"{prefix}{axes_prefix}{index + 1}_{axis}.i_Soll_geschwindigkeit_man"
