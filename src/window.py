@@ -186,7 +186,7 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
                 kwargs={
                     "new_user": True,
                     "access_level": "admin",
-                    "next_page": "select_patient",
+                    "next_page": "calibration",
                 },
             )
         elif not auth_util.does_doctor_exist():
@@ -196,7 +196,7 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
                 kwargs={
                     "new_user": True,
                     "access_level": "doctor",
-                    "next_page": "select_patient",
+                    "next_page": "calibration",
                 },
             )
         else:
@@ -399,6 +399,8 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
         Args:
             button (Gtk.Button): The clicked button
         """
+        print("Presenting shutdown dialog")
+
         self.more_popover.popdown()
 
         self.get_style_context().add_class("has-dialog")
