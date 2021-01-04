@@ -248,6 +248,6 @@ class Connection(metaclass=Singleton):
             AttributeError: If the node category does not exist
         """
         if name not in self.node_categories:
-            raise AttributeError(f"{name} is not a node categroy")
+            raise AttributeError(f"{name} is not a node category")
 
         return self.node_categories[name]
