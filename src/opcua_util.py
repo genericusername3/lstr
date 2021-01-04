@@ -124,6 +124,7 @@ node_ids: Dict[str, Dict[str, str]] = {
             ),
             "move_positive": (f"{prefix}{axes_prefix}{index + 1}_{axis}.i_Mode_endless_pos"),
             "move_negative": (f"{prefix}{axes_prefix}{index + 1}_{axis}.i_Mode_endless_neg"),
+            "start": (f"{prefix}{axes_prefix}{index + 1}_{axis}.x_Start"),
             "has_error": (f"{prefix}{axes_prefix}{index + 1}_{axis}.x_Fehler"),  # Error States soon
             "ready": (f"{prefix}{axes_prefix}{index + 1}_{axis}.x_Achse_befehlsbereit"),
         }

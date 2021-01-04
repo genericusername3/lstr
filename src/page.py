@@ -243,9 +243,7 @@ class Page(abc.ABC):
         pass
 
     @overload
-    def prepare_return(
-        self, *args, **kwargs
-    ) -> Tuple[str, int, bool, bool, Iterable[Any]]:
+    def prepare_return(self, *args, **kwargs) -> Tuple[str, int, bool, bool, Iterable[Any]]:
         """Prepare the page to be shown when returning from another page.
 
         Returns:
@@ -257,9 +255,7 @@ class Page(abc.ABC):
         """
         pass
 
-    def prepare_return(
-        self,
-    ) -> Tuple[str, int, bool, bool, Iterable[Any], Dict[str, Any]]:
+    def prepare_return(self,) -> Tuple[str, int, bool, bool, Iterable[Any], Dict[str, Any]]:
         """Prepare the page to be shown when returning from another page.
 
         Returns:
@@ -291,9 +287,7 @@ class Page(abc.ABC):
         if widget.is_focus():
             self._entries_pressed[widget] = time.time()
 
-    def on_entry_button_release(
-        self, widget: Gtk.Widget, event: Gdk.EventButton
-    ) -> None:
+    def on_entry_button_release(self, widget: Gtk.Widget, event: Gdk.EventButton) -> None:
         """React to an entry being unclicked (button release). Toggle OSK.
 
         Args:
@@ -314,11 +308,7 @@ class Page(abc.ABC):
         osk_util.unrequest_keyboard()
 
     def on_opcua_button_pressed(
-        self,
-        button: Gtk.Button,
-        event: Gdk.EventButton,
-        category: str,
-        variable_name: str,
+        self, button: Gtk.Button, event: Gdk.EventButton, category: str, variable_name: str,
     ) -> None:
         """React to a button that is represented in OPC UA being pressed.
 
@@ -361,16 +351,13 @@ class Page(abc.ABC):
             variable_name (str): The name of the boolean variable (yuck) node
         """
         try:
+            print(category, variable_name)
             Connection()[category][variable_name] = True
         except ConnectionRefusedError:
             self.get_toplevel().show_error(const.CONNECTION_ERROR_TEXT)
 
     def on_opcua_button_released(
-        self,
-        button: Gtk.Button,
-        event: Gdk.EventButton,
-        category: str,
-        variable_name: str,
+        self, button: Gtk.Button, event: Gdk.EventButton, category: str, variable_name: str,
     ) -> None:
         """React to a button that is represented in OPC UA being released.
 
