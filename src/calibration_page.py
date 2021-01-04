@@ -1,6 +1,6 @@
 """A page that prompts the user to input the patient's pain values."""
 
-from typing import Union, Optional
+from typing import Union, Optional, List, Tuple, Callable, Any
 
 from gi.repository import GObject, GLib, Gtk  # type: ignore
 
@@ -52,17 +52,10 @@ class CalibrationPage(Gtk.Box, Page, metaclass=PageClass):
                 self.emergency_off_revealer.set_reveal_child(False)
 
             else:
-                if not opcua_util.Connection()["main"]["not_referenced"]:
+                if opcua_util.Connection()["main"]["done_referencing"]:
                     self.on_opcua_button_released(None, None, "main", "power_button")
 
                     return "select_patient"
-
-                elif not opcua_util.Connection()["main"]["referencing"]:
-                    self.calibrate_button.set_sensitive(True)
-                    self.calibrate_button.set_always_show_image(False)
-                    self.calibrate_button.get_image().stop()
-
-                    self.emergency_off_revealer.set_reveal_child(False)
 
                 else:
                     self.calibrate_button.set_sensitive(False)
@@ -71,7 +64,7 @@ class CalibrationPage(Gtk.Box, Page, metaclass=PageClass):
 
                     self.emergency_off_revealer.set_reveal_child(True)
 
-                    self.if_done_switch_to_next()
+                    self.if_done_reset()
 
         except ConnectionRefusedError:
             self.get_toplevel().show_error(const.CONNECTION_ERROR_TEXT)
@@ -80,15 +73,6 @@ class CalibrationPage(Gtk.Box, Page, metaclass=PageClass):
             self.calibrate_button.get_image().stop()
 
             self.emergency_off_revealer.set_reveal_child(False)
-
-            if const.DEBUG:
-                GLib.timeout_add(
-                    3000,
-                    lambda: (
-                        self.get_toplevel().switch_page("select_patient"),
-                        self.get_toplevel().clear_history(),
-                    ),
-                )
 
     def prepare_return(self) -> None:
         """Prepare the page to be shown."""
@@ -109,13 +93,41 @@ class CalibrationPage(Gtk.Box, Page, metaclass=PageClass):
         self.calibrate_button.connect("clicked", self.on_calibrate_clicked)
         self.emergency_off_button.connect("clicked", self.on_emergency_off_clicked)
 
+    def if_done_reset(self):
+        try:
+            if not opcua_util.Connection()["main"]["done_referencing"]:
+                GLib.timeout_add(1000 / 10, self.if_done_reset)
+
+            else:
+                print(
+                    "Done calibrating, resetting",
+                    opcua_util.Connection()["main"]["done_referencing"],
+                )
+
+                opcua_util.Connection()["main"]["reset_axes_button"] = True
+
+                self.if_done_switch_to_next()
+
+        except ConnectionRefusedError:
+            self.get_toplevel().show_error(const.CONNECTION_ERROR_TEXT)
+
+            print("Could not calibrate")
+
+            if const.DEBUG:
+                print("(DEBUG) DONE")
+
+                self.if_done_switch_to_next()
+
     def if_done_switch_to_next(self):
         try:
-            if opcua_util.Connection()["main"]["referencing"]:
+            if opcua_util.Connection()["main"]["reset_axes_button"]:
                 GLib.timeout_add(1000 / 10, self.if_done_switch_to_next)
 
             else:
-                print("DONE", opcua_util.Connection()["main"]["referencing"])
+                print(
+                    "Done resetting, switching to next page",
+                    not opcua_util.Connection()["main"]["reset_axes_button"],
+                )
                 self.on_opcua_button_released(None, None, "main", "power_button")
                 self.get_toplevel().switch_page("select_patient")
                 self.get_toplevel().clear_history()
@@ -123,7 +135,12 @@ class CalibrationPage(Gtk.Box, Page, metaclass=PageClass):
         except ConnectionRefusedError:
             self.get_toplevel().show_error(const.CONNECTION_ERROR_TEXT)
 
-            GLib.timeout_add(1000 / 10, self.if_done_switch_to_next)
+            print("Could not reset")
+
+            if const.DEBUG:
+                print("(DEBUG) DONE")
+                self.get_toplevel().switch_page("select_patient")
+                self.get_toplevel().clear_history()
 
     def on_calibrate_clicked(self, button: Gtk.Button) -> None:
         """React to the calibrate button being clicked.
@@ -133,47 +150,31 @@ class CalibrationPage(Gtk.Box, Page, metaclass=PageClass):
         """
         button.set_sensitive(False)
 
-        self.on_opcua_button_released(button, None, "main", "emergency_off_button")
-        
-        GLib.timeout_add(
-            100,
-            self.on_opcua_button_pressed,
-            *(button, None, "main", "reset_button")
-        )
-        
-        GLib.timeout_add(
-            200,
-            self.on_opcua_button_released,
-            *(button, None, "main", "reset_button")
-        )
-        
-        GLib.timeout_add(
-            300,
-            self.on_opcua_button_pressed,
-            *(button, None, "main", "power_button")
-        )
+        opcua_action_queue: List[Tuple[Callable, Tuple[Any, ...]]] = [
+            (
+                self.on_opcua_button_released,
+                (button, None, "main", "emergency_off_button"),
+            ),
+            (self.on_opcua_button_pressed, (button, None, "main", "reset_button")),
+            (self.on_opcua_button_released, (button, None, "main", "reset_button")),
+            (self.on_opcua_button_pressed, (button, None, "main", "power_button")),
+            (self.if_done_reset, ()),
+        ]
 
-        try:
-            opcua_util.Connection()["main"]["referencing"] = True
+        def work_action_queue():
+            """Work through the action queue with an interval of 400ms."""
+            if opcua_action_queue:
+                fn, args = opcua_action_queue.pop(0)
+                fn(*args)
 
-        except ConnectionRefusedError:
-            if const.DEBUG:
-                GLib.timeout_add(
-                    5000,
-                    lambda: (
-                        self.get_toplevel().switch_page("select_patient"),
-                        self.get_toplevel().clear_history(),
-                    ),
-                )
-            else:
-                return
+                GLib.timeout_add(400, work_action_queue)
+
+        work_action_queue()
 
         button.set_always_show_image(True)
         button.get_image().start()
 
         self.emergency_off_revealer.set_reveal_child(True)
-
-        self.if_done_switch_to_next()
 
     def on_emergency_off_clicked(self, button: Gtk.Button) -> None:
         """React to the emergency off button being clicked.
@@ -185,11 +186,9 @@ class CalibrationPage(Gtk.Box, Page, metaclass=PageClass):
         self.calibrate_button.set_always_show_image(False)
         self.calibrate_button.get_image().stop()
 
-        self.emergency_off_button.set_sensitive(False)
-
         self.on_opcua_button_pressed(button, None, "main", "emergency_off_button")
-        
-        self.get_toplevel()._show_page("calibration", animation_direction=0)
+
+        self.prepare()
 
 
 # Make CalibrationPage accessible via .ui files
