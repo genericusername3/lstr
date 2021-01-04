@@ -53,9 +53,7 @@ node_ids: Dict[str, Dict[str, str]] = {
         "pusher_left_push_time_up": prefix + program_prefix + "iZeit_Puscher_A_Vor",
         "pusher_left_push_time_down": prefix + program_prefix + "iZeit_Puscher_A_Rueck",
         "pusher_right_push_time_up": prefix + program_prefix + "iZeit_Puscher_B_Vor",
-        "pusher_right_push_time_down": prefix
-        + program_prefix
-        + "iZeit_Puscher_B_Rueck",
+        "pusher_right_push_time_down": prefix + program_prefix + "iZeit_Puscher_B_Rueck",
         #
         # Push delays
         "pusher_left_delay_up": prefix + program_prefix + "iDelay_Puscher_A_Vor",
@@ -64,32 +62,16 @@ node_ids: Dict[str, Dict[str, str]] = {
         "pusher_right_delay_down": prefix + program_prefix + "iDelay_puscher_B_Rueck",
         #
         # Push wait times
-        "pusher_left_stay_duration_up": prefix
-        + program_prefix
-        + "iWarten_Puscher_A_Vor",
-        "pusher_left_stay_duration_down": prefix
-        + program_prefix
-        + "iWarten_Puscher_A_Rueck",
-        "pusher_right_stay_duration_up": prefix
-        + program_prefix
-        + "iWarten_puscher_B_Vor",
-        "pusher_right_stay_duration_down": prefix
-        + program_prefix
-        + "iWarten_puscher_B_Rueck",
+        "pusher_left_stay_duration_up": prefix + program_prefix + "iWarten_Puscher_A_Vor",
+        "pusher_left_stay_duration_down": prefix + program_prefix + "iWarten_Puscher_A_Rueck",
+        "pusher_right_stay_duration_up": prefix + program_prefix + "iWarten_puscher_B_Vor",
+        "pusher_right_stay_duration_down": prefix + program_prefix + "iWarten_puscher_B_Rueck",
         #
         # Push counts
-        "pusher_left_push_count_up": prefix
-        + program_prefix
-        + "iWiederholung_Pusher_A_Vor",
-        "pusher_left_push_count_down": prefix
-        + program_prefix
-        + "iWiederholung_Pusher_A_Rueck",
-        "pusher_right_push_count_up": prefix
-        + program_prefix
-        + "iWiederholung_Pusher_B_Vor",
-        "pusher_right_push_count_down": prefix
-        + program_prefix
-        + "iWiederholung_Pusher_B_Rueck",
+        "pusher_left_push_count_up": prefix + program_prefix + "iWiederholung_Pusher_A_Vor",
+        "pusher_left_push_count_down": prefix + program_prefix + "iWiederholung_Pusher_A_Rueck",
+        "pusher_right_push_count_up": prefix + program_prefix + "iWiederholung_Pusher_B_Vor",
+        "pusher_right_push_count_down": prefix + program_prefix + "iWiederholung_Pusher_B_Rueck",
         #
         # Distance correction per 7deg
         "pusher_left_distance_correction_up": prefix
@@ -123,7 +105,8 @@ node_ids: Dict[str, Dict[str, str]] = {
         "is_pusher_active": prefix + main_prefix + "xAlarm_Pfeil",
         #
         # Buttons
-        "emergency_off_button": prefix + emergency_off_prefix + "xNOTAUS",
+        "emergency_off_button": prefix + main_prefix + "xBut_NOTAUS",
+        # spec says prefix + emergency_off_prefix + "xNOTAUS", doesn't work
         #
         # Power, reset and program start
         "power_button": prefix + main_prefix + "xBut_Power",
@@ -135,21 +118,13 @@ node_ids: Dict[str, Dict[str, str]] = {
     },
     **{
         "axis{index}": {
-            "current_position": (
-                f"{prefix}{axes_prefix}{index + 1}_{axis}.i_Ist_position"
-            ),
+            "current_position": (f"{prefix}{axes_prefix}{index + 1}_{axis}.i_Ist_position"),
             "requested_speed": (
                 f"{prefix}{axes_prefix}{index + 1}_{axis}.i_Soll_geschwindigkeit_man"
             ),
-            "move_positive": (
-                f"{prefix}{axes_prefix}{index + 1}_{axis}.i_Mode_endless_pos"
-            ),
-            "move_negative": (
-                f"{prefix}{axes_prefix}{index + 1}_{axis}.i_Mode_endless_neg"
-            ),
-            "has_error": (
-                f"{prefix}{axes_prefix}{index + 1}_{axis}.x_Fehler"  # Error States soon
-            ),
+            "move_positive": (f"{prefix}{axes_prefix}{index + 1}_{axis}.i_Mode_endless_pos"),
+            "move_negative": (f"{prefix}{axes_prefix}{index + 1}_{axis}.i_Mode_endless_neg"),
+            "has_error": (f"{prefix}{axes_prefix}{index + 1}_{axis}.x_Fehler"),  # Error States soon
             "ready": (f"{prefix}{axes_prefix}{index + 1}_{axis}.x_Achse_befehlsbereit"),
         }
         for index, axis in enumerate(axes)
@@ -219,16 +194,12 @@ class NodeCategory:
             raise AttributeError(f"{name} is not a node of this NodeCategory")
 
         try:
-            self.nodes[name].set_value(
-                value, self.nodes[name].get_data_type_as_variant_type()
-            )
+            self.nodes[name].set_value(value, self.nodes[name].get_data_type_as_variant_type())
         except BrokenPipeError:
             # Try to re-connect and try again
             Connection().connect()
 
-            self.nodes[name].set_value(
-                value, self.nodes[name].get_data_type_as_variant_type()
-            )
+            self.nodes[name].set_value(value, self.nodes[name].get_data_type_as_variant_type())
 
     def keys(self) -> List[str]:
         """Return the names of all nodes contained in this NodeCategory.
@@ -255,9 +226,7 @@ class Connection(metaclass=Singleton):
         for node_category in node_ids:
             category_dict: [str, Node] = dict()
             for node_name in node_ids[node_category]:
-                category_dict[node_name] = self.client.get_node(
-                    node_ids[node_category][node_name]
-                )
+                category_dict[node_name] = self.client.get_node(node_ids[node_category][node_name])
 
             self.node_categories[node_category] = NodeCategory(category_dict)
 
