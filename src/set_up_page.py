@@ -264,31 +264,63 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
         if self.resetting:
             self.resetting = Connection()["main"]["start_button"]
 
-        self.move_up_button.set_sensitive(Connection()["axis3"]["ready"] and not self.resetting)
-        self.move_down_button.set_sensitive(Connection()["axis3"]["ready"] and not self.resetting)
+        self.move_up_button.set_sensitive(
+            Connection()["axis3"]["ready"]
+            or Connection()["axis3"]["move_positive"]
+            and not self.resetting
+        )
+        self.move_down_button.set_sensitive(
+            Connection()["axis3"]["ready"]
+            or Connection()["axis3"]["move_negative"]
+            and not self.resetting
+        )
         self.up_down_label.set_text(str(Connection()["axis3"]["current_position"]))
 
-        self.move_left_button.set_sensitive(Connection()["axis2"]["ready"] and not self.resetting)
-        self.move_right_button.set_sensitive(Connection()["axis2"]["ready"] and not self.resetting)
+        self.move_left_button.set_sensitive(
+            Connection()["axis2"]["ready"]
+            or Connection()["axis2"]["move_positive"]
+            and not self.resetting
+        )
+        self.move_right_button.set_sensitive(
+            Connection()["axis2"]["ready"]
+            or Connection()["axis2"]["move_negative"]
+            and not self.resetting
+        )
         self.left_right_label.set_text(str(Connection()["axis2"]["current_position"]))
 
-        self.tilt_up_button.set_sensitive(Connection()["axis4"]["ready"] and not self.resetting)
-        self.tilt_down_button.set_sensitive(Connection()["axis4"]["ready"] and not self.resetting)
+        self.tilt_down_button.set_sensitive(
+            Connection()["axis4"]["ready"]
+            or Connection()["axis4"]["move_positive"]
+            and not self.resetting
+        )
+        self.tilt_up_button.set_sensitive(
+            Connection()["axis4"]["ready"]
+            or Connection()["axis4"]["move_negative"]
+            and not self.resetting
+        )
         self.tilt_label.set_text(str(Connection()["axis4"]["current_position"]))
 
         self.left_move_in_button.set_sensitive(
-            Connection()["axis0"]["ready"] and not self.resetting
+            Connection()["axis0"]["ready"]
+            or Connection()["axis0"]["move_positive"]
+            and not self.resetting
         )
         self.left_move_out_button.set_sensitive(
-            Connection()["axis0"]["ready"] and not self.resetting
+            Connection()["axis0"]["ready"]
+            or Connection()["axis0"]["move_negative"]
+            and not self.resetting
         )
         self.left_pusher_label.set_text(str(Connection()["axis0"]["current_position"]))
 
         self.right_move_in_button.set_sensitive(
-            Connection()["axis0"]["ready"] and not self.resetting
+            Connection()["axis1"]["ready"]
+            or Connection()["axis1"]["move_positive"]
+            and not self.resetting
         )
         self.right_move_out_button.set_sensitive(
-            Connection()["axis0"]["ready"] and not self.resetting
+            Connection()["axis1"]["ready"]
+            or Connection()["axis1"]["move_negative"]
+            and not self.resetting
         )
         self.right_pusher_label.set_text(str(Connection()["axis1"]["current_position"]))
 
