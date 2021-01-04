@@ -1,29 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.36.0 -->
+<!-- Generated with glade 3.38.1 -->
 <interface>
   <requires lib="gtk+" version="3.20"/>
   <object class="GtkImage" id="close_icon">
     <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="icon_name">go-down-symbolic</property>
+    <property name="can-focus">False</property>
+    <property name="icon-name">go-down-symbolic</property>
     <property name="icon_size">3</property>
   </object>
+  <!-- n-columns=22 n-rows=5 -->
   <template class="OnscreenKeyboard" parent="GtkGrid">
     <property name="visible">True</property>
-    <property name="can_focus">False</property>
+    <property name="can-focus">False</property>
     <property name="orientation">vertical</property>
-    <property name="row_homogeneous">True</property>
-    <property name="column_homogeneous">True</property>
+    <property name="row-homogeneous">True</property>
+    <property name="column-homogeneous">True</property>
     <child>
       <object class="GtkButton" id="button_a00">
-        <property name="height_request">64</property>
+        <property name="height-request">64</property>
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="receives_default">False</property>
+        <property name="can-focus">False</property>
+        <property name="receives-default">False</property>
         <child>
           <object class="GtkLabel" id="label_a00">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="label" translatable="yes">a00</property>
             <attributes>
               <attribute name="scale" value="1.333"/>
@@ -35,21 +36,21 @@
         </style>
       </object>
       <packing>
-        <property name="left_attach">0</property>
-        <property name="top_attach">0</property>
+        <property name="left-attach">0</property>
+        <property name="top-attach">0</property>
         <property name="width">2</property>
       </packing>
     </child>
     <child>
       <object class="GtkButton" id="button_a01">
-        <property name="height_request">64</property>
+        <property name="height-request">64</property>
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="receives_default">False</property>
+        <property name="can-focus">False</property>
+        <property name="receives-default">False</property>
         <child>
           <object class="GtkLabel" id="label_a01">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="label" translatable="yes">a01</property>
             <attributes>
               <attribute name="scale" value="1.333"/>
@@ -61,21 +62,21 @@
         </style>
       </object>
       <packing>
-        <property name="left_attach">2</property>
-        <property name="top_attach">0</property>
+        <property name="left-attach">2</property>
+        <property name="top-attach">0</property>
         <property name="width">2</property>
       </packing>
     </child>
     <child>
       <object class="GtkButton" id="button_a02">
-        <property name="height_request">64</property>
+        <property name="height-request">64</property>
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="receives_default">False</property>
+        <property name="can-focus">False</property>
+        <property name="receives-default">False</property>
         <child>
           <object class="GtkLabel" id="label_a02">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="label" translatable="yes">a02</property>
             <attributes>
               <attribute name="scale" value="1.333"/>
@@ -87,21 +88,21 @@
         </style>
       </object>
       <packing>
-        <property name="left_attach">4</property>
-        <property name="top_attach">0</property>
+        <property name="left-attach">4</property>
+        <property name="top-attach">0</property>
         <property name="width">2</property>
       </packing>
     </child>
     <child>
       <object class="GtkButton" id="button_a03">
-        <property name="height_request">64</property>
+        <property name="height-request">64</property>
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="receives_default">False</property>
+        <property name="can-focus">False</property>
+        <property name="receives-default">False</property>
         <child>
           <object class="GtkLabel" id="label_a03">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="label" translatable="yes">a03</property>
             <attributes>
               <attribute name="scale" value="1.333"/>
@@ -113,21 +114,21 @@
         </style>
       </object>
       <packing>
-        <property name="left_attach">6</property>
-        <property name="top_attach">0</property>
+        <property name="left-attach">6</property>
+        <property name="top-attach">0</property>
         <property name="width">2</property>
       </packing>
     </child>
     <child>
       <object class="GtkButton" id="button_a04">
-        <property name="height_request">64</property>
+        <property name="height-request">64</property>
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="receives_default">False</property>
+        <property name="can-focus">False</property>
+        <property name="receives-default">False</property>
         <child>
           <object class="GtkLabel" id="label_a04">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="label" translatable="yes">a04</property>
             <attributes>
               <attribute name="scale" value="1.333"/>
@@ -139,21 +140,21 @@
         </style>
       </object>
       <packing>
-        <property name="left_attach">8</property>
-        <property name="top_attach">0</property>
+        <property name="left-attach">8</property>
+        <property name="top-attach">0</property>
         <property name="width">2</property>
       </packing>
     </child>
     <child>
       <object class="GtkButton" id="button_a05">
-        <property name="height_request">64</property>
+        <property name="height-request">64</property>
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="receives_default">False</property>
+        <property name="can-focus">False</property>
+        <property name="receives-default">False</property>
         <child>
           <object class="GtkLabel" id="label_a05">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="label" translatable="yes">a05</property>
             <attributes>
               <attribute name="scale" value="1.333"/>
@@ -165,21 +166,21 @@
         </style>
       </object>
       <packing>
-        <property name="left_attach">10</property>
-        <property name="top_attach">0</property>
+        <property name="left-attach">10</property>
+        <property name="top-attach">0</property>
         <property name="width">2</property>
       </packing>
     </child>
     <child>
       <object class="GtkButton" id="button_a06">
-        <property name="height_request">64</property>
+        <property name="height-request">64</property>
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="receives_default">False</property>
+        <property name="can-focus">False</property>
+        <property name="receives-default">False</property>
         <child>
           <object class="GtkLabel" id="label_a06">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="label" translatable="yes">a06</property>
             <attributes>
               <attribute name="scale" value="1.333"/>
@@ -191,21 +192,21 @@
         </style>
       </object>
       <packing>
-        <property name="left_attach">12</property>
-        <property name="top_attach">0</property>
+        <property name="left-attach">12</property>
+        <property name="top-attach">0</property>
         <property name="width">2</property>
       </packing>
     </child>
     <child>
       <object class="GtkButton" id="button_a07">
-        <property name="height_request">64</property>
+        <property name="height-request">64</property>
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="receives_default">False</property>
+        <property name="can-focus">False</property>
+        <property name="receives-default">False</property>
         <child>
           <object class="GtkLabel" id="label_a07">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="label" translatable="yes">a07</property>
             <attributes>
               <attribute name="scale" value="1.333"/>
@@ -217,21 +218,21 @@
         </style>
       </object>
       <packing>
-        <property name="left_attach">14</property>
-        <property name="top_attach">0</property>
+        <property name="left-attach">14</property>
+        <property name="top-attach">0</property>
         <property name="width">2</property>
       </packing>
     </child>
     <child>
       <object class="GtkButton" id="button_a08">
-        <property name="height_request">64</property>
+        <property name="height-request">64</property>
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="receives_default">False</property>
+        <property name="can-focus">False</property>
+        <property name="receives-default">False</property>
         <child>
           <object class="GtkLabel" id="label_a08">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="label" translatable="yes">a08</property>
             <attributes>
               <attribute name="scale" value="1.333"/>
@@ -243,21 +244,21 @@
         </style>
       </object>
       <packing>
-        <property name="left_attach">16</property>
-        <property name="top_attach">0</property>
+        <property name="left-attach">16</property>
+        <property name="top-attach">0</property>
         <property name="width">2</property>
       </packing>
     </child>
     <child>
       <object class="GtkButton" id="button_a09">
-        <property name="height_request">64</property>
+        <property name="height-request">64</property>
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="receives_default">False</property>
+        <property name="can-focus">False</property>
+        <property name="receives-default">False</property>
         <child>
           <object class="GtkLabel" id="label_a09">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="label" translatable="yes">a09</property>
             <attributes>
               <attribute name="scale" value="1.333"/>
@@ -269,21 +270,21 @@
         </style>
       </object>
       <packing>
-        <property name="left_attach">18</property>
-        <property name="top_attach">0</property>
+        <property name="left-attach">18</property>
+        <property name="top-attach">0</property>
         <property name="width">2</property>
       </packing>
     </child>
     <child>
       <object class="GtkButton" id="button_a10">
-        <property name="height_request">64</property>
+        <property name="height-request">64</property>
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="receives_default">False</property>
+        <property name="can-focus">False</property>
+        <property name="receives-default">False</property>
         <child>
           <object class="GtkLabel" id="label_a10">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="label" translatable="yes">a10</property>
             <attributes>
               <attribute name="scale" value="1.333"/>
@@ -295,21 +296,21 @@
         </style>
       </object>
       <packing>
-        <property name="left_attach">20</property>
-        <property name="top_attach">0</property>
+        <property name="left-attach">20</property>
+        <property name="top-attach">0</property>
         <property name="width">2</property>
       </packing>
     </child>
     <child>
       <object class="GtkButton" id="button_b00">
-        <property name="height_request">64</property>
+        <property name="height-request">64</property>
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="receives_default">False</property>
+        <property name="can-focus">False</property>
+        <property name="receives-default">False</property>
         <child>
           <object class="GtkLabel" id="label_b00">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="label" translatable="yes">b00</property>
             <attributes>
               <attribute name="scale" value="1.333"/>
@@ -321,21 +322,21 @@
         </style>
       </object>
       <packing>
-        <property name="left_attach">0</property>
-        <property name="top_attach">1</property>
+        <property name="left-attach">0</property>
+        <property name="top-attach">1</property>
         <property name="width">2</property>
       </packing>
     </child>
     <child>
       <object class="GtkButton" id="button_b01">
-        <property name="height_request">64</property>
+        <property name="height-request">64</property>
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="receives_default">False</property>
+        <property name="can-focus">False</property>
+        <property name="receives-default">False</property>
         <child>
           <object class="GtkLabel" id="label_b01">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="label" translatable="yes">b01</property>
             <attributes>
               <attribute name="scale" value="1.333"/>
@@ -347,21 +348,21 @@
         </style>
       </object>
       <packing>
-        <property name="left_attach">2</property>
-        <property name="top_attach">1</property>
+        <property name="left-attach">2</property>
+        <property name="top-attach">1</property>
         <property name="width">2</property>
       </packing>
     </child>
     <child>
       <object class="GtkButton" id="button_b02">
-        <property name="height_request">64</property>
+        <property name="height-request">64</property>
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="receives_default">False</property>
+        <property name="can-focus">False</property>
+        <property name="receives-default">False</property>
         <child>
           <object class="GtkLabel" id="label_b02">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="label" translatable="yes">b02</property>
             <attributes>
               <attribute name="scale" value="1.333"/>
@@ -373,21 +374,21 @@
         </style>
       </object>
       <packing>
-        <property name="left_attach">4</property>
-        <property name="top_attach">1</property>
+        <property name="left-attach">4</property>
+        <property name="top-attach">1</property>
         <property name="width">2</property>
       </packing>
     </child>
     <child>
       <object class="GtkButton" id="button_b03">
-        <property name="height_request">64</property>
+        <property name="height-request">64</property>
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="receives_default">False</property>
+        <property name="can-focus">False</property>
+        <property name="receives-default">False</property>
         <child>
           <object class="GtkLabel" id="label_b03">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="label" translatable="yes">b03</property>
             <attributes>
               <attribute name="scale" value="1.333"/>
@@ -399,21 +400,21 @@
         </style>
       </object>
       <packing>
-        <property name="left_attach">6</property>
-        <property name="top_attach">1</property>
+        <property name="left-attach">6</property>
+        <property name="top-attach">1</property>
         <property name="width">2</property>
       </packing>
     </child>
     <child>
       <object class="GtkButton" id="button_b04">
-        <property name="height_request">64</property>
+        <property name="height-request">64</property>
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="receives_default">False</property>
+        <property name="can-focus">False</property>
+        <property name="receives-default">False</property>
         <child>
           <object class="GtkLabel" id="label_b04">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="label" translatable="yes">b04</property>
             <attributes>
               <attribute name="scale" value="1.333"/>
@@ -425,21 +426,21 @@
         </style>
       </object>
       <packing>
-        <property name="left_attach">8</property>
-        <property name="top_attach">1</property>
+        <property name="left-attach">8</property>
+        <property name="top-attach">1</property>
         <property name="width">2</property>
       </packing>
     </child>
     <child>
       <object class="GtkButton" id="button_b05">
-        <property name="height_request">64</property>
+        <property name="height-request">64</property>
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="receives_default">False</property>
+        <property name="can-focus">False</property>
+        <property name="receives-default">False</property>
         <child>
           <object class="GtkLabel" id="label_b05">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="label" translatable="yes">b05</property>
             <attributes>
               <attribute name="scale" value="1.333"/>
@@ -451,21 +452,21 @@
         </style>
       </object>
       <packing>
-        <property name="left_attach">10</property>
-        <property name="top_attach">1</property>
+        <property name="left-attach">10</property>
+        <property name="top-attach">1</property>
         <property name="width">2</property>
       </packing>
     </child>
     <child>
       <object class="GtkButton" id="button_b06">
-        <property name="height_request">64</property>
+        <property name="height-request">64</property>
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="receives_default">False</property>
+        <property name="can-focus">False</property>
+        <property name="receives-default">False</property>
         <child>
           <object class="GtkLabel" id="label_b06">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="label" translatable="yes">b06</property>
             <attributes>
               <attribute name="scale" value="1.333"/>
@@ -477,21 +478,21 @@
         </style>
       </object>
       <packing>
-        <property name="left_attach">12</property>
-        <property name="top_attach">1</property>
+        <property name="left-attach">12</property>
+        <property name="top-attach">1</property>
         <property name="width">2</property>
       </packing>
     </child>
     <child>
       <object class="GtkButton" id="button_b07">
-        <property name="height_request">64</property>
+        <property name="height-request">64</property>
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="receives_default">False</property>
+        <property name="can-focus">False</property>
+        <property name="receives-default">False</property>
         <child>
           <object class="GtkLabel" id="label_b07">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="label" translatable="yes">b07</property>
             <attributes>
               <attribute name="scale" value="1.333"/>
@@ -503,21 +504,21 @@
         </style>
       </object>
       <packing>
-        <property name="left_attach">14</property>
-        <property name="top_attach">1</property>
+        <property name="left-attach">14</property>
+        <property name="top-attach">1</property>
         <property name="width">2</property>
       </packing>
     </child>
     <child>
       <object class="GtkButton" id="button_b08">
-        <property name="height_request">64</property>
+        <property name="height-request">64</property>
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="receives_default">False</property>
+        <property name="can-focus">False</property>
+        <property name="receives-default">False</property>
         <child>
           <object class="GtkLabel" id="label_b08">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="label" translatable="yes">b08</property>
             <attributes>
               <attribute name="scale" value="1.333"/>
@@ -529,21 +530,21 @@
         </style>
       </object>
       <packing>
-        <property name="left_attach">16</property>
-        <property name="top_attach">1</property>
+        <property name="left-attach">16</property>
+        <property name="top-attach">1</property>
         <property name="width">2</property>
       </packing>
     </child>
     <child>
       <object class="GtkButton" id="button_b09">
-        <property name="height_request">64</property>
+        <property name="height-request">64</property>
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="receives_default">False</property>
+        <property name="can-focus">False</property>
+        <property name="receives-default">False</property>
         <child>
           <object class="GtkLabel" id="label_b09">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="label" translatable="yes">b09</property>
             <attributes>
               <attribute name="scale" value="1.333"/>
@@ -555,21 +556,21 @@
         </style>
       </object>
       <packing>
-        <property name="left_attach">18</property>
-        <property name="top_attach">1</property>
+        <property name="left-attach">18</property>
+        <property name="top-attach">1</property>
         <property name="width">2</property>
       </packing>
     </child>
     <child>
       <object class="GtkButton" id="button_b10">
-        <property name="height_request">64</property>
+        <property name="height-request">64</property>
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="receives_default">False</property>
+        <property name="can-focus">False</property>
+        <property name="receives-default">False</property>
         <child>
           <object class="GtkLabel" id="label_b10">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="label" translatable="yes">b10</property>
             <attributes>
               <attribute name="scale" value="1.333"/>
@@ -581,21 +582,21 @@
         </style>
       </object>
       <packing>
-        <property name="left_attach">20</property>
-        <property name="top_attach">1</property>
+        <property name="left-attach">20</property>
+        <property name="top-attach">1</property>
         <property name="width">2</property>
       </packing>
     </child>
     <child>
       <object class="GtkButton" id="button_c00">
-        <property name="height_request">64</property>
+        <property name="height-request">64</property>
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="receives_default">False</property>
+        <property name="can-focus">False</property>
+        <property name="receives-default">False</property>
         <child>
           <object class="GtkLabel" id="label_c00">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="label" translatable="yes">c00</property>
             <attributes>
               <attribute name="scale" value="1.333"/>
@@ -607,21 +608,21 @@
         </style>
       </object>
       <packing>
-        <property name="left_attach">0</property>
-        <property name="top_attach">2</property>
+        <property name="left-attach">0</property>
+        <property name="top-attach">2</property>
         <property name="width">2</property>
       </packing>
     </child>
     <child>
       <object class="GtkButton" id="button_c01">
-        <property name="height_request">64</property>
+        <property name="height-request">64</property>
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="receives_default">False</property>
+        <property name="can-focus">False</property>
+        <property name="receives-default">False</property>
         <child>
           <object class="GtkLabel" id="label_c01">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="label" translatable="yes">c01</property>
             <attributes>
               <attribute name="scale" value="1.333"/>
@@ -633,21 +634,21 @@
         </style>
       </object>
       <packing>
-        <property name="left_attach">2</property>
-        <property name="top_attach">2</property>
+        <property name="left-attach">2</property>
+        <property name="top-attach">2</property>
         <property name="width">2</property>
       </packing>
     </child>
     <child>
       <object class="GtkButton" id="button_c02">
-        <property name="height_request">64</property>
+        <property name="height-request">64</property>
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="receives_default">False</property>
+        <property name="can-focus">False</property>
+        <property name="receives-default">False</property>
         <child>
           <object class="GtkLabel" id="label_c02">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="label" translatable="yes">c02</property>
             <attributes>
               <attribute name="scale" value="1.333"/>
@@ -659,21 +660,21 @@
         </style>
       </object>
       <packing>
-        <property name="left_attach">4</property>
-        <property name="top_attach">2</property>
+        <property name="left-attach">4</property>
+        <property name="top-attach">2</property>
         <property name="width">2</property>
       </packing>
     </child>
     <child>
       <object class="GtkButton" id="button_c03">
-        <property name="height_request">64</property>
+        <property name="height-request">64</property>
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="receives_default">False</property>
+        <property name="can-focus">False</property>
+        <property name="receives-default">False</property>
         <child>
           <object class="GtkLabel" id="label_c03">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="label" translatable="yes">c03</property>
             <attributes>
               <attribute name="scale" value="1.333"/>
@@ -685,21 +686,21 @@
         </style>
       </object>
       <packing>
-        <property name="left_attach">6</property>
-        <property name="top_attach">2</property>
+        <property name="left-attach">6</property>
+        <property name="top-attach">2</property>
         <property name="width">2</property>
       </packing>
     </child>
     <child>
       <object class="GtkButton" id="button_c04">
-        <property name="height_request">64</property>
+        <property name="height-request">64</property>
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="receives_default">False</property>
+        <property name="can-focus">False</property>
+        <property name="receives-default">False</property>
         <child>
           <object class="GtkLabel" id="label_c04">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="label" translatable="yes">c04</property>
             <attributes>
               <attribute name="scale" value="1.333"/>
@@ -711,21 +712,21 @@
         </style>
       </object>
       <packing>
-        <property name="left_attach">8</property>
-        <property name="top_attach">2</property>
+        <property name="left-attach">8</property>
+        <property name="top-attach">2</property>
         <property name="width">2</property>
       </packing>
     </child>
     <child>
       <object class="GtkButton" id="button_c05">
-        <property name="height_request">64</property>
+        <property name="height-request">64</property>
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="receives_default">False</property>
+        <property name="can-focus">False</property>
+        <property name="receives-default">False</property>
         <child>
           <object class="GtkLabel" id="label_c05">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="label" translatable="yes">c05</property>
             <attributes>
               <attribute name="scale" value="1.333"/>
@@ -737,21 +738,21 @@
         </style>
       </object>
       <packing>
-        <property name="left_attach">10</property>
-        <property name="top_attach">2</property>
+        <property name="left-attach">10</property>
+        <property name="top-attach">2</property>
         <property name="width">2</property>
       </packing>
     </child>
     <child>
       <object class="GtkButton" id="button_c06">
-        <property name="height_request">64</property>
+        <property name="height-request">64</property>
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="receives_default">False</property>
+        <property name="can-focus">False</property>
+        <property name="receives-default">False</property>
         <child>
           <object class="GtkLabel" id="label_c06">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="label" translatable="yes">c06</property>
             <attributes>
               <attribute name="scale" value="1.333"/>
@@ -763,21 +764,21 @@
         </style>
       </object>
       <packing>
-        <property name="left_attach">12</property>
-        <property name="top_attach">2</property>
+        <property name="left-attach">12</property>
+        <property name="top-attach">2</property>
         <property name="width">2</property>
       </packing>
     </child>
     <child>
       <object class="GtkButton" id="button_c07">
-        <property name="height_request">64</property>
+        <property name="height-request">64</property>
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="receives_default">False</property>
+        <property name="can-focus">False</property>
+        <property name="receives-default">False</property>
         <child>
           <object class="GtkLabel" id="label_c07">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="label" translatable="yes">c07</property>
             <attributes>
               <attribute name="scale" value="1.333"/>
@@ -789,21 +790,21 @@
         </style>
       </object>
       <packing>
-        <property name="left_attach">14</property>
-        <property name="top_attach">2</property>
+        <property name="left-attach">14</property>
+        <property name="top-attach">2</property>
         <property name="width">2</property>
       </packing>
     </child>
     <child>
       <object class="GtkButton" id="button_c08">
-        <property name="height_request">64</property>
+        <property name="height-request">64</property>
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="receives_default">False</property>
+        <property name="can-focus">False</property>
+        <property name="receives-default">False</property>
         <child>
           <object class="GtkLabel" id="label_c08">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="label" translatable="yes">c08</property>
             <attributes>
               <attribute name="scale" value="1.333"/>
@@ -815,21 +816,21 @@
         </style>
       </object>
       <packing>
-        <property name="left_attach">16</property>
-        <property name="top_attach">2</property>
+        <property name="left-attach">16</property>
+        <property name="top-attach">2</property>
         <property name="width">2</property>
       </packing>
     </child>
     <child>
       <object class="GtkButton" id="button_c09">
-        <property name="height_request">64</property>
+        <property name="height-request">64</property>
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="receives_default">False</property>
+        <property name="can-focus">False</property>
+        <property name="receives-default">False</property>
         <child>
           <object class="GtkLabel" id="label_c09">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="label" translatable="yes">c09</property>
             <attributes>
               <attribute name="scale" value="1.333"/>
@@ -841,21 +842,21 @@
         </style>
       </object>
       <packing>
-        <property name="left_attach">18</property>
-        <property name="top_attach">2</property>
+        <property name="left-attach">18</property>
+        <property name="top-attach">2</property>
         <property name="width">2</property>
       </packing>
     </child>
     <child>
       <object class="GtkButton" id="button_c10">
-        <property name="height_request">64</property>
+        <property name="height-request">64</property>
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="receives_default">False</property>
+        <property name="can-focus">False</property>
+        <property name="receives-default">False</property>
         <child>
           <object class="GtkLabel" id="label_c10">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="label" translatable="yes">c10</property>
             <attributes>
               <attribute name="scale" value="1.333"/>
@@ -867,21 +868,21 @@
         </style>
       </object>
       <packing>
-        <property name="left_attach">20</property>
-        <property name="top_attach">2</property>
+        <property name="left-attach">20</property>
+        <property name="top-attach">2</property>
         <property name="width">2</property>
       </packing>
     </child>
     <child>
       <object class="GtkButton" id="button_d00">
-        <property name="height_request">64</property>
+        <property name="height-request">64</property>
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="receives_default">False</property>
+        <property name="can-focus">False</property>
+        <property name="receives-default">False</property>
         <child>
           <object class="GtkLabel" id="label_d00">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="label" translatable="yes">d00</property>
             <attributes>
               <attribute name="scale" value="1.333"/>
@@ -893,21 +894,21 @@
         </style>
       </object>
       <packing>
-        <property name="left_attach">4</property>
-        <property name="top_attach">3</property>
+        <property name="left-attach">4</property>
+        <property name="top-attach">3</property>
         <property name="width">2</property>
       </packing>
     </child>
     <child>
       <object class="GtkButton" id="button_d01">
-        <property name="height_request">64</property>
+        <property name="height-request">64</property>
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="receives_default">False</property>
+        <property name="can-focus">False</property>
+        <property name="receives-default">False</property>
         <child>
           <object class="GtkLabel" id="label_d01">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="label" translatable="yes">d01</property>
             <attributes>
               <attribute name="scale" value="1.333"/>
@@ -919,21 +920,21 @@
         </style>
       </object>
       <packing>
-        <property name="left_attach">6</property>
-        <property name="top_attach">3</property>
+        <property name="left-attach">6</property>
+        <property name="top-attach">3</property>
         <property name="width">2</property>
       </packing>
     </child>
     <child>
       <object class="GtkButton" id="button_d02">
-        <property name="height_request">64</property>
+        <property name="height-request">64</property>
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="receives_default">False</property>
+        <property name="can-focus">False</property>
+        <property name="receives-default">False</property>
         <child>
           <object class="GtkLabel" id="label_d02">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="label" translatable="yes">d02</property>
             <attributes>
               <attribute name="scale" value="1.333"/>
@@ -945,21 +946,21 @@
         </style>
       </object>
       <packing>
-        <property name="left_attach">8</property>
-        <property name="top_attach">3</property>
+        <property name="left-attach">8</property>
+        <property name="top-attach">3</property>
         <property name="width">2</property>
       </packing>
     </child>
     <child>
       <object class="GtkButton" id="button_d03">
-        <property name="height_request">64</property>
+        <property name="height-request">64</property>
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="receives_default">False</property>
+        <property name="can-focus">False</property>
+        <property name="receives-default">False</property>
         <child>
           <object class="GtkLabel" id="label_d03">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="label" translatable="yes">d03</property>
             <attributes>
               <attribute name="scale" value="1.333"/>
@@ -971,21 +972,21 @@
         </style>
       </object>
       <packing>
-        <property name="left_attach">10</property>
-        <property name="top_attach">3</property>
+        <property name="left-attach">10</property>
+        <property name="top-attach">3</property>
         <property name="width">2</property>
       </packing>
     </child>
     <child>
       <object class="GtkButton" id="button_d04">
-        <property name="height_request">64</property>
+        <property name="height-request">64</property>
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="receives_default">False</property>
+        <property name="can-focus">False</property>
+        <property name="receives-default">False</property>
         <child>
           <object class="GtkLabel" id="label_d04">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="label" translatable="yes">d04</property>
             <attributes>
               <attribute name="scale" value="1.333"/>
@@ -997,21 +998,21 @@
         </style>
       </object>
       <packing>
-        <property name="left_attach">12</property>
-        <property name="top_attach">3</property>
+        <property name="left-attach">12</property>
+        <property name="top-attach">3</property>
         <property name="width">2</property>
       </packing>
     </child>
     <child>
       <object class="GtkButton" id="button_d05">
-        <property name="height_request">64</property>
+        <property name="height-request">64</property>
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="receives_default">False</property>
+        <property name="can-focus">False</property>
+        <property name="receives-default">False</property>
         <child>
           <object class="GtkLabel" id="label_d05">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="label" translatable="yes">d05</property>
             <attributes>
               <attribute name="scale" value="1.333"/>
@@ -1023,22 +1024,24 @@
         </style>
       </object>
       <packing>
-        <property name="left_attach">14</property>
-        <property name="top_attach">3</property>
+        <property name="left-attach">14</property>
+        <property name="top-attach">3</property>
         <property name="width">2</property>
       </packing>
     </child>
     <child>
       <object class="GtkButton" id="shift_button">
-        <property name="height_request">64</property>
+        <property name="height-request">64</property>
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="receives_default">False</property>
+        <property name="can-focus">False</property>
+        <property name="receives-default">False</property>
         <child>
           <object class="GtkLabel" id="shift_label">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
+            <property name="halign">center</property>
             <property name="label" translatable="yes">shift</property>
+            <property name="xalign">0</property>
             <attributes>
               <attribute name="scale" value="1.333"/>
             </attributes>
@@ -1049,21 +1052,21 @@
         </style>
       </object>
       <packing>
-        <property name="left_attach">0</property>
-        <property name="top_attach">3</property>
+        <property name="left-attach">0</property>
+        <property name="top-attach">3</property>
         <property name="width">4</property>
       </packing>
     </child>
     <child>
       <object class="GtkButton" id="space_button">
-        <property name="height_request">64</property>
+        <property name="height-request">64</property>
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="receives_default">False</property>
+        <property name="can-focus">False</property>
+        <property name="receives-default">False</property>
         <child>
           <object class="GtkLabel" id="space_label">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="label" translatable="yes">space</property>
             <attributes>
               <attribute name="scale" value="1.333"/>
@@ -1076,21 +1079,21 @@
         </style>
       </object>
       <packing>
-        <property name="left_attach">6</property>
-        <property name="top_attach">4</property>
+        <property name="left-attach">6</property>
+        <property name="top-attach">4</property>
         <property name="width">8</property>
       </packing>
     </child>
     <child>
       <object class="GtkButton" id="bksp_button">
-        <property name="height_request">64</property>
+        <property name="height-request">64</property>
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="receives_default">False</property>
+        <property name="can-focus">False</property>
+        <property name="receives-default">False</property>
         <child>
           <object class="GtkLabel" id="bksp_label">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="label" translatable="yes">bksp</property>
             <attributes>
               <attribute name="scale" value="1.333"/>
@@ -1102,21 +1105,21 @@
         </style>
       </object>
       <packing>
-        <property name="left_attach">18</property>
-        <property name="top_attach">3</property>
+        <property name="left-attach">18</property>
+        <property name="top-attach">3</property>
         <property name="width">4</property>
       </packing>
     </child>
     <child>
       <object class="GtkButton" id="button_d06">
-        <property name="height_request">64</property>
+        <property name="height-request">64</property>
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="receives_default">False</property>
+        <property name="can-focus">False</property>
+        <property name="receives-default">False</property>
         <child>
           <object class="GtkLabel" id="label_d06">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="label" translatable="yes">d06</property>
             <attributes>
               <attribute name="scale" value="1.333"/>
@@ -1128,21 +1131,21 @@
         </style>
       </object>
       <packing>
-        <property name="left_attach">16</property>
-        <property name="top_attach">3</property>
+        <property name="left-attach">16</property>
+        <property name="top-attach">3</property>
         <property name="width">2</property>
       </packing>
     </child>
     <child>
       <object class="GtkButton" id="button_e00">
-        <property name="height_request">64</property>
+        <property name="height-request">64</property>
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="receives_default">False</property>
+        <property name="can-focus">False</property>
+        <property name="receives-default">False</property>
         <child>
           <object class="GtkLabel" id="label_e00">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="label" translatable="yes">e00</property>
             <attributes>
               <attribute name="scale" value="1.333"/>
@@ -1154,21 +1157,21 @@
         </style>
       </object>
       <packing>
-        <property name="left_attach">4</property>
-        <property name="top_attach">4</property>
+        <property name="left-attach">4</property>
+        <property name="top-attach">4</property>
         <property name="width">2</property>
       </packing>
     </child>
     <child>
       <object class="GtkButton" id="button_e01">
-        <property name="height_request">64</property>
+        <property name="height-request">64</property>
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="receives_default">False</property>
+        <property name="can-focus">False</property>
+        <property name="receives-default">False</property>
         <child>
           <object class="GtkLabel" id="label_e01">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="label" translatable="yes">e01</property>
             <attributes>
               <attribute name="scale" value="1.333"/>
@@ -1180,21 +1183,21 @@
         </style>
       </object>
       <packing>
-        <property name="left_attach">14</property>
-        <property name="top_attach">4</property>
+        <property name="left-attach">14</property>
+        <property name="top-attach">4</property>
         <property name="width">2</property>
       </packing>
     </child>
     <child>
       <object class="GtkButton" id="button_e02">
-        <property name="height_request">64</property>
+        <property name="height-request">64</property>
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="receives_default">False</property>
+        <property name="can-focus">False</property>
+        <property name="receives-default">False</property>
         <child>
           <object class="GtkLabel" id="label_e02">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="label" translatable="yes">e02</property>
             <attributes>
               <attribute name="scale" value="1.333"/>
@@ -1206,43 +1209,65 @@
         </style>
       </object>
       <packing>
-        <property name="left_attach">16</property>
-        <property name="top_attach">4</property>
+        <property name="left-attach">16</property>
+        <property name="top-attach">4</property>
         <property name="width">2</property>
       </packing>
     </child>
     <child>
       <object class="GtkButton" id="close_button">
-        <property name="height_request">64</property>
+        <property name="height-request">64</property>
         <property name="visible">True</property>
-        <property name="can_focus">True</property>
-        <property name="receives_default">False</property>
+        <property name="can-focus">True</property>
+        <property name="receives-default">False</property>
         <property name="image">close_icon</property>
-        <property name="always_show_image">True</property>
+        <property name="always-show-image">True</property>
         <style>
           <class name="key"/>
         </style>
       </object>
       <packing>
-        <property name="left_attach">18</property>
-        <property name="top_attach">4</property>
+        <property name="left-attach">18</property>
+        <property name="top-attach">4</property>
         <property name="width">4</property>
       </packing>
     </child>
     <child>
-      <placeholder/>
-    </child>
-    <child>
-      <placeholder/>
-    </child>
-    <child>
-      <placeholder/>
-    </child>
-    <child>
-      <placeholder/>
+      <object class="GtkButton" id="alt_button">
+        <property name="height-request">64</property>
+        <property name="visible">True</property>
+        <property name="can-focus">False</property>
+        <property name="receives-default">False</property>
+        <child>
+          <object class="GtkLabel" id="alt_label">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="halign">center</property>
+            <property name="label" translatable="yes">alt</property>
+            <property name="xalign">0</property>
+            <attributes>
+              <attribute name="scale" value="1.333"/>
+            </attributes>
+          </object>
+        </child>
+        <style>
+          <class name="key"/>
+        </style>
+      </object>
+      <packing>
+        <property name="left-attach">0</property>
+        <property name="top-attach">4</property>
+        <property name="width">4</property>
+      </packing>
     </child>
     <style>
       <class name="keyboard"/>
     </style>
   </template>
+  <object class="GtkSizeGroup" id="mod_sizegroup">
+    <widgets>
+      <widget name="shift_label"/>
+      <widget name="alt_label"/>
+    </widgets>
+  </object>
 </interface>
