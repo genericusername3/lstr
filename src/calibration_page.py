@@ -160,10 +160,9 @@ class CalibrationPage(Gtk.Box, Page, metaclass=PageClass):
             """Work through the action queue with an interval of 400ms."""
             if opcua_action_queue:
                 fn, args = opcua_action_queue.pop(0)
-                print(fn, args)
                 fn(*args)
 
-                GLib.timeout_add(500, work_action_queue)
+                GLib.timeout_add(400, work_action_queue)
 
         work_action_queue()
 
