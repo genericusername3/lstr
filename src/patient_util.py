@@ -649,7 +649,10 @@ class Patient(GObject.Object):
                     "",
                     "",
                     date.fromtimestamp(treatment_row[0]).isoformat(),
-                    *[str(col) for col in treatment_row[1:]],
+                    *[
+                        str(col) if index != 2 else PAIN_LOCATIONS[str(col)]
+                        for index, col in enumerate(treatment_row[1:])
+                    ],
                 ]
                 patient_writer.writerow(csv_row)
 
