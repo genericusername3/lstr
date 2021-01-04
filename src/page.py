@@ -351,7 +351,6 @@ class Page(abc.ABC):
             variable_name (str): The name of the boolean variable (yuck) node
         """
         try:
-            print(category, variable_name)
             Connection()[category][variable_name] = True
         except ConnectionRefusedError:
             self.get_toplevel().show_error(const.CONNECTION_ERROR_TEXT)
