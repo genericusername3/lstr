@@ -261,12 +261,12 @@ class EditProgramPage(Gtk.Box, Page, metaclass=PageClass):
                 "calculated_column": False,
             },
             self.pass_count_total_entry: {
-                "column": "pass_count_sum",
+                "column": "repeat_count",
                 "places": 0,
                 "leading_zeroes": 0,
                 "minimum": None,
                 "maximum": None,
-                "calculated_column": True,
+                "calculated_column": False,
             },
             self.pass_count_up_entry: {
                 "column": "pass_count_up",
@@ -629,16 +629,6 @@ class EditProgramPage(Gtk.Box, Page, metaclass=PageClass):
             entry (Gtk.Entry): The unfocused Gtk.Entry
         """
         if self.editable:
-            try:
-                self.pass_count_total_entry.set_text(
-                    str(
-                        Decimal(self.pass_count_up_entry.get_text())
-                        + Decimal(self.pass_count_down_entry.get_text())
-                    )
-                )
-            except InvalidOperation:
-                pass
-
             self.update_save_sensitivities()
 
     def update_save_sensitivities(self) -> None:

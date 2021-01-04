@@ -54,12 +54,12 @@ PROGRAM_COLUMNS: Dict[str, Tuple[type, str]] = {
     "push_count_down": (int, "INT"),
     "pass_count_up": (int, "INT"),
     "pass_count_down": (int, "INT"),
+    "repeat_count": (int, "INT"),
 }
 
 CALC_PROGRAM_COLUMNS: Tuple[str, ...] = (
     "pusher_left_distance_max",
     "pusher_right_distance_max",
-    "push_count_sum",
     "pass_count_sum",
 )
 
@@ -96,8 +96,8 @@ DISPLAY_COLUMNS: Tuple[str, ...] = (
     "id",
     "pusher_left_distance_max",  # mm
     "pusher_right_distance_max",
-    "push_count_sum",
     "pass_count_sum",
+    "repeat_count",
 )
 
 
@@ -164,9 +164,6 @@ class Program(GObject.Object):
         self.__dict["pusher_right_distance_max"] = max(
             self.__dict["pusher_right_distance_up"],
             self.__dict["pusher_right_distance_down"],
-        )
-        self.__dict["push_count_sum"] = (
-            self.__dict["push_count_up"] + self.__dict["push_count_down"]
         )
         self.__dict["pass_count_sum"] = (
             self.__dict["pass_count_up"] + self.__dict["pass_count_down"]
@@ -245,9 +242,6 @@ class Program(GObject.Object):
         self.__dict["pusher_right_distance_max"] = max(
             self.__dict["pusher_right_distance_up"],
             self.__dict["pusher_right_distance_down"],
-        )
-        self.__dict["push_count_sum"] = (
-            self.__dict["push_count_up"] + self.__dict["push_count_down"]
         )
         self.__dict["pass_count_sum"] = (
             self.__dict["pass_count_up"] + self.__dict["pass_count_down"]

@@ -17,8 +17,8 @@ COLUMN_HEADER_TRANSLATIONS: Dict[str, str] = {
     "id": "Nr.",
     "pusher_left_distance_max": "Pusherstrecke L",
     "pusher_right_distance_max": "Pusherstrecke R",
-    "push_count_sum": "Anzahl Vorschübe",
-    "pass_count_sum": "Anzahl Durchläufe",
+    "pass_count_sum": "Durchläufe pro Wdh. (vor+zurück)",
+    "repeat_count": "Anzahl Wiederholungen",
 }
 
 INFO_ICON = "view-more-horizontal-symbolic"
@@ -38,8 +38,7 @@ class ProgramRow(Gtk.Box):
     program: program_util.Program
 
     def __init__(
-        self,
-        program: program_util.Program,
+        self, program: program_util.Program,
     ):
         """Create a new ProgramRow.
 
@@ -159,8 +158,6 @@ class ProgramHeader(Gtk.Box):
 
         size_groups["INFO_BUTTON"].add_widget(info_button_dummy)
 
-        self.pack_start(
-            info_button_dummy, expand=False, fill=False, padding=4
-        )
+        self.pack_start(info_button_dummy, expand=False, fill=False, padding=4)
 
         self.show_all()

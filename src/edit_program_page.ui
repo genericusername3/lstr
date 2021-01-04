@@ -267,7 +267,7 @@
                     <property name="can_focus">False</property>
                     <property name="halign">start</property>
                     <property name="margin_start">4</property>
-                    <property name="label" translatable="yes">Anzahl Durchläufe gesamt</property>
+                    <property name="label" translatable="yes">Anzahl Wiederholungen</property>
                     <property name="xalign">0</property>
                   </object>
                   <packing>
