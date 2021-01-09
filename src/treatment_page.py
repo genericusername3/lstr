@@ -297,11 +297,11 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
             cr (cairo.Context): The cairo.Context to draw on/with
         """
         try:
-            left_right = Connection()["main"]["left_right"]
-            up_down = Connection()["main"]["up_down"]
-            tilt = Connection()["main"]["tilt"]
-            left_pusher = Connection()["main"]["left_pusher"]
-            right_pusher = Connection()["main"]["right_pusher"]
+            left_right = Connection()["axis2"]["current_position"]
+            up_down = Connection()["axis3"]["current_position"]
+            tilt = Connection()["axis4"]["current_position"]
+            left_pusher = Connection()["axis0"]["current_position"]
+            right_pusher = Connection()["axis1"]["current_position"]
             is_pusher_active = Connection()["main"]["is_pusher_active"]
 
         except ConnectionRefusedError:
