@@ -270,7 +270,11 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
             return
 
         if self.resetting:
-            print(Connection()["main"]["start_button"], Connection()["main"]["reset_axes_button"])
+            print(
+                "SET (start, reset):",
+                Connection()["main"]["start_button"],
+                Connection()["main"]["reset_axes_button"],
+            )
             self.resetting = Connection()["main"]["reset_axes_button"]
 
             if not self.resetting:
