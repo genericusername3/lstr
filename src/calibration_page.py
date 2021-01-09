@@ -42,31 +42,24 @@ class CalibrationPage(Gtk.Box, Page, metaclass=PageClass):
     def prepare(self) -> Optional[str]:
         """Prepare the page to be shown."""
         try:
-            if const.DEBUG:
-                self.calibrate_button.set_sensitive(True)
-                self.calibrate_button.set_always_show_image(False)
-                self.calibrate_button.get_image().stop()
+            if opcua_util.Connection()["main"]["done_referencing"]:
+                self.on_opcua_button_released(None, None, "main", "power_button")
 
-                self.emergency_off_revealer.set_reveal_child(False)
+                return "select_patient"
 
             else:
-                if opcua_util.Connection()["main"]["done_referencing"]:
-                    self.on_opcua_button_released(None, None, "main", "power_button")
+                self.calibrate_button.set_sensitive(False)
+                self.calibrate_button.set_always_show_image(True)
+                self.calibrate_button.get_image().start()
 
-                    return "select_patient"
+                self.emergency_off_revealer.set_reveal_child(True)
 
-                else:
-                    self.calibrate_button.set_sensitive(False)
-                    self.calibrate_button.set_always_show_image(True)
-                    self.calibrate_button.get_image().start()
-
-                    self.emergency_off_revealer.set_reveal_child(True)
-
-                    self.if_done_reset()
+                self.if_done_reset()
 
         except ConnectionRefusedError:
             self.get_toplevel().show_error(const.CONNECTION_ERROR_TEXT)
-            self.calibrate_button.set_sensitive(False)
+
+            self.calibrate_button.set_sensitive(const.DEBUG)
             self.calibrate_button.set_always_show_image(False)
             self.calibrate_button.get_image().stop()
 
@@ -147,11 +140,15 @@ class CalibrationPage(Gtk.Box, Page, metaclass=PageClass):
         """
         button.set_sensitive(False)
 
+        def start_if_needed():
+            if not opcua_util.Connection()["main"]["done_referencing"]:
+                self.on_opcua_button_pressed(button, None, "main", "power_button")
+
         opcua_action_queue: List[Tuple[Callable, Tuple[Any, ...]]] = [
             (self.on_opcua_button_released, (button, None, "main", "emergency_off_button"),),
             (self.on_opcua_button_pressed, (button, None, "main", "reset_button")),
             (self.on_opcua_button_released, (button, None, "main", "reset_button")),
-            (self.on_opcua_button_pressed, (button, None, "main", "power_button")),
+            (start_if_needed, ()),
             (self.if_done_reset, ()),
         ]
 
