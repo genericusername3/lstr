@@ -262,7 +262,7 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
             return
 
         if self.resetting:
-            self.resetting = Connection()["main"]["reset_axes_button"]
+            self.resetting = Connection()["main"]["start_button"]
 
             if not self.resetting:
                 Connection()["main"]["reset_axes_button"] = False
@@ -400,7 +400,7 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
             button (Gtk.Button): The button that was clicked
         """
         self.on_opcua_button_pressed(button, event, "main", "reset_axes_button")
-        # GLib.timeout_add(400, self.on_opcua_button_pressed, (button, event, "main", "start_button"))
+        GLib.timeout_add(200, self.on_opcua_button_pressed, (button, event, "main", "start_button"))
 
         self.resetting = True
 
