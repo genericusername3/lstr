@@ -51,6 +51,8 @@ class CalibrationPage(Gtk.Box, Page, metaclass=PageClass):
 
         self.emergency_off_revealer.set_reveal_child(False)
 
+        opcua_util.Connection()["main"]["setup_mode"] = False
+
     def prepare_return(self) -> None:
         """Prepare the page to be shown."""
         self.prepare()

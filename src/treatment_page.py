@@ -76,7 +76,10 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
             for key in Connection()["program"].keys():
                 Connection()["program"][key] = program[key]
 
+            Connection()["main"]["setup_mode"] = False
+
             self.visualising = True
+
         except ConnectionRefusedError:
             self.get_toplevel().show_error(const.CONNECTION_ERROR_TEXT)
 
@@ -96,7 +99,7 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
     def prepare_return(self) -> None:
         """Prepare the page to be shown when returning from another page."""
         try:
-            Connection()
+            Connection()["main"]["setup_mode"] = False
 
             self.visualising = True
         except ConnectionRefusedError:
