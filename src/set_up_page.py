@@ -422,9 +422,12 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
             button (Gtk.Button): The button that was clicked
         """
         self.on_opcua_button_pressed(button, event, "main", "reset_axes_button")
-        GLib.timeout_add(200, self.on_opcua_button_pressed, button, event, "main", "start_button")
 
-        self.resetting = True
+        def start_resetting():
+            self.on_opcua_button_pressed, button, event, "main", "start_button"
+            self.resetting = True
+
+        GLib.timeout_add(200, start_resetting)
 
     def on_ok_clicked(self, button: Gtk.Button) -> None:
         """React to the "OK" button being clicked.
