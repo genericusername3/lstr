@@ -71,6 +71,8 @@ class CalibrationPage(Gtk.Box, Page, metaclass=PageClass):
         self.emergency_off_button.connect("clicked", self.on_emergency_off_clicked)
 
     def if_done_reset(self):
+        print("if_done_reset() called")
+
         try:
             if not opcua_util.Connection()["main"]["done_referencing"]:
                 GLib.timeout_add(1000 / 10, self.if_done_reset)
@@ -98,6 +100,8 @@ class CalibrationPage(Gtk.Box, Page, metaclass=PageClass):
                 self.if_done_switch_to_next()
 
     def if_done_switch_to_next(self):
+        print("if_done_switch_to_next() called")
+
         try:
             if opcua_util.Connection()["main"]["start_button"]:
                 GLib.timeout_add(1000 / 10, self.if_done_switch_to_next)
@@ -130,6 +134,7 @@ class CalibrationPage(Gtk.Box, Page, metaclass=PageClass):
         button.set_sensitive(False)
 
         def start_if_needed():
+            print("start_if_needed() called")
             try:
                 if not opcua_util.Connection()["main"]["done_referencing"]:
                     self.on_opcua_button_pressed(button, None, "main", "power_button")
