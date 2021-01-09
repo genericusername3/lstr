@@ -45,29 +45,11 @@ class CalibrationPage(Gtk.Box, Page, metaclass=PageClass):
         """Prepare the page to be shown."""
         self.next_page = next_page
 
-        try:
-            if opcua_util.Connection()["main"]["done_referencing"]:
-                self.on_opcua_button_released(None, None, "main", "power_button")
+        self.calibrate_button.set_sensitive(True)
+        self.calibrate_button.set_always_show_image(False)
+        self.calibrate_button.get_image().stop()
 
-                return next_page
-
-            else:
-                self.calibrate_button.set_sensitive(False)
-                self.calibrate_button.set_always_show_image(True)
-                self.calibrate_button.get_image().start()
-
-                self.emergency_off_revealer.set_reveal_child(True)
-
-                self.if_done_reset()
-
-        except ConnectionRefusedError:
-            self.get_toplevel().show_error(const.CONNECTION_ERROR_TEXT)
-
-            self.calibrate_button.set_sensitive(const.DEBUG)
-            self.calibrate_button.set_always_show_image(False)
-            self.calibrate_button.get_image().stop()
-
-            self.emergency_off_revealer.set_reveal_child(False)
+        self.emergency_off_revealer.set_reveal_child(False)
 
     def prepare_return(self) -> None:
         """Prepare the page to be shown."""
