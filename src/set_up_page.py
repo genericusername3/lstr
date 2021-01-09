@@ -112,7 +112,7 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
     def prepare_return(self) -> None:
         """Prepare the page to be shown."""
         try:
-            Connection()["main"]["setup_mode"] = True
+            Connection()["main"]["setup_mode"] = False
         except ConnectionRefusedError:
             self.get_toplevel().show_error(const.CONNECTION_ERROR_TEXT)
 
