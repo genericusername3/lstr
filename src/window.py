@@ -374,7 +374,7 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
         """
         self.more_popover.popdown()
 
-        next_page = "setup" if self.active_patient is not None else "select_patient"
+        next_page = "pain_evaluation" if self.active_patient is not None else "select_patient"
 
         self.switch_page("calibration", next_page=next_page)
 
