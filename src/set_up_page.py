@@ -271,9 +271,7 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
 
         if self.resetting:
             print(Connection()["main"]["start_button"], Connection()["main"]["reset_axes_button"])
-            self.resetting = (
-                Connection()["main"]["start_button"] and Connection()["main"]["reset_axes_button"]
-            )
+            self.resetting = Connection()["main"]["reset_axes_button"]
 
             if not self.resetting:
                 Connection()["main"]["start_button"] = False
