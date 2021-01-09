@@ -135,10 +135,11 @@ class CalibrationPage(Gtk.Box, Page, metaclass=PageClass):
 
         opcua_action_queue: List[Tuple[Callable, Tuple[Any, ...]]] = [
             (self.on_opcua_button_released, (button, None, "main", "emergency_off_button")),
-            (self.on_opcua_button_released, (button, None, "main", "start_button")),
             (self.on_opcua_button_pressed, (button, None, "main", "reset_button")),
             (self.on_opcua_button_released, (button, None, "main", "reset_button")),
+            (self.on_opcua_button_released, (button, None, "main", "start_button")),
             (self.on_opcua_button_pressed, (button, None, "main", "power_button")),
+            (self.on_opcua_button_pressed, (None, None, "main", "reset_axes_button")),
             (self.if_done_reset, ()),
         ]
 
