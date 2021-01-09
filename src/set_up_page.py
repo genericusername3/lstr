@@ -93,8 +93,8 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
         try:
             Connection()["main"]["setup_mode"] = True
 
-            for key in opcua_util.Connection()["program"].keys():
-                opcua_util.Connection()["program"][key] = 0
+            for key in Connection()["program"].keys():
+                Connection()["program"][key] = 0
 
         except ConnectionRefusedError:
             self.get_toplevel().show_error(const.CONNECTION_ERROR_TEXT)
@@ -118,8 +118,8 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
         try:
             Connection()["main"]["setup_mode"] = True
 
-            for key in opcua_util.Connection()["program"].keys():
-                opcua_util.Connection()["program"][key] = 0
+            for key in Connection()["program"].keys():
+                Connection()["program"][key] = 0
 
         except ConnectionRefusedError:
             self.get_toplevel().show_error(const.CONNECTION_ERROR_TEXT)
