@@ -123,8 +123,8 @@ class CalibrationPage(Gtk.Box, Page, metaclass=PageClass):
             else:
                 self.on_opcua_button_released(None, None, "main", "reset_axes_button")
                 self.on_opcua_button_released(None, None, "main", "power_button")
+                self.get_toplevel().page_history.pop()
                 self.get_toplevel().switch_page(self.next_page)
-                self.get_toplevel().clear_history()
 
         except ConnectionRefusedError:
             self.get_toplevel().show_error(const.CONNECTION_ERROR_TEXT)
@@ -133,8 +133,8 @@ class CalibrationPage(Gtk.Box, Page, metaclass=PageClass):
 
             if const.DEBUG:
                 print("(DEBUG) DONE")
+                self.get_toplevel().page_history.pop()
                 self.get_toplevel().switch_page(self.next_page)
-                self.get_toplevel().clear_history()
 
     def on_calibrate_clicked(self, button: Gtk.Button) -> None:
         """React to the calibrate button being clicked.
