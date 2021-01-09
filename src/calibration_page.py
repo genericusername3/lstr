@@ -83,11 +83,7 @@ class CalibrationPage(Gtk.Box, Page, metaclass=PageClass):
             else:
                 self.on_opcua_button_pressed(None, None, "main", "reset_axes_button")
 
-                def start_reset():
-                    self.on_opcua_button_pressed(None, None, "main", "start_button")
-                    self.if_done_switch_to_next()
-
-                GLib.timeout_add(400, start_reset)
+                self.if_done_switch_to_next()
 
         except ConnectionRefusedError:
             self.get_toplevel().show_error(const.CONNECTION_ERROR_TEXT)
@@ -103,7 +99,7 @@ class CalibrationPage(Gtk.Box, Page, metaclass=PageClass):
         print("if_done_switch_to_next() called")
 
         try:
-            if opcua_util.Connection()["main"]["start_button"]:
+            if opcua_util.Connection()["main"]["reset_axes_button"]:
                 GLib.timeout_add(1000 / 10, self.if_done_switch_to_next)
 
             elif opcua_util.Connection()["main"]["emergency_off_button"]:
@@ -136,6 +132,7 @@ class CalibrationPage(Gtk.Box, Page, metaclass=PageClass):
         def start_if_needed():
             print("start_if_needed() called")
             try:
+                print("")
                 if not opcua_util.Connection()["main"]["done_referencing"]:
                     self.on_opcua_button_pressed(button, None, "main", "power_button")
 
