@@ -105,13 +105,17 @@ class CalibrationPage(Gtk.Box, Page, metaclass=PageClass):
         print("if_done_switch_to_next() called")
 
         try:
-            if opcua_util.Connection()["main"]["start_button"]:
+            if (
+                opcua_util.Connection()["main"]["start_button"]
+                and opcua_util.Connection()["main"]["reset_axes_button"]
+            ):
                 GLib.timeout_add(1000 / 10, self.if_done_switch_to_next)
 
             elif opcua_util.Connection()["main"]["emergency_off_button"]:
                 return
 
             else:
+                self.on_opcua_button_released(None, None, "main", "start_button")
                 self.on_opcua_button_released(None, None, "main", "reset_axes_button")
                 self.on_opcua_button_released(None, None, "main", "power_button")
                 self.get_toplevel().page_history.pop()
