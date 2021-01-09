@@ -108,6 +108,7 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
     patient_button_revealer: Union[Gtk.Template.Child, Gtk.Revealer] = Gtk.Template.Child()
 
     shutdown_button: Union[Gtk.Template.Child, Gtk.Button] = Gtk.Template.Child()
+    recalibrate_button: Union[Gtk.Template.Child, Gtk.Button] = Gtk.Template.Child()
     log_out_button: Union[Gtk.Template.Child, Gtk.Button] = Gtk.Template.Child()
     log_out_button_compact: Union[Gtk.Template.Child, Gtk.Button] = Gtk.Template.Child()
 
@@ -163,6 +164,8 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
         self.change_password_button.connect("clicked", self.on_change_password_clicked)
         self.users_button.connect("clicked", self.on_users_clicked)
 
+        self.recalibrate_button.connect("clicked", self.on_recalibrate_clicked)
+
         self.log_out_button.connect("clicked", self.on_log_out_clicked)
         self.log_out_button_compact.connect("clicked", self.on_log_out_clicked)
 
@@ -175,13 +178,13 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
             self._show_page(
                 "register",
                 animation_direction=-1,
-                kwargs={"new_user": True, "access_level": "admin", "next_page": "calibration",},
+                kwargs={"new_user": True, "access_level": "admin", "next_page": "calibration"},
             )
         elif not auth_util.does_doctor_exist():
             self._show_page(
                 "register",
                 animation_direction=-1,
-                kwargs={"new_user": True, "access_level": "doctor", "next_page": "calibration",},
+                kwargs={"new_user": True, "access_level": "doctor", "next_page": "calibration"},
             )
         else:
             self._show_page("login", animation_direction=-1)
@@ -362,6 +365,18 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
         self.more_popover.popdown()
 
         self.switch_page("users")
+
+    def on_recalibrate_clicked(self, button: Gtk.Button) -> None:
+        """React to the "Recalibrate" button being clicked.
+
+        Args:
+            button (Gtk.Button): The clicked button
+        """
+        self.more_popover.popdown()
+
+        next_page = "setup" if self.active_patient is not None else "select_patient"
+
+        self.switch_page("calibration", next_page=next_page)
 
     def on_log_out_clicked(self, button: Gtk.Button) -> None:
         """React to the "Log out" button being clicked.

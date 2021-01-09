@@ -1,52 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.36.0 -->
+<!-- Generated with glade 3.38.1 -->
 <interface>
   <requires lib="gtk+" version="3.20"/>
   <object class="GtkImage" id="back_icon">
     <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="icon_name">go-previous-symbolic</property>
+    <property name="can-focus">False</property>
+    <property name="icon-name">go-previous-symbolic</property>
     <property name="icon_size">3</property>
   </object>
   <object class="GtkImage" id="logout_icon_compact">
     <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="icon_name">system-log-out-symbolic</property>
+    <property name="can-focus">False</property>
+    <property name="icon-name">system-log-out-symbolic</property>
     <property name="icon_size">5</property>
   </object>
   <object class="GtkImage" id="more_icon">
     <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="icon_name">view-more-symbolic</property>
+    <property name="can-focus">False</property>
+    <property name="icon-name">view-more-symbolic</property>
     <property name="icon_size">3</property>
   </object>
   <object class="GtkPopoverMenu" id="more_popover">
-    <property name="can_focus">False</property>
-    <property name="border_width">4</property>
+    <property name="can-focus">False</property>
+    <property name="border-width">4</property>
     <child>
       <object class="GtkBox">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
         <property name="orientation">vertical</property>
         <child>
           <object class="GtkButton" id="change_password_button">
-            <property name="height_request">48</property>
+            <property name="height-request">48</property>
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="focus_on_click">False</property>
-            <property name="receives_default">True</property>
-            <property name="border_width">2</property>
+            <property name="can-focus">True</property>
+            <property name="focus-on-click">False</property>
+            <property name="receives-default">True</property>
+            <property name="border-width">2</property>
             <child>
               <object class="GtkBox" id="change_password_button_box">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <child>
                   <object class="GtkImage" id="password_icon">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="margin_start">12</property>
-                    <property name="margin_end">12</property>
-                    <property name="icon_name">dialog-password-symbolic</property>
+                    <property name="can-focus">False</property>
+                    <property name="margin-start">12</property>
+                    <property name="margin-end">12</property>
+                    <property name="icon-name">dialog-password-symbolic</property>
                     <property name="icon_size">3</property>
                   </object>
                   <packing>
@@ -58,12 +58,66 @@
                 <child>
                   <object class="GtkLabel" id="change_password_button_label">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="halign">start</property>
-                    <property name="margin_end">12</property>
-                    <property name="margin_top">12</property>
-                    <property name="margin_bottom">12</property>
+                    <property name="margin-end">12</property>
+                    <property name="margin-top">12</property>
+                    <property name="margin-bottom">12</property>
                     <property name="label" translatable="yes">Passwort ändern...</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="users_button">
+            <property name="height-request">48</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="focus-on-click">False</property>
+            <property name="receives-default">True</property>
+            <property name="border-width">2</property>
+            <child>
+              <object class="GtkBox">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <child>
+                  <object class="GtkImage" id="users_icon">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="margin-left">12</property>
+                    <property name="margin-right">12</property>
+                    <property name="margin-start">12</property>
+                    <property name="margin-end">12</property>
+                    <property name="icon-name">system-users-symbolic</property>
+                    <property name="icon_size">3</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="users_button_label">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="halign">start</property>
+                    <property name="margin-end">12</property>
+                    <property name="margin-top">12</property>
+                    <property name="margin-bottom">12</property>
+                    <property name="label" translatable="yes">Benutzer...</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -81,26 +135,26 @@
           </packing>
         </child>
         <child>
-          <object class="GtkButton" id="users_button">
-            <property name="height_request">48</property>
+          <object class="GtkButton" id="recalibrate_button">
+            <property name="height-request">48</property>
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="focus_on_click">False</property>
-            <property name="receives_default">True</property>
-            <property name="border_width">2</property>
+            <property name="can-focus">True</property>
+            <property name="focus-on-click">False</property>
+            <property name="receives-default">True</property>
+            <property name="border-width">2</property>
             <child>
               <object class="GtkBox">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <child>
-                  <object class="GtkImage" id="users_icon">
+                  <object class="GtkImage" id="recalibrate_icon">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="margin_left">12</property>
-                    <property name="margin_right">12</property>
-                    <property name="margin_start">12</property>
-                    <property name="margin_end">12</property>
-                    <property name="icon_name">system-users-symbolic</property>
+                    <property name="can-focus">False</property>
+                    <property name="margin-left">12</property>
+                    <property name="margin-right">12</property>
+                    <property name="margin-start">12</property>
+                    <property name="margin-end">12</property>
+                    <property name="icon-name">view-refresh-symbolic</property>
                     <property name="icon_size">3</property>
                   </object>
                   <packing>
@@ -110,14 +164,15 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkLabel" id="users_button_label">
+                  <object class="GtkLabel" id="recalibrate_button_label">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="halign">start</property>
-                    <property name="margin_end">12</property>
-                    <property name="margin_top">12</property>
-                    <property name="margin_bottom">12</property>
-                    <property name="label" translatable="yes">Benutzer...</property>
+                    <property name="margin-right">12</property>
+                    <property name="margin-end">12</property>
+                    <property name="margin-top">12</property>
+                    <property name="margin-bottom">12</property>
+                    <property name="label" translatable="yes">Neu kalibrieren</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -136,25 +191,25 @@
         </child>
         <child>
           <object class="GtkButton" id="log_out_button">
-            <property name="height_request">48</property>
+            <property name="height-request">48</property>
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="focus_on_click">False</property>
-            <property name="receives_default">True</property>
-            <property name="border_width">2</property>
+            <property name="can-focus">True</property>
+            <property name="focus-on-click">False</property>
+            <property name="receives-default">True</property>
+            <property name="border-width">2</property>
             <child>
               <object class="GtkBox">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <child>
                   <object class="GtkImage" id="log_out_icon">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="margin_left">12</property>
-                    <property name="margin_right">12</property>
-                    <property name="margin_start">12</property>
-                    <property name="margin_end">12</property>
-                    <property name="icon_name">system-log-out-symbolic</property>
+                    <property name="can-focus">False</property>
+                    <property name="margin-left">12</property>
+                    <property name="margin-right">12</property>
+                    <property name="margin-start">12</property>
+                    <property name="margin-end">12</property>
+                    <property name="icon-name">system-log-out-symbolic</property>
                     <property name="icon_size">3</property>
                   </object>
                   <packing>
@@ -166,11 +221,11 @@
                 <child>
                   <object class="GtkLabel" id="log_out_button_label">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="halign">start</property>
-                    <property name="margin_end">12</property>
-                    <property name="margin_top">12</property>
-                    <property name="margin_bottom">12</property>
+                    <property name="margin-end">12</property>
+                    <property name="margin-top">12</property>
+                    <property name="margin-bottom">12</property>
                     <property name="label" translatable="yes">Abmelden</property>
                   </object>
                   <packing>
@@ -190,25 +245,25 @@
         </child>
         <child>
           <object class="GtkButton" id="shutdown_button">
-            <property name="height_request">48</property>
+            <property name="height-request">48</property>
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="focus_on_click">False</property>
-            <property name="receives_default">True</property>
-            <property name="border_width">2</property>
+            <property name="can-focus">True</property>
+            <property name="focus-on-click">False</property>
+            <property name="receives-default">True</property>
+            <property name="border-width">2</property>
             <child>
               <object class="GtkBox">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <child>
                   <object class="GtkImage" id="shutdown_icon">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="margin_left">12</property>
-                    <property name="margin_right">12</property>
-                    <property name="margin_start">12</property>
-                    <property name="margin_end">12</property>
-                    <property name="icon_name">system-shutdown-symbolic</property>
+                    <property name="can-focus">False</property>
+                    <property name="margin-left">12</property>
+                    <property name="margin-right">12</property>
+                    <property name="margin-start">12</property>
+                    <property name="margin-end">12</property>
+                    <property name="icon-name">system-shutdown-symbolic</property>
                     <property name="icon_size">3</property>
                   </object>
                   <packing>
@@ -220,11 +275,11 @@
                 <child>
                   <object class="GtkLabel" id="shutdown_button_label">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="halign">start</property>
-                    <property name="margin_end">12</property>
-                    <property name="margin_top">12</property>
-                    <property name="margin_bottom">12</property>
+                    <property name="margin-end">12</property>
+                    <property name="margin-top">12</property>
+                    <property name="margin-bottom">12</property>
                     <property name="label" translatable="yes">Herunterfahren</property>
                   </object>
                   <packing>
@@ -251,41 +306,41 @@
   </object>
   <object class="GtkImage" id="patient_icon">
     <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="icon_name">avatar-default-symbolic</property>
+    <property name="can-focus">False</property>
+    <property name="icon-name">avatar-default-symbolic</property>
     <property name="icon_size">3</property>
   </object>
   <template class="LiegensteuerungWindow" parent="GtkApplicationWindow">
-    <property name="can_focus">False</property>
-    <property name="default_width">600</property>
-    <property name="default_height">300</property>
+    <property name="can-focus">False</property>
+    <property name="default-width">600</property>
+    <property name="default-height">300</property>
     <child>
       <object class="GtkBox">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
         <property name="orientation">vertical</property>
         <child>
           <object class="GtkRevealer" id="header_bar_revealer">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="valign">start</property>
             <property name="vexpand">False</property>
-            <property name="transition_type">none</property>
-            <property name="transition_duration">200</property>
+            <property name="transition-type">none</property>
+            <property name="transition-duration">200</property>
             <child>
               <object class="GtkHeaderBar" id="header_bar">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="valign">start</property>
-                <property name="border_width">0</property>
+                <property name="border-width">0</property>
                 <property name="spacing">4</property>
                 <child type="title">
                   <object class="GtkLabel" id="title_label">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="halign">start</property>
                     <property name="valign">baseline</property>
-                    <property name="margin_start">8</property>
+                    <property name="margin-start">8</property>
                     <property name="hexpand">True</property>
                     <property name="vexpand">True</property>
                     <property name="label" translatable="yes">Title</property>
@@ -297,37 +352,37 @@
                 </child>
                 <child>
                   <object class="GtkMenuButton" id="more_button">
-                    <property name="width_request">48</property>
-                    <property name="height_request">48</property>
+                    <property name="width-request">48</property>
+                    <property name="height-request">48</property>
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="focus_on_click">False</property>
-                    <property name="receives_default">True</property>
-                    <property name="border_width">0</property>
+                    <property name="can-focus">True</property>
+                    <property name="focus-on-click">False</property>
+                    <property name="receives-default">True</property>
+                    <property name="border-width">0</property>
                     <property name="image">more_icon</property>
                     <property name="popover">more_popover</property>
                   </object>
                   <packing>
-                    <property name="pack_type">end</property>
+                    <property name="pack-type">end</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkRevealer" id="back_button_revealer">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="transition_type">slide-right</property>
-                    <property name="transition_duration">100</property>
+                    <property name="can-focus">False</property>
+                    <property name="transition-type">slide-right</property>
+                    <property name="transition-duration">100</property>
                     <child>
                       <object class="GtkButton" id="back_button">
-                        <property name="width_request">48</property>
-                        <property name="height_request">48</property>
+                        <property name="width-request">48</property>
+                        <property name="height-request">48</property>
                         <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="focus_on_click">False</property>
-                        <property name="receives_default">False</property>
-                        <property name="border_width">0</property>
+                        <property name="can-focus">True</property>
+                        <property name="focus-on-click">False</property>
+                        <property name="receives-default">False</property>
+                        <property name="border-width">0</property>
                         <property name="image">back_icon</property>
-                        <property name="always_show_image">True</property>
+                        <property name="always-show-image">True</property>
                       </object>
                     </child>
                   </object>
@@ -338,26 +393,26 @@
                 <child>
                   <object class="GtkRevealer" id="patient_button_revealer">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="transition_type">crossfade</property>
-                    <property name="transition_duration">100</property>
+                    <property name="can-focus">False</property>
+                    <property name="transition-type">crossfade</property>
+                    <property name="transition-duration">100</property>
                     <child>
                       <object class="GtkButton" id="patient_button">
                         <property name="label" translatable="yes">Patient...</property>
-                        <property name="width_request">48</property>
-                        <property name="height_request">48</property>
+                        <property name="width-request">48</property>
+                        <property name="height-request">48</property>
                         <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="focus_on_click">False</property>
-                        <property name="receives_default">True</property>
-                        <property name="border_width">0</property>
+                        <property name="can-focus">True</property>
+                        <property name="focus-on-click">False</property>
+                        <property name="receives-default">True</property>
+                        <property name="border-width">0</property>
                         <property name="image">patient_icon</property>
-                        <property name="always_show_image">True</property>
+                        <property name="always-show-image">True</property>
                       </object>
                     </child>
                   </object>
                   <packing>
-                    <property name="pack_type">end</property>
+                    <property name="pack-type">end</property>
                     <property name="position">2</property>
                   </packing>
                 </child>
@@ -372,15 +427,15 @@
         </child>
         <child>
           <object class="GtkInfoBar" id="error_bar">
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="valign">start</property>
-            <property name="message_type">error</property>
+            <property name="message-type">error</property>
             <property name="revealed">False</property>
             <child internal-child="action_area">
               <object class="GtkButtonBox">
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="spacing">6</property>
-                <property name="layout_style">end</property>
+                <property name="layout-style">end</property>
                 <child>
                   <placeholder/>
                 </child>
@@ -393,13 +448,13 @@
             </child>
             <child internal-child="content_area">
               <object class="GtkBox">
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="spacing">16</property>
                 <child>
                   <object class="GtkImage">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="icon_name">dialog-error-symbolic</property>
+                    <property name="can-focus">False</property>
+                    <property name="icon-name">dialog-error-symbolic</property>
                     <property name="icon_size">3</property>
                   </object>
                   <packing>
@@ -412,7 +467,7 @@
                   <object class="GtkLabel" id="error_bar_label">
                     <property name="name">error_bar_label</property>
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -437,14 +492,14 @@
         <child>
           <object class="GtkOverlay" id="main_area_overlay">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <child>
               <object class="GtkStack" id="page_stack">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="vhomogeneous">False</property>
-                <property name="transition_duration">300</property>
-                <property name="transition_type">slide-left-right</property>
+                <property name="transition-duration">300</property>
+                <property name="transition-type">slide-left-right</property>
                 <child>
                   <object class="RegisterPage">
                     <property name="visible">True</property>
@@ -558,10 +613,10 @@
         <child>
           <object class="GtkRevealer" id="keyboard_revealer">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="transition_type">slide-up</property>
-            <property name="transition_duration">200</property>
-            <property name="reveal_child">True</property>
+            <property name="can-focus">False</property>
+            <property name="transition-type">slide-up</property>
+            <property name="transition-duration">200</property>
+            <property name="reveal-child">True</property>
             <child>
               <object class="OnscreenKeyboard">
                 <property name="visible">True</property>
@@ -576,74 +631,71 @@
         </child>
       </object>
     </child>
-    <child type="titlebar">
-      <placeholder/>
-    </child>
   </template>
   <object class="GtkImage" id="shutdown_icon_compact">
     <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="icon_name">system-shutdown-symbolic</property>
+    <property name="can-focus">False</property>
+    <property name="icon-name">system-shutdown-symbolic</property>
     <property name="icon_size">5</property>
   </object>
   <object class="GtkRevealer" id="shutdown_compact_revealer">
     <property name="visible">True</property>
-    <property name="can_focus">False</property>
+    <property name="can-focus">False</property>
     <property name="halign">end</property>
     <property name="valign">start</property>
-    <property name="margin_start">8</property>
-    <property name="margin_end">8</property>
-    <property name="margin_top">8</property>
-    <property name="margin_bottom">8</property>
-    <property name="transition_duration">200</property>
-    <property name="reveal_child">True</property>
+    <property name="margin-start">8</property>
+    <property name="margin-end">8</property>
+    <property name="margin-top">8</property>
+    <property name="margin-bottom">8</property>
+    <property name="transition-duration">200</property>
+    <property name="reveal-child">True</property>
     <child>
       <object class="GtkBox">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
         <property name="spacing">8</property>
         <property name="homogeneous">True</property>
         <child>
           <object class="GtkButton" id="shutdown_button_compact">
-            <property name="width_request">40</property>
-            <property name="height_request">40</property>
+            <property name="width-request">40</property>
+            <property name="height-request">40</property>
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="focus_on_click">False</property>
-            <property name="receives_default">True</property>
+            <property name="can-focus">True</property>
+            <property name="focus-on-click">False</property>
+            <property name="receives-default">True</property>
             <property name="image">shutdown_icon_compact</property>
-            <property name="always_show_image">True</property>
+            <property name="always-show-image">True</property>
           </object>
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="pack_type">end</property>
+            <property name="pack-type">end</property>
             <property name="position">0</property>
           </packing>
         </child>
         <child>
           <object class="GtkRevealer" id="log_out_compact_revealer">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="transition_type">slide-right</property>
-            <property name="transition_duration">200</property>
+            <property name="can-focus">False</property>
+            <property name="transition-type">slide-right</property>
+            <property name="transition-duration">200</property>
             <child>
               <object class="GtkButton" id="log_out_button_compact">
-                <property name="width_request">40</property>
-                <property name="height_request">40</property>
+                <property name="width-request">40</property>
+                <property name="height-request">40</property>
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="focus_on_click">False</property>
-                <property name="receives_default">True</property>
+                <property name="can-focus">True</property>
+                <property name="focus-on-click">False</property>
+                <property name="receives-default">True</property>
                 <property name="image">logout_icon_compact</property>
-                <property name="always_show_image">True</property>
+                <property name="always-show-image">True</property>
               </object>
             </child>
           </object>
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="pack_type">end</property>
+            <property name="pack-type">end</property>
             <property name="position">1</property>
           </packing>
         </child>

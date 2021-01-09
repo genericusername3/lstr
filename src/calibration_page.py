@@ -26,6 +26,8 @@ class CalibrationPage(Gtk.Box, Page, metaclass=PageClass):
     header_visible: bool = False
     title: str = "Kalibrieren"
 
+    next_page: str = "select_patient"
+
     calibrate_button: Union[Gtk.Button, Gtk.Template.Child] = Gtk.Template.Child()
 
     emergency_off_revealer: Union[Gtk.Revealer, Gtk.Template.Child] = Gtk.Template.Child()
@@ -39,13 +41,15 @@ class CalibrationPage(Gtk.Box, Page, metaclass=PageClass):
         """
         super().__init__(**kwargs)
 
-    def prepare(self) -> Optional[str]:
+    def prepare(self, next_page: str = "select_patient") -> Optional[str]:
         """Prepare the page to be shown."""
+        self.next_page = next_page
+
         try:
             if opcua_util.Connection()["main"]["done_referencing"]:
                 self.on_opcua_button_released(None, None, "main", "power_button")
 
-                return "select_patient"
+                return next_page
 
             else:
                 self.calibrate_button.set_sensitive(False)
@@ -119,7 +123,7 @@ class CalibrationPage(Gtk.Box, Page, metaclass=PageClass):
             else:
                 self.on_opcua_button_released(None, None, "main", "reset_axes_button")
                 self.on_opcua_button_released(None, None, "main", "power_button")
-                self.get_toplevel().switch_page("select_patient")
+                self.get_toplevel().switch_page(self.next_page)
                 self.get_toplevel().clear_history()
 
         except ConnectionRefusedError:
@@ -129,7 +133,7 @@ class CalibrationPage(Gtk.Box, Page, metaclass=PageClass):
 
             if const.DEBUG:
                 print("(DEBUG) DONE")
-                self.get_toplevel().switch_page("select_patient")
+                self.get_toplevel().switch_page(self.next_page)
                 self.get_toplevel().clear_history()
 
     def on_calibrate_clicked(self, button: Gtk.Button) -> None:
@@ -141,8 +145,12 @@ class CalibrationPage(Gtk.Box, Page, metaclass=PageClass):
         button.set_sensitive(False)
 
         def start_if_needed():
-            if not opcua_util.Connection()["main"]["done_referencing"]:
-                self.on_opcua_button_pressed(button, None, "main", "power_button")
+            try:
+                if not opcua_util.Connection()["main"]["done_referencing"]:
+                    self.on_opcua_button_pressed(button, None, "main", "power_button")
+
+            except ConnectionRefusedError:
+                self.get_toplevel().show_error(const.CONNECTION_ERROR_TEXT)
 
         opcua_action_queue: List[Tuple[Callable, Tuple[Any, ...]]] = [
             (self.on_opcua_button_released, (button, None, "main", "emergency_off_button"),),
