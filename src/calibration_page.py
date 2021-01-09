@@ -121,7 +121,10 @@ class CalibrationPage(Gtk.Box, Page, metaclass=PageClass):
             if opcua_util.Connection()["main"]["reset_axes_button"]:
                 GLib.timeout_add(1000 / 10, self.if_done_switch_to_next)
 
-            elif opcua_util.Connection()["main"]["emergency_off_button"]:
+            elif (
+                opcua_util.Connection()["main"]["start_button"]
+                and opcua_util.Connection()["main"]["emergency_off_button"]
+            ):
                 return
 
             else:
@@ -167,12 +170,12 @@ class CalibrationPage(Gtk.Box, Page, metaclass=PageClass):
         ]
 
         def work_action_queue():
-            """Work through the action queue with an interval of 400ms."""
+            """Work through the action queue with an interval of 500ms."""
             if opcua_action_queue:
                 fn, args = opcua_action_queue.pop(0)
                 fn(*args)
 
-                GLib.timeout_add(400, work_action_queue)
+                GLib.timeout_add(500, work_action_queue)
 
         work_action_queue()
 
