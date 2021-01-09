@@ -51,7 +51,14 @@ class CalibrationPage(Gtk.Box, Page, metaclass=PageClass):
 
         self.emergency_off_revealer.set_reveal_child(False)
 
-        opcua_util.Connection()["main"]["setup_mode"] = False
+        try:
+            opcua_util.Connection()["main"]["setup_mode"] = False
+
+            for key in opcua_util.Connection()["program"].keys():
+                opcua_util.Connection()["program"][key] = 0
+
+        except ConnectionRefusedError():
+            self.get_toplevel().show_error(const.CONNECTION_ERROR_TEXT)
 
     def prepare_return(self) -> None:
         """Prepare the page to be shown."""
