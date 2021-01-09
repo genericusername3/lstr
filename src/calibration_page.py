@@ -125,6 +125,13 @@ class CalibrationPage(Gtk.Box, Page, metaclass=PageClass):
                 self.on_opcua_button_released(None, None, "main", "start_button")
                 self.on_opcua_button_released(None, None, "main", "reset_axes_button")
                 self.on_opcua_button_released(None, None, "main", "power_button")
+
+                opcua_util.Connection()["axis0"]["start"] = False
+                opcua_util.Connection()["axis1"]["start"] = False
+                opcua_util.Connection()["axis2"]["start"] = False
+                opcua_util.Connection()["axis3"]["start"] = False
+                opcua_util.Connection()["axis4"]["start"] = False
+
                 self.get_toplevel().page_history.pop()
                 self.get_toplevel().switch_page(self.next_page)
 

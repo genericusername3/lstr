@@ -138,6 +138,7 @@ node_ids: Dict[str, Dict[str, str]] = {
             "move_negative": (f"{prefix}{axes_prefix}{index + 1}_{axis}.x_Mode_endless_neg"),
             "has_error": (f"{prefix}{axes_prefix}{index + 1}_{axis}.x_Fehler"),  # Error States soon
             "ready": (f"{prefix}{axes_prefix}{index + 1}_{axis}.x_Achse_befehlsbereit"),
+            "start": (f"{prefix}{axes_prefix}{index + 1}_{axis}.x_Start"),
         }
         for index, axis in enumerate(axes)
     },
