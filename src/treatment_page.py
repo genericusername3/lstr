@@ -86,7 +86,7 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
             self.visualising = const.DEBUG
 
         if self.visualising:
-            self.last_progress = 0
+            self.progress_moving_to = True
 
             self.visualisation_loop()
 
@@ -361,18 +361,14 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
                 / 2
             ) / self.get_toplevel().active_program.repeat_count
 
-            self.last_progress = total_progress = max(
-                (
-                    total_repeat_progress
-                    + max(repeat_progress_to, repeat_progress_from)
-                    + max(pass_progress_to, pass_progress_from)
-                    + max(push_progress_to, push_progress_from)
-                ),
-                self.last_progress
+            total_progress = (
+                total_repeat_progress + max(repeat_progress_to, repeat_progress_from) + max(pass_progress_to, pass_progress_from) + max(push_progress_to, push_progress_from)
             )
 
-            if max(push_progress_to, push_progress_from) > 0:
-                self.program_progress_bar.set_fraction(total_progress)
+            print(total_progress, total_repeat_progress, (repeat_progress_to, repeat_progress_from), (pass_progress_to, pass_progress_from), (push_progress_to, push_progress_from)
+            )
+
+            self.program_progress_bar.set_fraction(total_progress)
 
         except ConnectionRefusedError:
             self.get_toplevel().show_error(const.CONNECTION_ERROR_TEXT)
