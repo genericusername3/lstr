@@ -162,7 +162,7 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
             print("No cam found.")
             self.cam_available = False
 
-        video_capture.release()
+        self.video_capture.release()
 
     def do_parent_set(self, old_parent: Optional[Gtk.Widget]) -> None:
         """React to the parent being set.
