@@ -365,8 +365,9 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
                 total_repeat_progress + max(repeat_progress_to, repeat_progress_from) + max(pass_progress_to, pass_progress_from) + max(push_progress_to, push_progress_from)
             )
 
-            print(total_progress)
-            self.program_progress_bar.set_fraction(total_progress)
+            print(total_progress, total_repeat_progress, (repeat_progress_to, repeat_progress_from), (pass_progress_to, pass_progress_from), (push_progress_to, push_progress_from)
+            )
+
             self.program_progress_bar.set_fraction(total_progress)
 
         except ConnectionRefusedError:
