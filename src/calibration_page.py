@@ -96,7 +96,7 @@ class CalibrationPage(Gtk.Box, Page, metaclass=PageClass):
                     self.on_opcua_button_pressed(None, None, "main", "start_button")
                     self.if_done_switch_to_next()
 
-                GLib.timeout_add(200, start_reset)
+                GLib.timeout_add(1000, start_reset)
 
         except ConnectionRefusedError:
             self.get_toplevel().show_error(const.CONNECTION_ERROR_TEXT)

@@ -86,6 +86,8 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
             self.visualising = const.DEBUG
 
         if self.visualising:
+            self.progress_moving_to = True
+
             self.visualisation_loop()
 
         self.start_button.show()
@@ -205,6 +207,7 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
         self.on_opcua_button_released(button, None, "main", "start_button")
         self.on_opcua_button_released(button, None, "main", "power_button")
         self.on_opcua_button_pressed(button, None, "main", "reset_button")
+        GLib.timeout_add(500, self.on_opcua_button_released, (button, None, "main", "reset_button"))
 
         self.get_toplevel()._show_page("select_patient", animation_direction=-1)
         self.get_toplevel().clear_history()
@@ -257,6 +260,16 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
                 self.cancel_button.set_sensitive(True)
 
                 self.get_toplevel()._show_page("calibration", animation_direction=-1)
+                self.get_toplevel().clear_history()
+
+                self.emergency_off_button.set_sensitive(True)
+                self.emergency_off_button.set_label("NOT AUS")
+                self.emergency_off_button.set_always_show_image(True)
+
+                self.emergency_off_button.get_style_context().remove_class(
+                    "suggested-action",
+                )
+                self.emergency_off_button.get_style_context().add_class("destructive-action",)
 
         except ConnectionRefusedError:
             print("NOTAUS failed")
@@ -265,19 +278,97 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
     def visualisation_loop(self) -> None:
         """Repeatedly render an SVG visualisation for the motor values."""
         try:
-            # TODO: Does this calculation add up and is "main/passes" is even the right variable?
-            # Calculate progress
-            # self.program_progress_bar.set_fraction(
-            #     Connection()["main"]["passes"]
-            #     / (
-            #         self.get_toplevel().active_program.pass_count_sum
-            #         * self.get_toplevel().active_program.repeat_count
-            #     )
-            # )
-            print("================= START =================")
-            for key in Connection()["counters"].keys():
-                print(key, Connection()["counters"][key])
-            print("================== END ==================")
+            total_repeat_progress = (
+                Connection()["counters"]["repeat_total"]
+                / self.get_toplevel().active_program.repeat_count
+            )
+
+            if self.progress_moving_to:
+                repeat_progress = (
+                    (
+                        Connection()["counters"]["repeat_to"]
+                        / self.get_toplevel().active_program.pass_count_up
+                    )
+                    / 2
+                ) / self.get_toplevel().active_program.repeat_count
+
+                pass_progress = (
+                    (
+                        (
+                            Connection()["counters"]["passes_to"]
+                            / self.get_toplevel().active_program.push_count_up
+                        )
+                        / self.get_toplevel().active_program.pass_count_up
+                    )
+                    / 2
+                ) / self.get_toplevel().active_program.repeat_count
+
+                push_progress = (
+                    (
+                        (
+                            (
+                                min(
+                                    Connection()["counters"]["pushes_lv"]
+                                    / self.get_toplevel().active_program.pusher_left_push_count_up,
+                                    Connection()["counters"]["pushes_rv"]
+                                    / self.get_toplevel().active_program.pusher_right_push_count_up,
+                                )
+                                / self.get_toplevel().active_program.push_count_up
+                            )
+                        )
+                        / self.get_toplevel().active_program.pass_count_up
+                    )
+                    / 2
+                ) / self.get_toplevel().active_program.repeat_count
+
+            else:
+                repeat_progress = (
+                    0.5
+                    + (
+                        Connection()["counters"]["repeat_from"]
+                        / self.get_toplevel().active_program.pass_count_down
+                    )
+                    / 2
+                ) / self.get_toplevel().active_program.repeat_count
+
+                pass_progress = (
+                    (
+                        (
+                            0.5
+                            + (
+                                Connection()["counters"]["passes_from"]
+                                / self.get_toplevel().active_program.push_count_down
+                            )
+                        )
+                        / self.get_toplevel().active_program.pass_count_up
+                    )
+                    / 2
+                ) / self.get_toplevel().active_program.repeat_count
+
+                push_progress = (
+                    (
+                        (
+                            (
+                                min(
+                                    Connection()["counters"]["pushes_lr"]
+                                    / self.get_toplevel().active_program.pusher_left_push_count_down,
+                                    Connection()["counters"]["pushes_rr"]
+                                    / self.get_toplevel().active_program.pusher_right_push_count_down,
+                                )
+                                / self.get_toplevel().active_program.push_count_down
+                            )
+                        )
+                        / self.get_toplevel().active_program.pass_count_up
+                    )
+                    / 2
+                ) / self.get_toplevel().active_program.repeat_count
+
+            total_progress = (
+                total_repeat_progress + repeat_progress + pass_progress + push_progress
+            )
+
+            print(total_progress)
+            self.program_progress_bar.set_fraction(total_progress)
 
         except ConnectionRefusedError:
             self.get_toplevel().show_error(const.CONNECTION_ERROR_TEXT)

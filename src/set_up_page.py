@@ -105,6 +105,7 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
         self.end_value_left = None
         self.end_value_right = None
 
+        self.video_capture = cv2.VideoCapture(0)
         read_thread = Thread(target=self.read_camera_input_loop)
         read_thread.start()
 
@@ -146,11 +147,9 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
 
         This only happens if running is True and a webcam could be found.
         """
-        video_capture = cv2.VideoCapture(0)
-
-        if video_capture.isOpened():  # try to get the first frame
+        if self.video_capture.isOpened():  # try to get the first frame
             while self.running:
-                return_value, new_camera_frame = video_capture.read()
+                return_value, new_camera_frame = self.video_capture.read()
 
                 try:
                     # Some operations like color correction
@@ -189,16 +188,16 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
 
         # Tilt buttons
         self.tilt_down_button.connect(
-            "button-press-event", self.on_opcua_button_pressed, "axis4", "move_positive",
-        )
-        self.tilt_down_button.connect(
-            "button-release-event", self.on_opcua_button_released, "axis4", "move_positive",
-        )
-        self.tilt_up_button.connect(
             "button-press-event", self.on_opcua_button_pressed, "axis4", "move_negative",
         )
-        self.tilt_up_button.connect(
+        self.tilt_down_button.connect(
             "button-release-event", self.on_opcua_button_released, "axis4", "move_negative",
+        )
+        self.tilt_up_button.connect(
+            "button-press-event", self.on_opcua_button_pressed, "axis4", "move_positive",
+        )
+        self.tilt_up_button.connect(
+            "button-release-event", self.on_opcua_button_released, "axis4", "move_positive",
         )
 
         # Pusher buttons
@@ -229,28 +228,28 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
 
         # Left/RIght/Up/Down buttons
         self.move_left_button.connect(
-            "button-press-event", self.on_opcua_button_pressed, "axis2", "move_positive",
-        )
-        self.move_left_button.connect(
-            "button-release-event", self.on_opcua_button_released, "axis2", "move_positive",
-        )
-        self.move_right_button.connect(
             "button-press-event", self.on_opcua_button_pressed, "axis2", "move_negative",
         )
-        self.move_right_button.connect(
+        self.move_left_button.connect(
             "button-release-event", self.on_opcua_button_released, "axis2", "move_negative",
         )
-        self.move_up_button.connect(
-            "button-press-event", self.on_opcua_button_pressed, "axis3", "move_positive",
+        self.move_right_button.connect(
+            "button-press-event", self.on_opcua_button_pressed, "axis2", "move_positive",
+        )
+        self.move_right_button.connect(
+            "button-release-event", self.on_opcua_button_released, "axis2", "move_positive",
         )
         self.move_up_button.connect(
-            "button-release-event", self.on_opcua_button_released, "axis3", "move_positive",
-        )
-        self.move_down_button.connect(
             "button-press-event", self.on_opcua_button_pressed, "axis3", "move_negative",
         )
-        self.move_down_button.connect(
+        self.move_up_button.connect(
             "button-release-event", self.on_opcua_button_released, "axis3", "move_negative",
+        )
+        self.move_down_button.connect(
+            "button-press-event", self.on_opcua_button_pressed, "axis3", "move_positive",
+        )
+        self.move_down_button.connect(
+            "button-release-event", self.on_opcua_button_released, "axis3", "move_positive",
         )
 
     def display_camera_input_loop(self) -> None:
@@ -291,36 +290,36 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
 
         self.move_up_button.set_sensitive(
             Connection()["axis3"]["ready"]
-            or Connection()["axis3"]["move_positive"]
+            or Connection()["axis3"]["move_negative"]
             and not self.resetting
         )
         self.move_down_button.set_sensitive(
             Connection()["axis3"]["ready"]
-            or Connection()["axis3"]["move_negative"]
+            or Connection()["axis3"]["move_positive"]
             and not self.resetting
         )
         self.up_down_label.set_text(str(Connection()["axis3"]["current_position"]))
 
         self.move_left_button.set_sensitive(
             Connection()["axis2"]["ready"]
-            or Connection()["axis2"]["move_positive"]
+            or Connection()["axis2"]["move_negative"]
             and not self.resetting
         )
         self.move_right_button.set_sensitive(
             Connection()["axis2"]["ready"]
-            or Connection()["axis2"]["move_negative"]
+            or Connection()["axis2"]["move_positive"]
             and not self.resetting
         )
         self.left_right_label.set_text(str(Connection()["axis2"]["current_position"]))
 
         self.tilt_down_button.set_sensitive(
             Connection()["axis4"]["ready"]
-            or Connection()["axis4"]["move_positive"]
+            or Connection()["axis4"]["move_negative"]
             and not self.resetting
         )
         self.tilt_up_button.set_sensitive(
             Connection()["axis4"]["ready"]
-            or Connection()["axis4"]["move_negative"]
+            or Connection()["axis4"]["move_positive"]
             and not self.resetting
         )
         self.tilt_label.set_text(str(Connection()["axis4"]["current_position"]))
@@ -423,11 +422,11 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
         """
         self.on_opcua_button_pressed(button, event, "main", "reset_axes_button")
 
-        def start_resetting():
+        def start_reset():
             self.on_opcua_button_pressed, button, event, "main", "start_button"
             self.resetting = True
 
-        GLib.timeout_add(200, start_resetting)
+        GLib.timeout_add(1000, start_reset)
 
     def on_ok_clicked(self, button: Gtk.Button) -> None:
         """React to the "OK" button being clicked.
