@@ -338,7 +338,7 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
                             / self.get_toplevel().active_program.push_count_down
                         )
                     )
-                    / self.get_toplevel().active_program.pass_count_up
+                    / self.get_toplevel().active_program.pass_count_down
                 )
                 / 2
             ) / self.get_toplevel().active_program.repeat_count
@@ -356,7 +356,7 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
                             / self.get_toplevel().active_program.push_count_down
                         )
                     )
-                    / self.get_toplevel().active_program.pass_count_up
+                    / self.get_toplevel().active_program.pass_count_down
                 )
                 / 2
             ) / self.get_toplevel().active_program.repeat_count
