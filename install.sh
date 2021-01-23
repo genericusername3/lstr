@@ -5,4 +5,4 @@ mkdir -p build
 meson setup build
 ninja -C build/ install
 killall liegensteuerung
-liegensteuerung
+# liegensteuerung
