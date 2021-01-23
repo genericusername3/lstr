@@ -90,9 +90,12 @@ class CalibrationPage(Gtk.Box, Page, metaclass=PageClass):
                 return
 
             else:
-                self.on_opcua_button_pressed(None, None, "main", "reset_axes_button")
+                def reset_axes():
+                    self.on_opcua_button_pressed(None, None, "main", "reset_axes_button")
 
-                self.if_done_switch_to_next()
+                    self.if_done_switch_to_next()
+
+                GLib.timeout_add(500, reset_axes)
 
         except ConnectionRefusedError:
             self.get_toplevel().show_error(const.CONNECTION_ERROR_TEXT)
