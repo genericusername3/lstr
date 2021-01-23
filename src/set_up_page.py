@@ -271,15 +271,13 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
         if self.resetting:
             print(
                 "SET (start, reset):",
-                Connection()["main"]["start_button"],
                 Connection()["main"]["reset_axes_button"],
             )
             self.resetting = (
-                Connection()["main"]["start_button"] and Connection()["main"]["reset_axes_button"]
+                Connection()["main"]["reset_axes_button"]
             )
 
             if not self.resetting:
-                Connection()["main"]["start_button"] = False
                 Connection()["main"]["reset_axes_button"] = False
 
                 Connection()["axis0"]["start"] = False
@@ -423,7 +421,6 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
         self.on_opcua_button_pressed(button, event, "main", "reset_axes_button")
 
         def start_reset():
-            self.on_opcua_button_pressed, button, event, "main", "start_button"
             self.resetting = True
 
         GLib.timeout_add(1000, start_reset)

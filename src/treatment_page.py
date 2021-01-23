@@ -277,6 +277,7 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
 
     def visualisation_loop(self) -> None:
         """Repeatedly render an SVG visualisation for the motor values."""
+        # FIXME: This whole progress mess doesn't really work
         try:
             total_repeat_progress = (
                 Connection()["counters"]["repeat_total"]
