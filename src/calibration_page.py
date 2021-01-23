@@ -91,7 +91,7 @@ class CalibrationPage(Gtk.Box, Page, metaclass=PageClass):
 
             else:
                 def reset():
-                    # self.on_opcua_button_pressed(None, None, "main", "reset_axes_button")
+                    self.on_opcua_button_pressed(None, None, "main", "reset_axes_button")
 
                     def start_reset():
                         self.if_done_switch_to_next()
