@@ -379,7 +379,7 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
             + f"{(fg_color.green + 1) / 3}, "
             + f"{(fg_color.blue + 1) / 3})",
             up_down=max(-55, min(55, up_down)) * UP_DOWN_FACTOR,
-            rotation=-max(-27, min(27, tilt),
+            rotation=-max(-27, min(27, tilt)),
             left_pusher=25 - max(0, min(50, left_pusher)),
             right_pusher=25 - max(0, min(50, right_pusher)),
         )
