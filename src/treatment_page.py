@@ -100,6 +100,8 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
         if const.DEBUG:
             self.started = False
 
+        self.last_progress = 0
+
     def prepare_return(self) -> None:
         """Prepare the page to be shown when returning from another page."""
         try:
@@ -303,17 +305,14 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
                 * prog.repeat_count
             )
 
-            print(
-                Connection()["counters"]["passes_total"],
-                (
-                    (
-                        prog.push_count_up * prog.pass_count_up
-                        + prog.push_count_down * prog.pass_count_down
-                    )
-                    * prog.repeat_count
-                ),
-            )
             self.program_progress_bar.set_fraction(progress)
+
+            if self.last_progress > progress:
+                self.get_toplevel().switch_page("select_patient")
+                self.get_toplevel().clear_history()
+
+            else:
+                self.last_progress = progress
 
         except ConnectionRefusedError:
             self.get_toplevel().show_error(const.CONNECTION_ERROR_TEXT)
