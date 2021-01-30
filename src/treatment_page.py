@@ -296,7 +296,11 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
         try:
             prog = self.get_toplevel().active_program
             progress = Connection()["counters"]["passes_total"] / (
-                (prog.pass_count_up + prog.pass_count_down) * prog.repeat_count
+                (
+                    prog.push_count_up * prog.pass_count_up
+                    + prog.push_count_down * prog.pass_count_down
+                )
+                * prog.repeat_count
             )
 
             self.program_progress_bar.set_fraction(progress)
