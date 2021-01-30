@@ -297,8 +297,8 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
             prog = self.get_toplevel().active_program
             progress = Connection()["counters"]["passes_total"] / (
                 (
-                    prog.push_count_up * prog.pass_count_up
-                    + prog.push_count_down * prog.pass_count_down
+                    (prog.push_count_up + 1) * prog.pass_count_up
+                    + (prog.push_count_down + 1) * prog.pass_count_down
                 )
                 * prog.repeat_count
             )
