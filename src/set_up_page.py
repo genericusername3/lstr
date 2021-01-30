@@ -491,6 +491,7 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
         Args:
             button (Gtk.Button): The button that was clicked
         """
+        self.running = False
         self.get_toplevel().switch_page("select_program", self.end_value_left, self.end_value_right)
 
     def on_save_pos_clicked(self, button: Gtk.Button) -> None:
