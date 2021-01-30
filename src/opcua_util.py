@@ -127,6 +127,7 @@ node_ids: Dict[str, Dict[str, str]] = {
         "repeat_from": prefix + counters_prefix + "iWdhCounter_Durchlauf_Rueck",
         "repeat_to": prefix + counters_prefix + "iWdhCounter_Durchlauf_Vor",
         "repeat_total": prefix + counters_prefix + "iWdhCounter_Gesamt",
+        "passes_total": prefix + all_axes_prefix + "iProgrammSchritt",
     },
     **{
         f"axis{index}": {

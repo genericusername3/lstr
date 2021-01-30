@@ -13,9 +13,11 @@ from .opcua_util import Connection
 from . import const
 
 
-SVG_CODE: str = Gio.resources_lookup_data(
-    "/de/linusmathieu/Liegensteuerung/treatment_preview.svg", 0
-).get_data().decode()
+SVG_CODE: str = (
+    Gio.resources_lookup_data("/de/linusmathieu/Liegensteuerung/treatment_preview.svg", 0)
+    .get_data()
+    .decode()
+)
 
 LEFT_RIGHT_FACTOR: float = 50.0 / 18.0
 LEFT_RIGHT_SCALE_FACTOR: float = LEFT_RIGHT_FACTOR / (1000.0 / 3.0)
@@ -207,7 +209,14 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
         self.on_opcua_button_released(button, None, "main", "start_button")
         self.on_opcua_button_released(button, None, "main", "power_button")
         self.on_opcua_button_pressed(button, None, "main", "reset_button")
-        GLib.timeout_add(500, self.on_opcua_button_released, button, None, "main", "reset_button")
+        GLib.timeout_add(
+            500,
+            self.on_opcua_button_released,
+            button,
+            None,
+            "main",
+            "reset_button",
+        )
 
         self.get_toplevel()._show_page("select_patient", animation_direction=-1)
         self.get_toplevel().clear_history()
@@ -244,10 +253,13 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
                     self.emergency_off_button.get_style_context().remove_class(
                         "destructive-action",
                     )
-                    self.emergency_off_button.get_style_context().add_class("suggested-action",)
+                    self.emergency_off_button.get_style_context().add_class(
+                        "suggested-action",
+                    )
 
                 GLib.timeout_add(
-                    500, offer_reset,
+                    500,
+                    offer_reset,
                 )
 
                 if const.DEBUG:
@@ -269,7 +281,9 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
                 self.emergency_off_button.get_style_context().remove_class(
                     "suggested-action",
                 )
-                self.emergency_off_button.get_style_context().add_class("destructive-action",)
+                self.emergency_off_button.get_style_context().add_class(
+                    "destructive-action",
+                )
 
         except ConnectionRefusedError:
             print("NOTAUS failed")
@@ -278,98 +292,14 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
     def visualisation_loop(self) -> None:
         """Repeatedly render an SVG visualisation for the motor values."""
         # FIXME: This whole progress mess doesn't really work
+
         try:
-            total_repeat_progress = (
-                Connection()["counters"]["repeat_total"]
-                / self.get_toplevel().active_program.repeat_count
+            prog = self.get_toplevel().active_program
+            progress = Connection()["counters"]["passes_total"] / (
+                (prog.pass_count_up + prog.pass_count_down) * prog.repeat_count
             )
 
-            repeat_progress_to = (
-                (
-                    Connection()["counters"]["repeat_to"]
-                    / self.get_toplevel().active_program.pass_count_up
-                )
-                / 2
-            ) / self.get_toplevel().active_program.repeat_count
-
-            pass_progress_to = (
-                (
-                    (
-                        Connection()["counters"]["passes_to"]
-                        / self.get_toplevel().active_program.push_count_up
-                    )
-                    / self.get_toplevel().active_program.pass_count_up
-                )
-                / 2
-            ) / self.get_toplevel().active_program.repeat_count
-
-            push_progress_to = (
-                (
-                    (
-                        (
-                            min(
-                                Connection()["counters"]["pushes_lv"]
-                                / self.get_toplevel().active_program.pusher_left_push_count_up,
-                                Connection()["counters"]["pushes_rv"]
-                                / self.get_toplevel().active_program.pusher_right_push_count_up,
-                            )
-                            / self.get_toplevel().active_program.push_count_up
-                        )
-                    )
-                    / self.get_toplevel().active_program.pass_count_up
-                )
-                / 2
-            ) / self.get_toplevel().active_program.repeat_count
-
-            repeat_progress_from = (
-                0.5
-                + (
-                    Connection()["counters"]["repeat_from"]
-                    / self.get_toplevel().active_program.pass_count_down
-                )
-                / 2
-            ) / self.get_toplevel().active_program.repeat_count
-
-            pass_progress_from = (
-                (
-                    (
-                        0.5
-                        + (
-                            Connection()["counters"]["passes_from"]
-                            / self.get_toplevel().active_program.push_count_down
-                        )
-                    )
-                    / self.get_toplevel().active_program.pass_count_down
-                )
-                / 2
-            ) / self.get_toplevel().active_program.repeat_count
-
-            push_progress_from = (
-                (
-                    (
-                        (
-                            min(
-                                Connection()["counters"]["pushes_lr"]
-                                / self.get_toplevel().active_program.pusher_left_push_count_down,
-                                Connection()["counters"]["pushes_rr"]
-                                / self.get_toplevel().active_program.pusher_right_push_count_down,
-                            )
-                            / self.get_toplevel().active_program.push_count_down
-                        )
-                    )
-                    / self.get_toplevel().active_program.pass_count_down
-                )
-                / 2
-            ) / self.get_toplevel().active_program.repeat_count
-
-            total_progress = (
-                total_repeat_progress + max(repeat_progress_to, repeat_progress_from) + max(pass_progress_to, pass_progress_from) + max(push_progress_to, push_progress_from)
-            )
-
-            print(total_progress, total_repeat_progress, (repeat_progress_to, repeat_progress_from), (pass_progress_to, pass_progress_from), (push_progress_to, push_progress_from)
-            )
-
-            self.program_progress_bar.set_fraction(total_progress)
+            self.program_progress_bar.set_fraction(progress)
 
         except ConnectionRefusedError:
             self.get_toplevel().show_error(const.CONNECTION_ERROR_TEXT)
@@ -458,7 +388,8 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
         scale = min(available_width / width, available_height / height)
 
         cr.translate(
-            (available_width - width * scale) / 2.0, (available_height - height * scale) / 2.0,
+            (available_width - width * scale) / 2.0,
+            (available_height - height * scale) / 2.0,
         )
         cr.scale(scale, scale)
 
