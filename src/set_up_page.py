@@ -126,7 +126,9 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
             self.get_toplevel().show_error(const.CONNECTION_ERROR_TEXT)
 
         self.running = True
+        self.resetting = False
 
+        self.video_capture = cv2.VideoCapture(0)
         read_thread = Thread(target=self.read_camera_input_loop)
         read_thread.start()
 
@@ -188,68 +190,128 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
 
         # Tilt buttons
         self.tilt_down_button.connect(
-            "button-press-event", self.on_opcua_button_pressed, "axis4", "move_negative",
+            "button-press-event",
+            self.on_opcua_button_pressed,
+            "axis4",
+            "move_negative",
         )
         self.tilt_down_button.connect(
-            "button-release-event", self.on_opcua_button_released, "axis4", "move_negative",
+            "button-release-event",
+            self.on_opcua_button_released,
+            "axis4",
+            "move_negative",
         )
         self.tilt_up_button.connect(
-            "button-press-event", self.on_opcua_button_pressed, "axis4", "move_positive",
+            "button-press-event",
+            self.on_opcua_button_pressed,
+            "axis4",
+            "move_positive",
         )
         self.tilt_up_button.connect(
-            "button-release-event", self.on_opcua_button_released, "axis4", "move_positive",
+            "button-release-event",
+            self.on_opcua_button_released,
+            "axis4",
+            "move_positive",
         )
 
         # Pusher buttons
         self.left_move_in_button.connect(
-            "button-press-event", self.on_opcua_button_pressed, "axis0", "move_positive",
+            "button-press-event",
+            self.on_opcua_button_pressed,
+            "axis0",
+            "move_positive",
         )
         self.left_move_in_button.connect(
-            "button-release-event", self.on_opcua_button_released, "axis0", "move_positive",
+            "button-release-event",
+            self.on_opcua_button_released,
+            "axis0",
+            "move_positive",
         )
         self.left_move_out_button.connect(
-            "button-press-event", self.on_opcua_button_pressed, "axis0", "move_negative",
+            "button-press-event",
+            self.on_opcua_button_pressed,
+            "axis0",
+            "move_negative",
         )
         self.left_move_out_button.connect(
-            "button-release-event", self.on_opcua_button_released, "axis0", "move_negative",
+            "button-release-event",
+            self.on_opcua_button_released,
+            "axis0",
+            "move_negative",
         )
         self.right_move_in_button.connect(
-            "button-press-event", self.on_opcua_button_pressed, "axis1", "move_positive",
+            "button-press-event",
+            self.on_opcua_button_pressed,
+            "axis1",
+            "move_positive",
         )
         self.right_move_in_button.connect(
-            "button-release-event", self.on_opcua_button_released, "axis1", "move_positive",
+            "button-release-event",
+            self.on_opcua_button_released,
+            "axis1",
+            "move_positive",
         )
         self.right_move_out_button.connect(
-            "button-press-event", self.on_opcua_button_pressed, "axis1", "move_negative",
+            "button-press-event",
+            self.on_opcua_button_pressed,
+            "axis1",
+            "move_negative",
         )
         self.right_move_out_button.connect(
-            "button-release-event", self.on_opcua_button_released, "axis1", "move_negative",
+            "button-release-event",
+            self.on_opcua_button_released,
+            "axis1",
+            "move_negative",
         )
 
         # Left/RIght/Up/Down buttons
         self.move_left_button.connect(
-            "button-press-event", self.on_opcua_button_pressed, "axis2", "move_negative",
+            "button-press-event",
+            self.on_opcua_button_pressed,
+            "axis2",
+            "move_negative",
         )
         self.move_left_button.connect(
-            "button-release-event", self.on_opcua_button_released, "axis2", "move_negative",
+            "button-release-event",
+            self.on_opcua_button_released,
+            "axis2",
+            "move_negative",
         )
         self.move_right_button.connect(
-            "button-press-event", self.on_opcua_button_pressed, "axis2", "move_positive",
+            "button-press-event",
+            self.on_opcua_button_pressed,
+            "axis2",
+            "move_positive",
         )
         self.move_right_button.connect(
-            "button-release-event", self.on_opcua_button_released, "axis2", "move_positive",
+            "button-release-event",
+            self.on_opcua_button_released,
+            "axis2",
+            "move_positive",
         )
         self.move_up_button.connect(
-            "button-press-event", self.on_opcua_button_pressed, "axis3", "move_negative",
+            "button-press-event",
+            self.on_opcua_button_pressed,
+            "axis3",
+            "move_negative",
         )
         self.move_up_button.connect(
-            "button-release-event", self.on_opcua_button_released, "axis3", "move_negative",
+            "button-release-event",
+            self.on_opcua_button_released,
+            "axis3",
+            "move_negative",
         )
         self.move_down_button.connect(
-            "button-press-event", self.on_opcua_button_pressed, "axis3", "move_positive",
+            "button-press-event",
+            self.on_opcua_button_pressed,
+            "axis3",
+            "move_positive",
         )
         self.move_down_button.connect(
-            "button-release-event", self.on_opcua_button_released, "axis3", "move_positive",
+            "button-release-event",
+            self.on_opcua_button_released,
+            "axis3",
+            "move_positive",
         )
 
     def display_camera_input_loop(self) -> None:
@@ -273,9 +335,7 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
                 "SET (start, reset):",
                 Connection()["main"]["reset_axes_button"],
             )
-            self.resetting = (
-                Connection()["main"]["reset_axes_button"]
-            )
+            self.resetting = Connection()["main"]["reset_axes_button"]
 
             if not self.resetting:
                 Connection()["main"]["reset_axes_button"] = False
