@@ -378,10 +378,10 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
             else f"rgb({(fg_color.red + 1) / 3}, "
             + f"{(fg_color.green + 1) / 3}, "
             + f"{(fg_color.blue + 1) / 3})",
-            up_down=up_down * UP_DOWN_FACTOR,
-            rotation=tilt,
-            left_pusher=25 - left_pusher,
-            right_pusher=25 - right_pusher,
+            up_down=max(-55, min(55, up_down)) * UP_DOWN_FACTOR,
+            rotation=-max(-27, min(27, tilt),
+            left_pusher=25 - max(0, min(50, left_pusher)),
+            right_pusher=25 - max(0, min(50, right_pusher)),
         )
 
         self.left_right_label.set_text(str(left_right))
