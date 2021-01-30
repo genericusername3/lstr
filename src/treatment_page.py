@@ -62,6 +62,8 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
 
     emergency_off: bool = False
 
+    last_progress: float = 0
+
     def __init__(self, **kwargs):
         """Create a new TreatmentPage.
 
