@@ -118,15 +118,6 @@ node_ids: Dict[str, Dict[str, str]] = {
         "reset_axes_button": prefix + all_axes_prefix + "xStart_Grundstellung",
     },
     "counters": {
-        "pushes_lr": prefix + counters_prefix + "iPushCounter_L_R",
-        "pushes_lv": prefix + counters_prefix + "iPushCounter_L_V",
-        "pushes_rr": prefix + counters_prefix + "iPushCounter_R_R",
-        "pushes_rv": prefix + counters_prefix + "iPushCounter_R_V",
-        "passes_from": prefix + counters_prefix + "iVorschub_Zaehler_Rueck",
-        "passes_to": prefix + counters_prefix + "iVorschub_Zaehler_Vor",
-        "repeat_from": prefix + counters_prefix + "iWdhCounter_Durchlauf_Rueck",
-        "repeat_to": prefix + counters_prefix + "iWdhCounter_Durchlauf_Vor",
-        "repeat_total": prefix + counters_prefix + "iWdhCounter_Gesamt",
         "passes_total": prefix + all_axes_prefix + "iProgrammSchritt",
     },
     **{
