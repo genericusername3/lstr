@@ -34,22 +34,14 @@ class EditProgramPage(Gtk.Box, Page, metaclass=PageClass):
     angle_change_down_entry: Union[Gtk.Entry, Gtk.Template.Child] = Gtk.Template.Child()
     angle_change_up_entry: Union[Gtk.Entry, Gtk.Template.Child] = Gtk.Template.Child()
 
-    distance_correction_down_left_entry: Union[
-        Gtk.Entry, Gtk.Template.Child
-    ] = Gtk.Template.Child()
+    distance_correction_down_left_entry: Union[Gtk.Entry, Gtk.Template.Child] = Gtk.Template.Child()
     distance_correction_down_right_entry: Union[
         Gtk.Entry, Gtk.Template.Child
     ] = Gtk.Template.Child()
-    distance_correction_up_left_entry: Union[
-        Gtk.Entry, Gtk.Template.Child
-    ] = Gtk.Template.Child()
-    distance_correction_up_right_entry: Union[
-        Gtk.Entry, Gtk.Template.Child
-    ] = Gtk.Template.Child()
+    distance_correction_up_left_entry: Union[Gtk.Entry, Gtk.Template.Child] = Gtk.Template.Child()
+    distance_correction_up_right_entry: Union[Gtk.Entry, Gtk.Template.Child] = Gtk.Template.Child()
 
-    move_distance_down_entry: Union[
-        Gtk.Entry, Gtk.Template.Child
-    ] = Gtk.Template.Child()
+    move_distance_down_entry: Union[Gtk.Entry, Gtk.Template.Child] = Gtk.Template.Child()
     move_distance_up_entry: Union[Gtk.Entry, Gtk.Template.Child] = Gtk.Template.Child()
 
     pass_count_down_entry: Union[Gtk.Entry, Gtk.Template.Child] = Gtk.Template.Child()
@@ -60,70 +52,30 @@ class EditProgramPage(Gtk.Box, Page, metaclass=PageClass):
     push_count_down_entry: Union[Gtk.Entry, Gtk.Template.Child] = Gtk.Template.Child()
     push_count_up_entry: Union[Gtk.Entry, Gtk.Template.Child] = Gtk.Template.Child()
 
-    pusher_delay_down_left_entry: Union[
-        Gtk.Entry, Gtk.Template.Child
-    ] = Gtk.Template.Child()
-    pusher_delay_down_right_entry: Union[
-        Gtk.Entry, Gtk.Template.Child
-    ] = Gtk.Template.Child()
-    pusher_delay_up_left_entry: Union[
-        Gtk.Entry, Gtk.Template.Child
-    ] = Gtk.Template.Child()
-    pusher_delay_up_right_entry: Union[
-        Gtk.Entry, Gtk.Template.Child
-    ] = Gtk.Template.Child()
+    pusher_delay_down_left_entry: Union[Gtk.Entry, Gtk.Template.Child] = Gtk.Template.Child()
+    pusher_delay_down_right_entry: Union[Gtk.Entry, Gtk.Template.Child] = Gtk.Template.Child()
+    pusher_delay_up_left_entry: Union[Gtk.Entry, Gtk.Template.Child] = Gtk.Template.Child()
+    pusher_delay_up_right_entry: Union[Gtk.Entry, Gtk.Template.Child] = Gtk.Template.Child()
 
-    pusher_distance_down_left_entry: Union[
-        Gtk.Entry, Gtk.Template.Child
-    ] = Gtk.Template.Child()
-    pusher_distance_down_right_entry: Union[
-        Gtk.Entry, Gtk.Template.Child
-    ] = Gtk.Template.Child()
-    pusher_distance_up_left_entry: Union[
-        Gtk.Entry, Gtk.Template.Child
-    ] = Gtk.Template.Child()
-    pusher_distance_up_right_entry: Union[
-        Gtk.Entry, Gtk.Template.Child
-    ] = Gtk.Template.Child()
+    pusher_distance_down_left_entry: Union[Gtk.Entry, Gtk.Template.Child] = Gtk.Template.Child()
+    pusher_distance_down_right_entry: Union[Gtk.Entry, Gtk.Template.Child] = Gtk.Template.Child()
+    pusher_distance_up_left_entry: Union[Gtk.Entry, Gtk.Template.Child] = Gtk.Template.Child()
+    pusher_distance_up_right_entry: Union[Gtk.Entry, Gtk.Template.Child] = Gtk.Template.Child()
 
-    pusher_move_count_down_left_entry: Union[
-        Gtk.Entry, Gtk.Template.Child
-    ] = Gtk.Template.Child()
-    pusher_move_count_down_right_entry: Union[
-        Gtk.Entry, Gtk.Template.Child
-    ] = Gtk.Template.Child()
-    pusher_move_count_up_left_entry: Union[
-        Gtk.Entry, Gtk.Template.Child
-    ] = Gtk.Template.Child()
-    pusher_move_count_up_right_entry: Union[
-        Gtk.Entry, Gtk.Template.Child
-    ] = Gtk.Template.Child()
+    pusher_move_count_down_left_entry: Union[Gtk.Entry, Gtk.Template.Child] = Gtk.Template.Child()
+    pusher_move_count_down_right_entry: Union[Gtk.Entry, Gtk.Template.Child] = Gtk.Template.Child()
+    pusher_move_count_up_left_entry: Union[Gtk.Entry, Gtk.Template.Child] = Gtk.Template.Child()
+    pusher_move_count_up_right_entry: Union[Gtk.Entry, Gtk.Template.Child] = Gtk.Template.Child()
 
-    pusher_speed_down_left_entry: Union[
-        Gtk.Entry, Gtk.Template.Child
-    ] = Gtk.Template.Child()
-    pusher_speed_down_right_entry: Union[
-        Gtk.Entry, Gtk.Template.Child
-    ] = Gtk.Template.Child()
-    pusher_speed_up_left_entry: Union[
-        Gtk.Entry, Gtk.Template.Child
-    ] = Gtk.Template.Child()
-    pusher_speed_up_right_entry: Union[
-        Gtk.Entry, Gtk.Template.Child
-    ] = Gtk.Template.Child()
+    pusher_speed_down_left_entry: Union[Gtk.Entry, Gtk.Template.Child] = Gtk.Template.Child()
+    pusher_speed_down_right_entry: Union[Gtk.Entry, Gtk.Template.Child] = Gtk.Template.Child()
+    pusher_speed_up_left_entry: Union[Gtk.Entry, Gtk.Template.Child] = Gtk.Template.Child()
+    pusher_speed_up_right_entry: Union[Gtk.Entry, Gtk.Template.Child] = Gtk.Template.Child()
 
-    pusher_stay_down_left_entry: Union[
-        Gtk.Entry, Gtk.Template.Child
-    ] = Gtk.Template.Child()
-    pusher_stay_down_right_entry: Union[
-        Gtk.Entry, Gtk.Template.Child
-    ] = Gtk.Template.Child()
-    pusher_stay_up_left_entry: Union[
-        Gtk.Entry, Gtk.Template.Child
-    ] = Gtk.Template.Child()
-    pusher_stay_up_right_entry: Union[
-        Gtk.Entry, Gtk.Template.Child
-    ] = Gtk.Template.Child()
+    pusher_stay_down_left_entry: Union[Gtk.Entry, Gtk.Template.Child] = Gtk.Template.Child()
+    pusher_stay_down_right_entry: Union[Gtk.Entry, Gtk.Template.Child] = Gtk.Template.Child()
+    pusher_stay_up_left_entry: Union[Gtk.Entry, Gtk.Template.Child] = Gtk.Template.Child()
+    pusher_stay_up_right_entry: Union[Gtk.Entry, Gtk.Template.Child] = Gtk.Template.Child()
 
     save_box: Union[Gtk.Box, Gtk.Template.Child] = Gtk.Template.Child()
     delete_button: Union[Gtk.Button, Gtk.Template.Child] = Gtk.Template.Child()
@@ -185,78 +137,76 @@ class EditProgramPage(Gtk.Box, Page, metaclass=PageClass):
         if self.get_parent() is None:
             return
 
-        self.entries: Dict[
-            Gtk.Entry, Dict[str, Union[str, int, Optional[float], bool]]
-        ] = {
+        self.entries: Dict[Gtk.Entry, Dict[str, Union[str, int, Optional[float], bool]]] = {
             self.angle_change_down_entry: {
                 "column": "angle_change_down",
                 "places": 0,
                 "leading_zeroes": 0,
-                "minimum": None,
-                "maximum": None,
+                "minimum": -27,
+                "maximum": 27,
                 "calculated_column": False,
             },
             self.angle_change_up_entry: {
                 "column": "angle_change_up",
                 "places": 0,
                 "leading_zeroes": 0,
-                "minimum": None,
-                "maximum": None,
+                "minimum": -27,
+                "maximum": 27,
                 "calculated_column": False,
             },
             self.distance_correction_down_left_entry: {
                 "column": "pusher_left_distance_correction_down",
                 "places": 0,
                 "leading_zeroes": 0,
-                "minimum": None,
-                "maximum": None,
+                "minimum": 0,
+                "maximum": 10,
                 "calculated_column": False,
             },
             self.distance_correction_down_right_entry: {
                 "column": "pusher_right_distance_correction_down",
                 "places": 0,
                 "leading_zeroes": 0,
-                "minimum": None,
-                "maximum": None,
+                "minimum": 0,
+                "maximum": 10,
                 "calculated_column": False,
             },
             self.distance_correction_up_left_entry: {
                 "column": "pusher_left_distance_correction_up",
                 "places": 0,
                 "leading_zeroes": 0,
-                "minimum": None,
-                "maximum": None,
+                "minimum": 0,
+                "maximum": 10,
                 "calculated_column": False,
             },
             self.distance_correction_up_right_entry: {
                 "column": "pusher_right_distance_correction_up",
                 "places": 0,
                 "leading_zeroes": 0,
-                "minimum": None,
-                "maximum": None,
+                "minimum": 0,
+                "maximum": 10,
                 "calculated_column": False,
             },
             self.move_distance_down_entry: {
                 "column": "push_distance_down",
                 "places": 0,
                 "leading_zeroes": 0,
-                "minimum": None,
-                "maximum": None,
+                "minimum": -55,
+                "maximum": 55,
                 "calculated_column": False,
             },
             self.move_distance_up_entry: {
                 "column": "push_distance_up",
                 "places": 0,
                 "leading_zeroes": 0,
-                "minimum": None,
-                "maximum": None,
+                "minimum": -55,
+                "maximum": 55,
                 "calculated_column": False,
             },
             self.pass_count_down_entry: {
                 "column": "pass_count_down",
                 "places": 0,
                 "leading_zeroes": 0,
-                "minimum": None,
+                "minimum": 1,
                 "maximum": None,
                 "calculated_column": False,
             },
@@ -264,7 +214,7 @@ class EditProgramPage(Gtk.Box, Page, metaclass=PageClass):
                 "column": "repeat_count",
                 "places": 0,
                 "leading_zeroes": 0,
-                "minimum": None,
+                "minimum": 1,
                 "maximum": None,
                 "calculated_column": False,
             },
@@ -272,7 +222,7 @@ class EditProgramPage(Gtk.Box, Page, metaclass=PageClass):
                 "column": "pass_count_up",
                 "places": 0,
                 "leading_zeroes": 0,
-                "minimum": None,
+                "minimum": 1,
                 "maximum": None,
                 "calculated_column": False,
             },
@@ -280,7 +230,7 @@ class EditProgramPage(Gtk.Box, Page, metaclass=PageClass):
                 "column": "push_count_down",
                 "places": 0,
                 "leading_zeroes": 0,
-                "minimum": None,
+                "minimum": 1,
                 "maximum": None,
                 "calculated_column": False,
             },
@@ -288,7 +238,7 @@ class EditProgramPage(Gtk.Box, Page, metaclass=PageClass):
                 "column": "push_count_up",
                 "places": 0,
                 "leading_zeroes": 0,
-                "minimum": None,
+                "minimum": 1,
                 "maximum": None,
                 "calculated_column": False,
             },
@@ -296,7 +246,7 @@ class EditProgramPage(Gtk.Box, Page, metaclass=PageClass):
                 "column": "pusher_left_delay_down",
                 "places": 0,
                 "leading_zeroes": 0,
-                "minimum": None,
+                "minimum": 0,
                 "maximum": None,
                 "calculated_column": False,
             },
@@ -304,7 +254,7 @@ class EditProgramPage(Gtk.Box, Page, metaclass=PageClass):
                 "column": "pusher_right_delay_down",
                 "places": 0,
                 "leading_zeroes": 0,
-                "minimum": None,
+                "minimum": 0,
                 "maximum": None,
                 "calculated_column": False,
             },
@@ -312,7 +262,7 @@ class EditProgramPage(Gtk.Box, Page, metaclass=PageClass):
                 "column": "pusher_left_delay_up",
                 "places": 0,
                 "leading_zeroes": 0,
-                "minimum": None,
+                "minimum": 0,
                 "maximum": None,
                 "calculated_column": False,
             },
@@ -320,7 +270,7 @@ class EditProgramPage(Gtk.Box, Page, metaclass=PageClass):
                 "column": "pusher_right_delay_up",
                 "places": 0,
                 "leading_zeroes": 0,
-                "minimum": None,
+                "minimum": 0,
                 "maximum": None,
                 "calculated_column": False,
             },
@@ -328,39 +278,39 @@ class EditProgramPage(Gtk.Box, Page, metaclass=PageClass):
                 "column": "pusher_left_distance_down",
                 "places": 0,
                 "leading_zeroes": 0,
-                "minimum": None,
-                "maximum": None,
+                "minimum": 0,
+                "maximum": 50,
                 "calculated_column": False,
             },
             self.pusher_distance_down_right_entry: {
                 "column": "pusher_right_distance_down",
                 "places": 0,
                 "leading_zeroes": 0,
-                "minimum": None,
-                "maximum": None,
+                "minimum": 0,
+                "maximum": 50,
                 "calculated_column": False,
             },
             self.pusher_distance_up_left_entry: {
                 "column": "pusher_left_distance_up",
                 "places": 0,
                 "leading_zeroes": 0,
-                "minimum": None,
-                "maximum": None,
+                "minimum": 0,
+                "maximum": 50,
                 "calculated_column": False,
             },
             self.pusher_distance_up_right_entry: {
                 "column": "pusher_right_distance_up",
                 "places": 0,
                 "leading_zeroes": 0,
-                "minimum": None,
-                "maximum": None,
+                "minimum": 0,
+                "maximum": 50,
                 "calculated_column": False,
             },
             self.pusher_move_count_down_left_entry: {
                 "column": "pusher_left_push_count_down",
                 "places": 0,
                 "leading_zeroes": 0,
-                "minimum": None,
+                "minimum": 1,
                 "maximum": None,
                 "calculated_column": False,
             },
@@ -368,7 +318,7 @@ class EditProgramPage(Gtk.Box, Page, metaclass=PageClass):
                 "column": "pusher_right_push_count_down",
                 "places": 0,
                 "leading_zeroes": 0,
-                "minimum": None,
+                "minimum": 1,
                 "maximum": None,
                 "calculated_column": False,
             },
@@ -376,7 +326,7 @@ class EditProgramPage(Gtk.Box, Page, metaclass=PageClass):
                 "column": "pusher_left_push_count_up",
                 "places": 0,
                 "leading_zeroes": 0,
-                "minimum": None,
+                "minimum": 1,
                 "maximum": None,
                 "calculated_column": False,
             },
@@ -384,7 +334,7 @@ class EditProgramPage(Gtk.Box, Page, metaclass=PageClass):
                 "column": "pusher_right_push_count_up",
                 "places": 0,
                 "leading_zeroes": 0,
-                "minimum": None,
+                "minimum": 1,
                 "maximum": None,
                 "calculated_column": False,
             },
@@ -392,39 +342,39 @@ class EditProgramPage(Gtk.Box, Page, metaclass=PageClass):
                 "column": "pusher_left_speed_down",
                 "places": 0,
                 "leading_zeroes": 0,
-                "minimum": None,
-                "maximum": None,
+                "minimum": 1,
+                "maximum": 30,
                 "calculated_column": False,
             },
             self.pusher_speed_down_right_entry: {
                 "column": "pusher_right_speed_down",
                 "places": 0,
                 "leading_zeroes": 0,
-                "minimum": None,
-                "maximum": None,
+                "minimum": 1,
+                "maximum": 30,
                 "calculated_column": False,
             },
             self.pusher_speed_up_left_entry: {
                 "column": "pusher_left_speed_up",
                 "places": 0,
                 "leading_zeroes": 0,
-                "minimum": None,
-                "maximum": None,
+                "minimum": 1,
+                "maximum": 30,
                 "calculated_column": False,
             },
             self.pusher_speed_up_right_entry: {
                 "column": "pusher_right_speed_up",
                 "places": 0,
                 "leading_zeroes": 0,
-                "minimum": None,
-                "maximum": None,
+                "minimum": 1,
+                "maximum": 30,
                 "calculated_column": False,
             },
             self.pusher_stay_down_left_entry: {
                 "column": "pusher_left_stay_duration_down",
                 "places": 0,
                 "leading_zeroes": 0,
-                "minimum": None,
+                "minimum": 0,
                 "maximum": None,
                 "calculated_column": False,
             },
@@ -432,7 +382,7 @@ class EditProgramPage(Gtk.Box, Page, metaclass=PageClass):
                 "column": "pusher_right_stay_duration_down",
                 "places": 0,
                 "leading_zeroes": 0,
-                "minimum": None,
+                "minimum": 0,
                 "maximum": None,
                 "calculated_column": False,
             },
@@ -440,7 +390,7 @@ class EditProgramPage(Gtk.Box, Page, metaclass=PageClass):
                 "column": "pusher_left_stay_duration_up",
                 "places": 0,
                 "leading_zeroes": 0,
-                "minimum": None,
+                "minimum": 0,
                 "maximum": None,
                 "calculated_column": False,
             },
@@ -448,7 +398,7 @@ class EditProgramPage(Gtk.Box, Page, metaclass=PageClass):
                 "column": "pusher_right_stay_duration_up",
                 "places": 0,
                 "leading_zeroes": 0,
-                "minimum": None,
+                "minimum": 0,
                 "maximum": None,
                 "calculated_column": False,
             },
@@ -458,12 +408,8 @@ class EditProgramPage(Gtk.Box, Page, metaclass=PageClass):
             places: int = self.entries[entry]["places"]
             leading_zeroes: int = self.entries[entry]["leading_zeroes"]
 
-            minimum: Optional[Union[int, float, Decimal]] = (
-                self.entries[entry]["minimum"]
-            )
-            maximum: Optional[Union[int, float, Decimal]] = (
-                self.entries[entry]["maximum"]
-            )
+            minimum: Optional[Union[int, float, Decimal]] = self.entries[entry]["minimum"]
+            maximum: Optional[Union[int, float, Decimal]] = self.entries[entry]["maximum"]
 
             entry.connect("focus-in-event", self.on_focus_entry)
             entry.connect("button-press-event", self.on_entry_button_press)
@@ -478,7 +424,11 @@ class EditProgramPage(Gtk.Box, Page, metaclass=PageClass):
             )
 
             entry.connect(
-                "insert-text", self.on_num_entry_insert, places, minimum, maximum,
+                "insert-text",
+                self.on_num_entry_insert,
+                places,
+                minimum,
+                maximum,
             )
 
             entry.connect_after("changed", self.on_after_entry_changed)
@@ -559,7 +509,11 @@ class EditProgramPage(Gtk.Box, Page, metaclass=PageClass):
             self.on_unfocus_entry(entry, event)
 
             self.check_input(
-                entry, leading_zeroes, places, minimum, maximum,
+                entry,
+                leading_zeroes,
+                places,
+                minimum,
+                maximum,
             )
 
     def check_input(

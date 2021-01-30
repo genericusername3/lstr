@@ -284,7 +284,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="has_focus">True</property>
-                        <property name="max_length">5</property>
+                        <property name="max_length">3</property>
                         <property name="width_chars">5</property>
                         <property name="max_width_chars">5</property>
                         <property name="input_purpose">number</property>
@@ -324,7 +324,7 @@
                       <object class="GtkEntry" id="pusher_distance_up_right_entry">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="max_length">5</property>
+                        <property name="max_length">3</property>
                         <property name="width_chars">5</property>
                         <property name="max_width_chars">5</property>
                         <property name="input_purpose">number</property>
@@ -364,7 +364,7 @@
                       <object class="GtkEntry" id="pusher_distance_down_right_entry">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="max_length">5</property>
+                        <property name="max_length">3</property>
                         <property name="width_chars">5</property>
                         <property name="max_width_chars">5</property>
                         <property name="input_purpose">number</property>
@@ -404,7 +404,7 @@
                       <object class="GtkEntry" id="pusher_distance_down_left_entry">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="max_length">5</property>
+                        <property name="max_length">3</property>
                         <property name="width_chars">5</property>
                         <property name="max_width_chars">5</property>
                         <property name="input_purpose">number</property>
@@ -444,7 +444,7 @@
                       <object class="GtkEntry" id="pusher_speed_up_left_entry">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="max_length">5</property>
+                        <property name="max_length">3</property>
                         <property name="width_chars">5</property>
                         <property name="max_width_chars">5</property>
                         <property name="input_purpose">number</property>
@@ -484,7 +484,7 @@
                       <object class="GtkEntry" id="pusher_speed_down_left_entry">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="max_length">5</property>
+                        <property name="max_length">3</property>
                         <property name="width_chars">5</property>
                         <property name="max_width_chars">5</property>
                         <property name="input_purpose">number</property>
@@ -524,7 +524,7 @@
                       <object class="GtkEntry" id="pusher_speed_up_right_entry">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="max_length">5</property>
+                        <property name="max_length">3</property>
                         <property name="width_chars">5</property>
                         <property name="max_width_chars">5</property>
                         <property name="input_purpose">number</property>
@@ -564,7 +564,7 @@
                       <object class="GtkEntry" id="pusher_speed_down_right_entry">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="max_length">5</property>
+                        <property name="max_length">3</property>
                         <property name="width_chars">5</property>
                         <property name="max_width_chars">5</property>
                         <property name="input_purpose">number</property>
@@ -604,7 +604,7 @@
                       <object class="GtkEntry" id="pusher_delay_down_right_entry">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="max_length">5</property>
+                        <property name="max_length">3</property>
                         <property name="width_chars">5</property>
                         <property name="max_width_chars">5</property>
                         <property name="input_purpose">number</property>
@@ -644,7 +644,7 @@
                       <object class="GtkEntry" id="pusher_stay_down_right_entry">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="max_length">5</property>
+                        <property name="max_length">3</property>
                         <property name="width_chars">5</property>
                         <property name="max_width_chars">5</property>
                         <property name="input_purpose">number</property>
@@ -684,7 +684,7 @@
                       <object class="GtkEntry" id="pusher_move_count_down_right_entry">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="max_length">5</property>
+                        <property name="max_length">3</property>
                         <property name="width_chars">5</property>
                         <property name="max_width_chars">5</property>
                         <property name="input_purpose">number</property>
@@ -712,7 +712,7 @@
                       <object class="GtkEntry" id="distance_correction_down_right_entry">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="max_length">5</property>
+                        <property name="max_length">3</property>
                         <property name="width_chars">5</property>
                         <property name="max_width_chars">5</property>
                         <property name="input_purpose">number</property>
@@ -753,7 +753,7 @@
                       <object class="GtkEntry" id="angle_change_down_entry">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="max_length">5</property>
+                        <property name="max_length">3</property>
                         <property name="width_chars">5</property>
                         <property name="max_width_chars">5</property>
                         <property name="input_purpose">number</property>
@@ -795,7 +795,7 @@
                       <object class="GtkEntry" id="angle_change_up_entry">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="max_length">5</property>
+                        <property name="max_length">3</property>
                         <property name="width_chars">5</property>
                         <property name="max_width_chars">5</property>
                         <property name="input_purpose">number</property>
@@ -837,7 +837,7 @@
                       <object class="GtkEntry" id="move_distance_up_entry">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="max_length">5</property>
+                        <property name="max_length">3</property>
                         <property name="width_chars">5</property>
                         <property name="max_width_chars">5</property>
                         <property name="input_purpose">number</property>
@@ -879,7 +879,7 @@
                       <object class="GtkEntry" id="move_distance_down_entry">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="max_length">5</property>
+                        <property name="max_length">3</property>
                         <property name="width_chars">5</property>
                         <property name="max_width_chars">5</property>
                         <property name="input_purpose">number</property>
@@ -921,7 +921,7 @@
                       <object class="GtkEntry" id="push_count_up_entry">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="max_length">5</property>
+                        <property name="max_length">3</property>
                         <property name="width_chars">5</property>
                         <property name="max_width_chars">5</property>
                         <property name="input_purpose">number</property>
@@ -951,7 +951,7 @@
                       <object class="GtkEntry" id="push_count_down_entry">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="max_length">5</property>
+                        <property name="max_length">3</property>
                         <property name="width_chars">5</property>
                         <property name="max_width_chars">5</property>
                         <property name="input_purpose">number</property>
@@ -982,7 +982,7 @@
                       <object class="GtkEntry" id="pass_count_up_entry">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="max_length">5</property>
+                        <property name="max_length">3</property>
                         <property name="width_chars">5</property>
                         <property name="max_width_chars">5</property>
                         <property name="input_purpose">number</property>
@@ -1012,7 +1012,7 @@
                       <object class="GtkEntry" id="pass_count_total_entry">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="max_length">5</property>
+                        <property name="max_length">3</property>
                         <property name="width_chars">5</property>
                         <property name="max_width_chars">5</property>
                         <property name="input_purpose">number</property>
@@ -1043,7 +1043,7 @@
                       <object class="GtkEntry" id="pass_count_down_entry">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="max_length">5</property>
+                        <property name="max_length">3</property>
                         <property name="width_chars">5</property>
                         <property name="max_width_chars">5</property>
                         <property name="input_purpose">number</property>
@@ -1072,7 +1072,7 @@
                       <object class="GtkEntry" id="distance_correction_up_right_entry">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="max_length">5</property>
+                        <property name="max_length">3</property>
                         <property name="width_chars">5</property>
                         <property name="max_width_chars">5</property>
                         <property name="input_purpose">number</property>
@@ -1112,7 +1112,7 @@
                       <object class="GtkEntry" id="distance_correction_down_left_entry">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="max_length">5</property>
+                        <property name="max_length">3</property>
                         <property name="width_chars">5</property>
                         <property name="max_width_chars">5</property>
                         <property name="input_purpose">number</property>
@@ -1152,7 +1152,7 @@
                       <object class="GtkEntry" id="pusher_move_count_down_left_entry">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="max_length">5</property>
+                        <property name="max_length">3</property>
                         <property name="width_chars">5</property>
                         <property name="max_width_chars">5</property>
                         <property name="input_purpose">number</property>
@@ -1180,7 +1180,7 @@
                       <object class="GtkEntry" id="pusher_delay_down_left_entry">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="max_length">5</property>
+                        <property name="max_length">3</property>
                         <property name="width_chars">5</property>
                         <property name="max_width_chars">5</property>
                         <property name="input_purpose">number</property>
@@ -1220,7 +1220,7 @@
                       <object class="GtkEntry" id="pusher_stay_up_right_entry">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="max_length">5</property>
+                        <property name="max_length">3</property>
                         <property name="width_chars">5</property>
                         <property name="max_width_chars">5</property>
                         <property name="input_purpose">number</property>
@@ -1260,7 +1260,7 @@
                       <object class="GtkEntry" id="pusher_stay_down_left_entry">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="max_length">5</property>
+                        <property name="max_length">3</property>
                         <property name="width_chars">5</property>
                         <property name="max_width_chars">5</property>
                         <property name="input_purpose">number</property>
@@ -1300,7 +1300,7 @@
                       <object class="GtkEntry" id="pusher_delay_up_right_entry">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="max_length">5</property>
+                        <property name="max_length">3</property>
                         <property name="width_chars">5</property>
                         <property name="max_width_chars">5</property>
                         <property name="input_purpose">number</property>
@@ -1340,7 +1340,7 @@
                       <object class="GtkEntry" id="pusher_move_count_up_right_entry">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="max_length">5</property>
+                        <property name="max_length">3</property>
                         <property name="width_chars">5</property>
                         <property name="max_width_chars">5</property>
                         <property name="input_purpose">number</property>
@@ -1368,7 +1368,7 @@
                       <object class="GtkEntry" id="pusher_move_count_up_left_entry">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="max_length">5</property>
+                        <property name="max_length">3</property>
                         <property name="width_chars">5</property>
                         <property name="max_width_chars">5</property>
                         <property name="input_purpose">number</property>
@@ -1396,7 +1396,7 @@
                       <object class="GtkEntry" id="distance_correction_up_left_entry">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="max_length">5</property>
+                        <property name="max_length">3</property>
                         <property name="width_chars">5</property>
                         <property name="max_width_chars">5</property>
                         <property name="input_purpose">number</property>
@@ -1436,7 +1436,7 @@
                       <object class="GtkEntry" id="pusher_stay_up_left_entry">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="max_length">5</property>
+                        <property name="max_length">3</property>
                         <property name="width_chars">5</property>
                         <property name="max_width_chars">5</property>
                         <property name="input_purpose">number</property>
@@ -1476,7 +1476,7 @@
                       <object class="GtkEntry" id="pusher_delay_up_left_entry">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="max_length">5</property>
+                        <property name="max_length">3</property>
                         <property name="width_chars">5</property>
                         <property name="max_width_chars">5</property>
                         <property name="input_purpose">number</property>
