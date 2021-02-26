@@ -14,7 +14,9 @@ from . import const
 
 
 SVG_CODE: str = (
-    Gio.resources_lookup_data("/de/linusmathieu/Liegensteuerung/treatment_preview.svg", 0)
+    Gio.resources_lookup_data(
+        "/de/linusmathieu/Liegensteuerung/treatment_preview.svg", 0
+    )
     .get_data()
     .decode()
 )
@@ -49,8 +51,12 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
 
     emergency_off_button: Union[Gtk.Button, Gtk.Template.Child] = Gtk.Template.Child()
 
-    visualisation_drawing_area: Union[Gtk.DrawingArea, Gtk.Template.Child] = Gtk.Template.Child()
-    program_progress_bar: Union[Gtk.ProgressBar, Gtk.Template.Child] = Gtk.Template.Child()
+    visualisation_drawing_area: Union[
+        Gtk.DrawingArea, Gtk.Template.Child
+    ] = Gtk.Template.Child()
+    program_progress_bar: Union[
+        Gtk.ProgressBar, Gtk.Template.Child
+    ] = Gtk.Template.Child()
 
     left_right_label: Union[Gtk.Button, Gtk.Template.Child] = Gtk.Template.Child()
     up_down_label: Union[Gtk.Button, Gtk.Template.Child] = Gtk.Template.Child()
@@ -241,7 +247,9 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
 
         try:
             if self.emergency_off:
-                self.on_opcua_button_pressed(button, None, "main", "emergency_off_button")
+                self.on_opcua_button_pressed(
+                    button, None, "main", "emergency_off_button"
+                )
 
                 self.start_button.set_sensitive(False)
                 self.resume_button.set_sensitive(False)
@@ -293,6 +301,34 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
             print("NOTAUS failed")
             self.get_toplevel().show_error(const.CONNECTION_ERROR_TEXT)
 
+    def if_done_switch_to_next(self):
+        try:
+            if Connection()["main"]["reset_axes_button"]:
+                GLib.timeout_add(1000 / 10, self.if_done_switch_to_next)
+
+            else:
+                self.on_opcua_button_released(None, None, "main", "setup_mode")
+                self.on_opcua_button_released(None, None, "main", "reset_axes_button")
+                self.on_opcua_button_released(None, None, "main", "power_button")
+
+                Connection()["axis0"]["start"] = False
+                Connection()["axis1"]["start"] = False
+                Connection()["axis2"]["start"] = False
+                Connection()["axis3"]["start"] = False
+                Connection()["axis4"]["start"] = False
+
+                self.get_toplevel().switch_page("select_patient")
+                self.get_toplevel().clear_history()
+
+        except ConnectionRefusedError:
+            self.get_toplevel().show_error(const.CONNECTION_ERROR_TEXT)
+
+            print("Could not reset")
+
+            if const.DEBUG:
+                self.get_toplevel().switch_page("select_patient")
+                self.get_toplevel().clear_history()
+
     def visualisation_loop(self) -> None:
         """Repeatedly render an SVG visualisation for the motor values."""
         # FIXME: This whole progress mess doesn't really work
@@ -310,8 +346,19 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
             self.program_progress_bar.set_fraction(progress)
 
             if self.last_progress > progress:
-                self.get_toplevel().switch_page("select_patient")
-                self.get_toplevel().clear_history()
+
+                def reset():
+                    self.on_opcua_button_pressed(None, None, "main", "setup_mode")
+
+                    def start_reset():
+                        self.on_opcua_button_pressed(
+                            None, None, "main", "reset_axes_button"
+                        )
+                        self.if_done_switch_to_next()
+
+                    GLib.timeout_add(500, start_reset)
+
+                GLib.timeout_add(500, reset)
 
             else:
                 self.last_progress = progress
