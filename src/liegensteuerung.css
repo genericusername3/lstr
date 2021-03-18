@@ -1,14 +1,27 @@
-@define-color accent mix(#888, aqua, 0.7);
+@define-color accent #42d4d6;
 @define-color accent-contrast #222;
-@define-color accent-contrast-contrast #ddd;
+@define-color accent-contrast-contrast #fff;
 
 @define-color info @accent;
-@define-color error mix(indianred, @accent, 0.1);
-@define-color warning mix(lightsalmon, @accent, 0.1);
+@define-color info-contrast @accent-contrast;
+@define-color error #FF9482;
+@define-color error-contrast #222;
+@define-color warning #FFC86D;
+@define-color warning-contrast #222;
 
 @define-color good @accent;
-@define-color medium mix(lightsalmon, @accent, 0.1);
-@define-color bad mix(indianred, @accent, 0.1);
+@define-color good-contrast @accent-contrast;
+@define-color medium #FFC86D;
+@define-color medium-contrast #222;
+@define-color bad #FF4448;
+@define-color bad-contrast #fff;
+
+@define-color password-good @accent;
+@define-color password-medium #FFC86D;
+@define-color password-bad #FF9482;
+
+@define-color disabled #888;
+@define-color disabled-contrast #fff;
 
 * {
     box-shadow: none;
@@ -50,7 +63,12 @@ entry, button, textview, textview text {
     min-width: 28px;
     margin: 2px;
     border: solid 2px alpha(mix(@accent, @accent-contrast, 0.5), 0.4);
-    background: none;
+    background: @accent-contrast-contrast;
+    color: @accent-contrast;
+}
+
+entry *, button:not(.key):not(.destructive-action):not(.suggested-action):not(.radio):not(.header) *, {
+    color: @accent-contrast;
 }
 
 .clickable {
@@ -67,69 +85,91 @@ entry.smaller, button.smaller, textview.smaller, textview.smaller text {
 }
 
 button:disabled {
-    border: 2px solid #888;
-    background: #888;
-    color: #fff;
+    border: 2px solid @disabled;
+    background: @disabled;
+    color: @disabled-contrast;
     opacity: 0.4;
 }
 button:disabled * {
-    color: #fff;
+    color: @disabled-contrast;
 }
 
 button.suggested-action:disabled {
-    border: 2px solid mix(@good, #222, 0.2);
-    background: mix(@good, #222, 0.2);
-    color: #222;
+    border: 2px solid mix(@good, @disabled, 0.3);
+    background: mix(@good, @disabled, 0.3);
+    color: mix(@good-contrast, @disabled, 0.3);
     opacity: 0.4;
 }
 button.suggested-action:disabled * {
-    color: #222;
+    color: mix(@good-contrast, @disabled, 0.3);
 }
 
 button.suggested-action {
-    background: mix(@good, #222, 0.2);
-    border: 2px solid #888;
-    color: #222;
+    background: @good;
+    border: 2px solid mix(@good, @good-contrast, 0.2);
+    color: @good-contrast;
 }
 button.suggested-action * {
-    color: #222;
+    color: @good-contrast;
 }
 
 button.suggested-action:hover {
-    background: @good;
-    color: #222;
+    background: mix(@good, @good-contrast, 0.2);
+    color: @good-contrast;
+}
+button.suggested-action:hover * {
+    color: @good-contrast;
 }
 
 button.suggested-action:active {
-    background: mix(@good, #fff, 0.2);
-    color: #222;
+    background: mix(@good, @good-contrast, 0.4);
+    color: @good-contrast;
+}
+button.suggested-action:active * {
+    color: @good-contrast;
 }
 
 button.destructive-action {
     background: @bad;
-    border: 2px solid #888;
-    color: #fff;
+    border: 2px solid @bad;
+    color: @bad-contrast;
 }
 button.destructive-action * {
-    color: #fff;
+    color: @bad-contrast;
 }
 
 button.destructive-action:hover {
-    background: mix(@bad, #fff, 0.1);
-    color: #fff;
+    background: mix(@bad, @bad-contrast, 0.2);
+    color: @bad-contrast;
+}
+button.destructive-action:hover * {
+    color: @bad-contrast;
 }
 
 button.destructive-action:active {
-    background: mix(@bad, #fff, 0.2);
-    color: #fff;
+    background: mix(@bad, @bad-contrast, 0.4);
+    color: @bad-contrast;
+}
+button.destructive-action:active * {
+    color: @bad-contrast;
 }
 
-entry:hover, button:hover {
-    background: alpha(mix(@accent, @accent-contrast, 0.6), 0.1);
+entry:hover, button:not(.key):not(.destructive-action):not(.suggested-action):not(.radio):not(.header):hover {
+    background: mix(@accent-contrast-contrast, @accent-contrast, 0.05);
+    color: @accent-contrast;
 }
 
-entry:focus, button:active {
-    background: alpha(mix(@accent, @accent-contrast, 0.6), 0.2);
+entry:hover *, button:not(.key):not(.destructive-action):not(.suggested-action):not(.radio):not(.header):hover * {
+    color: @accent-contrast;
+}
+
+entry:focus, button:not(.key):not(.destructive-action):not(.suggested-action):not(.radio):not(.header):active {
+    background: mix(@accent-contrast-contrast, @accent-contrast, 0.1);
+    color: @accent-contrast;
+}
+
+entry:focus *, button:not(.key):not(.destructive-action):not(.suggested-action):not(.radio):not(.header):active * {
+    color: @accent-contrast;
 }
 
 entry:focus {
@@ -151,16 +191,25 @@ entry progress {
     transition: border-bottom-width 0.1s ease;
 }
 entry:focus progress {
-    border-bottom-width: 4px;
+    border-bottom-width: 5px;
+}
+entry.good {
+    background: alpha(@password-good, 0.1);
 }
 entry.good progress {
-    border-bottom-color: @good;
+    border-bottom-color: @password-good;
+}
+entry.medium {
+    background: alpha(@password-medium, 0.1);
 }
 entry.medium progress {
-    border-bottom-color: @medium;
+    border-bottom-color: @password-medium;
+}
+entry.bad {
+    background: alpha(@password-bad, 0.1);
 }
 entry.bad progress {
-    border-bottom-color: @bad;
+    border-bottom-color: @password-bad;
 }
 
 entry.error {
@@ -191,24 +240,24 @@ headerbar {
     outline: none;
 }
 
-headerbar button {
+headerbar button.header {
     background: none;
     color: @accent-contrast-contrast;
     border: solid 2px alpha(@accent, 0.3);
     margin: 4px 2px;
 }
 
-headerbar button:not(.image-button) {
+headerbar button.header:not(.image-button) {
     padding-left: 8px;
     padding-right: 8px;
 }
 
-headerbar button:hover {
+headerbar button.header:hover {
     background: alpha(@accent-contrast-contrast, 0.1);
     color: @accent-contrast-contrast;
 }
 
-headerbar button:active {
+headerbar button.header:active {
     background: alpha(@accent-contrast-contrast, 0.2);
     color: @accent-contrast-contrast;
 }
@@ -234,21 +283,30 @@ infobar box {
 
 infobar.warning {
     background: alpha(@warning, 0.8);
-    color: #222;
+    color: @warning-contrast;
+}
+infobar.warning * {
+    color: @warning-contrast;
 }
 
 infobar.info {
     background: @info;
-    color: #222;
+    color: @info-contrast;
+}
+infobar.info * {
+    color: @info-contrast;
 }
 
 infobar.error {
     background: alpha(@error, 0.9);
-    color: #222;
+    color: @error-contrast;
 }
+infobar.error * {
+    color: @error-contrast;
+}
+
 infobar * {
     background: none;
-    color: #222;
     border: none;
     outline: none;
 }
@@ -278,11 +336,11 @@ scale trough {
     outline: none;
 }
 scale fill {
-    background-color: rgba(128, 128, 128, 0.1);
+    background-color: alpha(@accent-contrast, 0.1);
     border-radius: 4px;
     margin-top: 12px;
     margin-bottom: 12px;
-    border: 1px solid #888;
+    border: 1px solid @accent-contrast-contrast;
     outline: none;
 }
 scale slider {
@@ -368,6 +426,7 @@ stackswitcher button {
     padding-bottom: 0px;
     border-color: @accent;
     color: @accent;
+    background-color: transparent;
 }
 
 stackswitcher button:not(:first-child):not(:last-child) {
