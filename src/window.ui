@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.38.1 -->
+<!-- Generated with glade 3.38.2 -->
 <interface>
   <requires lib="gtk+" version="3.20"/>
   <object class="GtkImage" id="back_icon">
@@ -135,9 +135,63 @@
           </packing>
         </child>
         <child>
+          <object class="GtkButton" id="programs_button">
+            <property name="height-request">48</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="focus-on-click">False</property>
+            <property name="receives-default">True</property>
+            <property name="border-width">2</property>
+            <child>
+              <object class="GtkBox">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <child>
+                  <object class="GtkImage" id="programs_icon">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="margin-left">12</property>
+                    <property name="margin-right">12</property>
+                    <property name="margin-start">12</property>
+                    <property name="margin-end">12</property>
+                    <property name="icon-name">system-run-symbolic</property>
+                    <property name="icon_size">3</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="programs_button_label">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="halign">start</property>
+                    <property name="margin-right">12</property>
+                    <property name="margin-end">12</property>
+                    <property name="margin-top">12</property>
+                    <property name="margin-bottom">12</property>
+                    <property name="label" translatable="yes">Programme...</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+        <child>
           <object class="GtkButton" id="recalibrate_button">
             <property name="height-request">48</property>
-            <property name="visible">False</property>
             <property name="can-focus">True</property>
             <property name="focus-on-click">False</property>
             <property name="receives-default">True</property>
@@ -186,7 +240,7 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">2</property>
+            <property name="position">3</property>
           </packing>
         </child>
         <child>
@@ -240,7 +294,7 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">3</property>
+            <property name="position">4</property>
           </packing>
         </child>
         <child>
@@ -294,7 +348,7 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">4</property>
+            <property name="position">5</property>
           </packing>
         </child>
       </object>
@@ -361,6 +415,9 @@
                     <property name="border-width">0</property>
                     <property name="image">more_icon</property>
                     <property name="popover">more_popover</property>
+                    <style>
+                      <class name="header"/>
+                    </style>
                   </object>
                   <packing>
                     <property name="pack-type">end</property>
@@ -383,6 +440,9 @@
                         <property name="border-width">0</property>
                         <property name="image">back_icon</property>
                         <property name="always-show-image">True</property>
+                        <style>
+                          <class name="header"/>
+                        </style>
                       </object>
                     </child>
                   </object>
@@ -408,6 +468,9 @@
                         <property name="border-width">0</property>
                         <property name="image">patient_icon</property>
                         <property name="always-show-image">True</property>
+                        <style>
+                          <class name="header"/>
+                        </style>
                       </object>
                     </child>
                   </object>

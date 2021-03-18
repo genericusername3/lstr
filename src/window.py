@@ -63,6 +63,8 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
         users_button (Union[Gtk.Template.Child, Gtk.Button]): A button that
             offers an administrator or doctor to view and edit users with lower
             access levels
+        programs_button (Union[Gtk.Template.Child, Gtk.Button]): A button that
+            offers an administrator or doctor to view and edit programs
         change_password_button (Union[Gtk.Template.Child, Gtk.Button]): A
             button that offers the user to change their own password
 
@@ -105,7 +107,9 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
     more_popover: Union[Gtk.Template.Child, Gtk.Popover] = Gtk.Template.Child()
 
     patient_button: Union[Gtk.Template.Child, Gtk.Button] = Gtk.Template.Child()
-    patient_button_revealer: Union[Gtk.Template.Child, Gtk.Revealer] = Gtk.Template.Child()
+    patient_button_revealer: Union[
+        Gtk.Template.Child, Gtk.Revealer
+    ] = Gtk.Template.Child()
 
     shutdown_button: Union[Gtk.Template.Child, Gtk.Button] = Gtk.Template.Child()
     recalibrate_button: Union[Gtk.Template.Child, Gtk.Button] = Gtk.Template.Child()
@@ -113,14 +117,21 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
     log_out_button_compact: Union[Gtk.Template.Child, Gtk.Button] = Gtk.Template.Child()
 
     users_button: Union[Gtk.Template.Child, Gtk.Button] = Gtk.Template.Child()
+    programs_button: Union[Gtk.Template.Child, Gtk.Button] = Gtk.Template.Child()
     change_password_button: Union[Gtk.Template.Child, Gtk.Button] = Gtk.Template.Child()
 
     title_label: Union[Gtk.Template.Child, Gtk.Label] = Gtk.Template.Child()
 
     main_area_overlay: Union[Gtk.Template.Child, Gtk.Overlay] = Gtk.Template.Child()
-    shutdown_button_compact: Union[Gtk.Template.Child, Gtk.Button] = Gtk.Template.Child()
-    shutdown_compact_revealer: Union[Gtk.Template.Child, Gtk.Revealer] = Gtk.Template.Child()
-    log_out_compact_revealer: Union[Gtk.Template.Child, Gtk.Revealer] = Gtk.Template.Child()
+    shutdown_button_compact: Union[
+        Gtk.Template.Child, Gtk.Button
+    ] = Gtk.Template.Child()
+    shutdown_compact_revealer: Union[
+        Gtk.Template.Child, Gtk.Revealer
+    ] = Gtk.Template.Child()
+    log_out_compact_revealer: Union[
+        Gtk.Template.Child, Gtk.Revealer
+    ] = Gtk.Template.Child()
 
     keyboard_revealer: Union[Gtk.Template.Child, Gtk.Revealer] = Gtk.Template.Child()
 
@@ -163,6 +174,7 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
 
         self.change_password_button.connect("clicked", self.on_change_password_clicked)
         self.users_button.connect("clicked", self.on_users_clicked)
+        self.programs_button.connect("clicked", self.on_programs_clicked)
 
         self.recalibrate_button.connect("clicked", self.on_recalibrate_clicked)
 
@@ -178,20 +190,33 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
             self._show_page(
                 "register",
                 animation_direction=-1,
-                kwargs={"new_user": True, "access_level": "admin", "next_page": "calibration"},
+                kwargs={
+                    "new_user": True,
+                    "access_level": "admin",
+                    "next_page": "calibration",
+                },
             )
         elif not auth_util.does_doctor_exist():
             self._show_page(
                 "register",
                 animation_direction=-1,
-                kwargs={"new_user": True, "access_level": "doctor", "next_page": "calibration"},
+                kwargs={
+                    "new_user": True,
+                    "access_level": "doctor",
+                    "next_page": "calibration",
+                },
             )
         else:
             self._show_page("login", animation_direction=-1)
 
         self.clear_history()
 
-    def switch_page(self, page_name: str, *args, **kwargs,) -> None:
+    def switch_page(
+        self,
+        page_name: str,
+        *args,
+        **kwargs,
+    ) -> None:
         """Switch the active page.
 
         Args:
@@ -211,7 +236,10 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
         self.page_history.pop()
 
         self._show_page(
-            self.page_history[-1], animation_direction=-1, prepare=False, prepare_return=True,
+            self.page_history[-1],
+            animation_direction=-1,
+            prepare=False,
+            prepare_return=True,
         )
 
     def _show_page(
@@ -267,7 +295,10 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
             if len(self.page_history) and self.page_history[-1] == page_name:
                 self.page_history.pop()
 
-            return self._show_page(page_name=relay_page, animation_direction=animation_direction,)
+            return self._show_page(
+                page_name=relay_page,
+                animation_direction=animation_direction,
+            )
 
         elif isinstance(relay_page, tuple):
             if len(self.page_history) and self.page_history[-1] == page_name:
@@ -291,13 +322,15 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
         self.log_out_compact_revealer.set_reveal_child(self.active_user is not None)
 
         is_admin: bool = (
-            self.active_user is not None and auth_util.get_access_level(self.active_user) == "admin"
+            self.active_user is not None
+            and auth_util.get_access_level(self.active_user) == "admin"
         )
         is_doctor: bool = (
             self.active_user is not None
             and auth_util.get_access_level(self.active_user) == "doctor"
         )
         self.users_button.set_visible(is_admin or is_doctor)
+        self.programs_button.set_visible(is_admin or is_doctor)
 
         self.patient_button_revealer.set_reveal_child(
             self.active_patient is not None and not next_page.is_patient_info_page
@@ -366,6 +399,19 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
 
         self.switch_page("users")
 
+    def on_programs_clicked(self, button: Gtk.Button) -> None:
+        """React to the "Users..." button being clicked.
+
+        Args:
+            button (Gtk.Button): The clicked button
+        """
+        self.more_popover.popdown()
+
+        self.get_toplevel().switch_page(
+            "select_program",
+            select_program=False,
+        )
+
     def on_recalibrate_clicked(self, button: Gtk.Button) -> None:
         """React to the "Recalibrate" button being clicked.
 
@@ -374,7 +420,9 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
         """
         self.more_popover.popdown()
 
-        next_page = "pain_evaluation" if self.active_patient is not None else "select_patient"
+        next_page = (
+            "pain_evaluation" if self.active_patient is not None else "select_patient"
+        )
 
         self.switch_page("calibration", next_page=next_page)
 

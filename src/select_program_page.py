@@ -12,9 +12,7 @@ from .program_util import Program
 from .program_row import ProgramRow, ProgramHeader
 
 
-@Gtk.Template(
-    resource_path="/de/linusmathieu/Liegensteuerung/select_program_page.ui"
-)
+@Gtk.Template(resource_path="/de/linusmathieu/Liegensteuerung/select_program_page.ui")
 class SelectProgramPage(Gtk.Box, Page, metaclass=PageClass):
     """A page that prompts the user to select a program.
 
@@ -31,20 +29,14 @@ class SelectProgramPage(Gtk.Box, Page, metaclass=PageClass):
     header_visible: bool = True
     title: str = "Programm auswählen"
 
-    program_list_box: Union[
-        Gtk.ListBox, Gtk.Template.Child
-    ] = Gtk.Template.Child()
+    program_list_box: Union[Gtk.ListBox, Gtk.Template.Child] = Gtk.Template.Child()
 
     header_box: Union[Gtk.Box, Gtk.Template.Child] = Gtk.Template.Child()
 
     add_button: Union[Gtk.Button, Gtk.Template.Child] = Gtk.Template.Child()
 
-    end_pos_left_label: Union[
-        Gtk.Label, Gtk.Template.Child
-    ] = Gtk.Template.Child()
-    end_pos_right_label: Union[
-        Gtk.Label, Gtk.Template.Child
-    ] = Gtk.Template.Child()
+    end_pos_left_label: Union[Gtk.Label, Gtk.Template.Child] = Gtk.Template.Child()
+    end_pos_right_label: Union[Gtk.Label, Gtk.Template.Child] = Gtk.Template.Child()
 
     def __init__(self, **kwargs):
         """Create a new SelectProgramPage.
@@ -54,15 +46,32 @@ class SelectProgramPage(Gtk.Box, Page, metaclass=PageClass):
         """
         super().__init__(**kwargs)
 
-    def prepare(self, max_left: int, max_right: int) -> None:
+    def prepare(
+        self,
+        max_left: Optional[int] = None,
+        max_right: Optional[int] = None,
+        select_program: bool = True,
+    ) -> None:
         """Prepare the page to be shown.
 
         Args:
             max_left (int): The maximum pusher_left_distance_up to allow
             max_right (int): The maximum pusher_right_distance_up to allow
         """
-        self.end_pos_left_label.set_text(f"{max_left} mm")
-        self.end_pos_right_label.set_text(f"{max_right} mm")
+        self.select_program: bool = select_program
+
+        if self.select_program:
+            self.title = "Programm auswählen"
+            assert max_left is not None and max_right is not None
+
+            self.end_pos_left_label.set_text(f"{max_left} mm")
+            self.end_pos_right_label.set_text(f"{max_right} mm")
+
+        else:
+            self.title = "Programm bearbeiten"
+
+            self.end_pos_left_label.set_text("")
+            self.end_pos_right_label.set_text("")
 
         self.max_left, self.max_right = max_left, max_right
 
@@ -70,8 +79,7 @@ class SelectProgramPage(Gtk.Box, Page, metaclass=PageClass):
 
         is_admin: bool = (
             self.get_toplevel().active_user is not None
-            and auth_util.get_access_level(self.get_toplevel().active_user)
-            == "admin"
+            and auth_util.get_access_level(self.get_toplevel().active_user) == "admin"
         )
 
         self.add_button.set_visible(is_admin)
@@ -85,12 +93,19 @@ class SelectProgramPage(Gtk.Box, Page, metaclass=PageClass):
 
     def update_programs(self) -> None:
         """Re-query all programs."""
-        self.program_list_box.bind_model(
-            Program.iter_to_model(
-                Program.get_fitting(self.max_left, self.max_right)
-            ),
-            ProgramRow,
-        )
+        if self.select_program:
+            self.program_list_box.bind_model(
+                Program.iter_to_model(
+                    Program.get_fitting(self.max_left, self.max_right)
+                ),
+                ProgramRow,
+            )
+        else:
+            self.program_list_box.bind_model(
+                Program.iter_to_model(Program.get_all()),
+                ProgramRow,
+            )
+
         self.program_list_box.show_all()
 
     def do_parent_set(self, old_parent: Optional[Gtk.Widget]) -> None:
@@ -105,9 +120,7 @@ class SelectProgramPage(Gtk.Box, Page, metaclass=PageClass):
         if self.get_parent() is None:
             return
 
-        self.header_box.pack_start(
-            ProgramHeader(), fill=True, expand=True, padding=0
-        )
+        self.header_box.pack_start(ProgramHeader(), fill=True, expand=True, padding=0)
         self.header_box.show_all()
 
         self.program_list_box.connect("row-selected", self.on_program_selected)
@@ -124,9 +137,16 @@ class SelectProgramPage(Gtk.Box, Page, metaclass=PageClass):
             row (Gtk.ListBoxRow): The Gtk.ListBoxRow that was selected
         """
         if row is not None:
-            self.get_toplevel().active_program = row.get_child().program
+            if self.select_program:
+                self.get_toplevel().active_program = row.get_child().program
 
-            self.get_toplevel().switch_page("treatment")
+                self.get_toplevel().switch_page("treatment")
+
+            else:
+                self.get_toplevel().switch_page(
+                    "edit_program", program=row.get_child().program
+                )
+
         list_box.unselect_all()
 
     def on_add_clicked(self, button: Gtk.Button) -> None:
