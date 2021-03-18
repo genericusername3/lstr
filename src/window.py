@@ -330,7 +330,7 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
             and auth_util.get_access_level(self.active_user) == "doctor"
         )
         self.users_button.set_visible(is_admin or is_doctor)
-        self.programs_button.set_visible(is_admin or is_doctor)
+        self.programs_button.set_visible(is_admin and self.active_program is None)
 
         self.patient_button_revealer.set_reveal_child(
             self.active_patient is not None and not next_page.is_patient_info_page
