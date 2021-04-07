@@ -5,6 +5,7 @@
 *.pyc
 *.plugin
 cscope.out
+\#*.ui\#
 *.ui~
 *~
 
