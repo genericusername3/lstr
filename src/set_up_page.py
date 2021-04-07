@@ -323,7 +323,7 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
 
         if self.running:
             GLib.timeout_add(
-                1000 / 30, self.display_camera_input_loop, GLib.PRIORITY_HIGH
+                1000 / 30, self.display_camera_input_loop, priority=GLib.PRIORITY_HIGH
             )
 
     def update_values_loop(self) -> None:
