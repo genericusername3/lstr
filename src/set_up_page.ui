@@ -189,7 +189,7 @@
                       <object class="GtkImage">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="icon-name">dialog-information-symbolic</property>
+                        <property name="icon-name">dialog-information</property>
                         <property name="icon_size">3</property>
                       </object>
                       <packing>
@@ -203,7 +203,7 @@
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
                         <property name="xpad">4</property>
-                        <property name="label" translatable="yes">Querachse nur in Grundstellung verfügbar</property>
+                        <property name="label" translatable="yes">Querachse (links/rechts) nur in Grundstellung verfügbar</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
