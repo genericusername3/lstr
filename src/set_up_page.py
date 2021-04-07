@@ -370,7 +370,7 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
             or Connection()["axis2"]["move_negative"]
             and not self.resetting
             and all(
-                Connection[f"axis{axis}"]["current_position"] == 0 for axis in {3, 4}
+                Connection()[f"axis{axis}"]["current_position"] == 0 for axis in {3, 4}
             )
         )
         self.move_right_button.set_sensitive(
@@ -378,7 +378,7 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
             or Connection()["axis2"]["move_positive"]
             and not self.resetting
             and all(
-                Connection[f"axis{axis}"]["current_position"] == 0 for axis in {3, 4}
+                Connection()[f"axis{axis}"]["current_position"] == 0 for axis in {3, 4}
             )
         )
         self.left_right_label.set_text(str(Connection()["axis2"]["current_position"]))
@@ -428,7 +428,7 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
 
         self.left_right_locked_info_revealer.set_reveal_child(
             not all(
-                Connection[f"axis{axis}"]["current_position"] == 0 for axis in {3, 4}
+                Connection()[f"axis{axis}"]["current_position"] == 0 for axis in {3, 4}
             )
         )
 
