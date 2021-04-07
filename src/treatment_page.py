@@ -372,7 +372,9 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
         self.visualisation_drawing_area.queue_draw()
 
         if self.visualising:
-            GLib.timeout_add(1000 / 60, self.visualisation_loop)
+            GLib.timeout_add(
+                1000 / 30, self.visualisation_loop, priority=GLib.PRIORITY_HIGH
+            )
         else:
             print("visualising is False")
 
