@@ -40,7 +40,9 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
     header_visible: bool = True
     title: str = "Einrichten"
 
-    camera_drawing_area: Union[Gtk.Template.Child, Gtk.DrawingArea] = Gtk.Template.Child()
+    camera_drawing_area: Union[
+        Gtk.Template.Child, Gtk.DrawingArea
+    ] = Gtk.Template.Child()
 
     ok_button: Union[Gtk.Template.Child, Gtk.Button] = Gtk.Template.Child()
 
@@ -320,7 +322,9 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
             self.camera_drawing_area.queue_draw()
 
         if self.running:
-            GLib.timeout_add(1000 / 60, self.display_camera_input_loop)
+            GLib.timeout_add(
+                1000 / 30, self.display_camera_input_loop, GLib.PRIORITY_HIGH
+            )
 
     def update_values_loop(self) -> None:
         """Read OPC UA values to display current motor status."""
@@ -406,13 +410,17 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
         )
         self.right_pusher_label.set_text(str(Connection()["axis1"]["current_position"]))
 
-        all_ready: bool = all([Connection()[f"axis{index}"]["ready"] for index in range(len(axes))])
+        all_ready: bool = all(
+            [Connection()[f"axis{index}"]["ready"] for index in range(len(axes))]
+        )
 
         self.reset_axes_button.set_sensitive(all_ready)
         self.save_position_button.set_sensitive(all_ready)
 
         self.ok_button.set_sensitive(
-            all_ready and self.end_value_left is not None and self.end_value_right is not None
+            all_ready
+            and self.end_value_left is not None
+            and self.end_value_right is not None
         )
 
         self.end_pos_left_label.set_text(
@@ -429,7 +437,9 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
         """When the window is destroyed, stop all threads and quit."""
         self.running = False
 
-    def on_draw_camera_drawing_area(self, widget: Gtk.Widget, cr: cairo.Context) -> None:
+    def on_draw_camera_drawing_area(
+        self, widget: Gtk.Widget, cr: cairo.Context
+    ) -> None:
         """React to the camera output being queried to be drawn. Draw the camera output.
 
         Args:
@@ -492,7 +502,9 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
             button (Gtk.Button): The button that was clicked
         """
         self.running = False
-        self.get_toplevel().switch_page("select_program", self.end_value_left, self.end_value_right)
+        self.get_toplevel().switch_page(
+            "select_program", self.end_value_left, self.end_value_right
+        )
 
     def on_save_pos_clicked(self, button: Gtk.Button) -> None:
         """React to the "Save position" button being clicked.
