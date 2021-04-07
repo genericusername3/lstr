@@ -366,17 +366,21 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
         self.up_down_label.set_text(str(Connection()["axis3"]["current_position"]))
 
         self.move_left_button.set_sensitive(
-            Connection()["axis2"]["ready"]
-            or Connection()["axis2"]["move_negative"]
-            and not self.resetting
+            (
+                Connection()["axis2"]["ready"]
+                or Connection()["axis2"]["move_negative"]
+            )
+            and (not self.resetting)
             and all(
                 Connection()[f"axis{axis}"]["current_position"] == 0 for axis in {3, 4}
             )
         )
         self.move_right_button.set_sensitive(
-            Connection()["axis2"]["ready"]
-            or Connection()["axis2"]["move_positive"]
-            and not self.resetting
+            (
+                Connection()["axis2"]["ready"]
+                or Connection()["axis2"]["move_positive"]
+            )
+            and (not self.resetting)
             and all(
                 Connection()[f"axis{axis}"]["current_position"] == 0 for axis in {3, 4}
             )
