@@ -47,6 +47,9 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
     ok_button: Union[Gtk.Template.Child, Gtk.Button] = Gtk.Template.Child()
 
     reset_axes_button: Union[Gtk.Button, Gtk.Template.Child] = Gtk.Template.Child()
+    left_right_locked_info_revealer: Union[
+        Gtk.Revealer, Gtk.Template.Child
+    ] = Gtk.Template.Child()
 
     # Tilt buttons
     tilt_down_button: Union[Gtk.Button, Gtk.Template.Child] = Gtk.Template.Child()
@@ -366,11 +369,17 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
             Connection()["axis2"]["ready"]
             or Connection()["axis2"]["move_negative"]
             and not self.resetting
+            and all(
+                Connection[f"axis{axis}"]["current_position"] == 0 for axis in {3, 4}
+            )
         )
         self.move_right_button.set_sensitive(
             Connection()["axis2"]["ready"]
             or Connection()["axis2"]["move_positive"]
             and not self.resetting
+            and all(
+                Connection[f"axis{axis}"]["current_position"] == 0 for axis in {3, 4}
+            )
         )
         self.left_right_label.set_text(str(Connection()["axis2"]["current_position"]))
 
@@ -416,6 +425,12 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
 
         self.reset_axes_button.set_sensitive(all_ready)
         self.save_position_button.set_sensitive(all_ready)
+
+        self.left_right_locked_info_revealer.set_reveal_child(
+            not all(
+                Connection[f"axis{axis}"]["current_position"] == 0 for axis in {3, 4}
+            )
+        )
 
         self.ok_button.set_sensitive(
             all_ready
