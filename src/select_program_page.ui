@@ -157,6 +157,7 @@
               <object class="GtkListBox" id="program_list_box">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
+                <property name="selection-mode">none</property>
                 <child type="placeholder">
                   <object class="GtkLabel">
                     <property name="height-request">40</property>

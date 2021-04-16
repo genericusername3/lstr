@@ -123,11 +123,11 @@ class SelectProgramPage(Gtk.Box, Page, metaclass=PageClass):
         self.header_box.pack_start(ProgramHeader(), fill=True, expand=True, padding=0)
         self.header_box.show_all()
 
-        self.program_list_box.connect("row-selected", self.on_program_selected)
+        self.program_list_box.connect("row-activated", self.on_program_activated)
 
         self.add_button.connect("clicked", self.on_add_clicked)
 
-    def on_program_selected(self, list_box: Gtk.ListBox, row: Gtk.ListBoxRow):
+    def on_program_activated(self, list_box: Gtk.ListBox, row: Gtk.ListBoxRow):
         """React to the user selecting a program.
 
         This will switch to the page 'pain_evaluation'.
@@ -146,8 +146,6 @@ class SelectProgramPage(Gtk.Box, Page, metaclass=PageClass):
                 self.get_toplevel().switch_page(
                     "edit_program", program=row.get_child().program
                 )
-
-        list_box.unselect_all()
 
     def on_add_clicked(self, button: Gtk.Button) -> None:
         """React to the "add program" button being clicked.
