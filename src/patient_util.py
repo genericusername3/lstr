@@ -490,17 +490,14 @@ class Patient(GObject.Object):
         return timestamp
 
     def add_treatment_entry(
-        self, timestamp: int, username: str, program: program_util.Program
-    ) -> int:
+        self, program: program_util.Program
+    ):
         """Add a program entry to the database.
 
         A program entry with the patient id, the program number and
             time.time() will be added to the table treatment_entries
 
         Args:
-            timestamp (int): The UNIX timestamp of an existing treatment entry
-                (with pain values)
-            username (str): The treating user's username
             program (program_util.Program): The program that was completed
 
         Returns:
@@ -511,14 +508,14 @@ class Patient(GObject.Object):
         cursor.execute(
             """
             UPDATE treatment_entries
-            SET program_id = ?, timestamp = ?
-            WHERE patient_id=? AND timestamp=? AND username=?
+            SET program_id = ?
+            WHERE patient_id=?
+            ORDER BY timestamp DESC
+            LIMIT 1
             """,
-            (program.id, new_timestamp, self.patient_id, timestamp, username),
+            (program.id, self.patient_id),
         )
         connection.commit()
-
-        return new_timestamp
 
     def modify_pain_entry(
         self, timestamp: int, username: str, pain_intensity: int, pain_location: str,

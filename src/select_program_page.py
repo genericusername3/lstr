@@ -142,6 +142,8 @@ class SelectProgramPage(Gtk.Box, Page, metaclass=PageClass):
 
                 self.get_toplevel().switch_page("treatment")
 
+                self.get_toplevel().active_patient.add_treatment_entry(self.get_toplevel().active_program)
+
             else:
                 self.get_toplevel().switch_page(
                     "edit_program", program=row.get_child().program
