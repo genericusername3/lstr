@@ -216,6 +216,8 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
         self.pause_button.hide()
         self.cancel_revealer.set_reveal_child(False)
 
+        self.visualising = False
+
         self.on_opcua_button_released(button, None, "main", "start_button")
         self.on_opcua_button_released(button, None, "main", "power_button")
         self.on_opcua_button_pressed(button, None, "main", "reset_button")
@@ -302,6 +304,9 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
             self.get_toplevel().show_error(const.CONNECTION_ERROR_TEXT)
 
     def if_done_switch_to_next(self):
+        if not self.visualising:
+            return
+            
         try:
             if Connection()["main"]["reset_axes_button"]:
                 GLib.timeout_add(1000 / 10, self.if_done_switch_to_next)
@@ -327,7 +332,9 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
 
             print("Could not reset")
 
-            if const.DEBUG:
+            if const.DEBUG: 
+                self.visualising = False
+
                 self.get_toplevel()._show_page("select_patient", animation_direction=-1)
                 self.get_toplevel().clear_history()
 
