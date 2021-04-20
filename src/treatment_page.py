@@ -307,6 +307,8 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
                 GLib.timeout_add(1000 / 10, self.if_done_switch_to_next)
 
             else:
+                self.visualising = False
+
                 self.on_opcua_button_released(None, None, "main", "setup_mode")
                 self.on_opcua_button_released(None, None, "main", "reset_axes_button")
                 self.on_opcua_button_released(None, None, "main", "power_button")
@@ -385,6 +387,9 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
             widget (Gtk.Widget): The widget to re-draw
             cr (cairo.Context): The cairo.Context to draw on/with
         """
+        if not self.visualising:
+            return
+
         try:
             left_right = Connection()["axis2"]["current_position"]
             up_down = Connection()["axis3"]["current_position"]
