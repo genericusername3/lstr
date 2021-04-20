@@ -10,6 +10,8 @@ from .patient_util import Patient
 from .patient_util import COLUMNS as PATIENT_COLUMNS
 from .patient_row import PatientRow, PatientHeader
 
+import traceback
+
 
 @Gtk.Template(
     resource_path="/de/linusmathieu/Liegensteuerung/select_patient_page.ui"
@@ -55,6 +57,8 @@ class SelectPatientPage(Gtk.Box, Page, metaclass=PageClass):
     def prepare(self) -> None:
         """Prepare the page to be shown."""
         print("prepare sel_pat")
+
+        traceback.print_stack()
 
         self.get_toplevel().active_patient = None
 
