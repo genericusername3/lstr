@@ -199,7 +199,7 @@ class NodeCategory:
             raise AttributeError(f"{name} is not a node of this NodeCategory")
 
         try:
-            print("setting", name, "to", self.nodes[name].get_data_type_as_variant_type())
+            # print("setting", name, "to", self.nodes[name].get_data_type_as_variant_type())
             self.nodes[name].set_value(value, self.nodes[name].get_data_type_as_variant_type())
         except BrokenPipeError:
             # Try to re-connect and try again
