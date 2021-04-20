@@ -375,7 +375,7 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
 
         if self.visualising:
             GLib.timeout_add(
-                1000 / 30, self.visualisation_loop, priority=GLib.PRIORITY_HIGH
+                1000 / 10, self.visualisation_loop, priority=GLib.PRIORITY_HIGH
             )
         else:
             print("visualising is False")
