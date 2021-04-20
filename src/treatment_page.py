@@ -319,7 +319,7 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
                 Connection()["axis3"]["start"] = False
                 Connection()["axis4"]["start"] = False
 
-                self.get_toplevel().switch_page("select_patient")
+                self.get_toplevel()._show_page("select_patient", animation_direction=-1)
                 self.get_toplevel().clear_history()
 
         except ConnectionRefusedError:
@@ -328,7 +328,7 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
             print("Could not reset")
 
             if const.DEBUG:
-                self.get_toplevel().switch_page("select_patient")
+                self.get_toplevel()._show_page("select_patient", animation_direction=-1)
                 self.get_toplevel().clear_history()
 
     def visualisation_loop(self) -> None:
