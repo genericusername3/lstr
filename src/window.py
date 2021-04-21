@@ -452,7 +452,7 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
             self.get_toplevel(),
             Gtk.DialogFlags.MODAL,
             Gtk.MessageType.WARNING,
-            ("Nein", Gtk.ResponseType.NO, "Ja", Gtk.ResponseType.YES),
+            ("Abbrechen", Gtk.ResponseType.NO, "Neu starten", Gtk.ResponseType.YES, "Herunterfahren", Gtk.ResponseType.OK),
             (f"Jetzt herunterfahren?"),
         )
         dialog.set_decorated(False)
@@ -461,8 +461,11 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
 
         self.get_style_context().remove_class("has-dialog")
 
-        if response == Gtk.ResponseType.YES:
+        if response == Gtk.ResponseType.OK:
             subprocess.call(("shutdown", "-h", "now"))
+
+        if response == Gtk.ResponseType.YES:
+            subprocess.call(("shutdown", "-r", "now"))
 
         elif response == Gtk.ResponseType.NO:
             pass
