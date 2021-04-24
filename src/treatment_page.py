@@ -306,7 +306,7 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
     def if_done_switch_to_next(self):
         if not self.visualising:
             return
-            
+
         try:
             if Connection()["main"]["reset_axes_button"]:
                 GLib.timeout_add(1000 / 10, self.if_done_switch_to_next)
@@ -332,7 +332,7 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
 
             print("Could not reset")
 
-            if const.DEBUG: 
+            if const.DEBUG:
                 self.visualising = False
 
                 self.get_toplevel()._show_page("select_patient", animation_direction=-1)
@@ -363,6 +363,7 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
                         self.on_opcua_button_pressed(
                             None, None, "main", "reset_axes_button"
                         )
+                        print("IDSTN!")
                         self.if_done_switch_to_next()
 
                     GLib.timeout_add(500, start_reset)
