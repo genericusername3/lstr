@@ -484,6 +484,8 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
 
             scale = min(available_width / width, available_height / height)
 
+            scale = int(scale * 4) / 4
+
             print(scale)
 
             import time
