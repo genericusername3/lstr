@@ -484,6 +484,8 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
 
             scale = min(available_width / width, available_height / height)
 
+            print(scale)
+
             if scale < 1:
                 pixbuf = pixbuf.scale_simple(
                     width * scale, height * scale, GdkPixbuf.InterpType.TILES
