@@ -370,8 +370,7 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
 
                 GLib.timeout_add(500, reset)
 
-            else:
-                self.last_progress = progress
+            self.last_progress = progress
 
         except ConnectionRefusedError:
             self.get_toplevel().show_error(const.CONNECTION_ERROR_TEXT)
