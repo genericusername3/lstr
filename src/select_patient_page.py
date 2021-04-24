@@ -56,8 +56,6 @@ class SelectPatientPage(Gtk.Box, Page, metaclass=PageClass):
 
     def prepare(self) -> None:
         """Prepare the page to be shown."""
-        print("prepare sel_pat")
-
         traceback.print_stack()
 
         self.get_toplevel().active_patient = None
@@ -74,8 +72,6 @@ class SelectPatientPage(Gtk.Box, Page, metaclass=PageClass):
 
     def prepare_return(self) -> None:
         """Prepare the page to be shown when returning from another page."""
-        print("prepare_return sel_pat")
-
         self.get_toplevel().active_patient = None
 
         # Inefficient to re-load all patients, but everything else is more work

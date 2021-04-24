@@ -442,8 +442,6 @@ class LiegensteuerungWindow(Gtk.ApplicationWindow):
         Args:
             button (Gtk.Button): The clicked button
         """
-        print("Presenting shutdown dialog")
-
         self.more_popover.popdown()
 
         self.get_style_context().add_class("has-dialog")

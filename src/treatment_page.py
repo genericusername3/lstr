@@ -244,7 +244,6 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
         Args:
             button (Gtk.Button): The clicked button
         """
-        print("NOTAUS")
         self.emergency_off = not self.emergency_off
 
         try:
@@ -363,7 +362,7 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
                         self.on_opcua_button_pressed(
                             None, None, "main", "reset_axes_button"
                         )
-                        print("IDSTN!")
+
                         self.if_done_switch_to_next()
 
                     GLib.timeout_add(500, start_reset)
@@ -384,8 +383,6 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
             GLib.timeout_add(
                 1000 / 10, self.visualisation_loop, priority=GLib.PRIORITY_HIGH
             )
-        else:
-            print("visualising is False")
 
     def on_draw_visualisation(self, widget: Gtk.Widget, cr: cairo.Context) -> None:
         """React to the visualisation being queried to be drawn. Draw the visualisation.
