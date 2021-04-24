@@ -486,6 +486,9 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
 
             print(scale)
 
+            import time
+            s = time.time()
+
             if scale < 1:
                 pixbuf = pixbuf.scale_simple(
                     width * scale, height * scale, GdkPixbuf.InterpType.TILES
@@ -494,6 +497,8 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
                 pixbuf = pixbuf.scale_simple(
                     width * scale, height * scale, GdkPixbuf.InterpType.NEAREST
                 )
+
+            print(time.time() - s)
 
             Gdk.cairo_set_source_pixbuf(
                 cr,
