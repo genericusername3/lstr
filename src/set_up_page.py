@@ -326,7 +326,7 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
 
         if self.running:
             GLib.timeout_add(
-                1000 / 10, self.display_camera_input_loop
+                1000 / 30, self.display_camera_input_loop
             )
 
     def update_values_loop(self) -> None:
@@ -486,11 +486,6 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
 
             scale = int(scale * 4) / 4
 
-            print(scale)
-
-            import time
-            s = time.time()
-
             if scale < 1:
                 pixbuf = pixbuf.scale_simple(
                     width * scale, height * scale, GdkPixbuf.InterpType.TILES
@@ -499,8 +494,6 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
                 pixbuf = pixbuf.scale_simple(
                     width * scale, height * scale, GdkPixbuf.InterpType.NEAREST
                 )
-
-            print(time.time() - s)
 
             Gdk.cairo_set_source_pixbuf(
                 cr,
