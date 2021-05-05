@@ -339,7 +339,6 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
 
     def visualisation_loop(self) -> None:
         """Repeatedly render an SVG visualisation for the motor values."""
-        # FIXME: This whole progress mess doesn't really work
 
         try:
             prog = self.get_toplevel().active_program
