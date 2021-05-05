@@ -1,6 +1,6 @@
 """Utility functions that deal with the sqlite database 'programs'."""
 
-from typing import Generator, Iterable, List, Dict, Any, Tuple
+from typing import Generator, Iterable, List, Dict, Any, Tuple, Optional
 
 import os
 
@@ -230,7 +230,10 @@ class Program(GObject.Object):
                 SET {', '.join([attribute + ' = ?' for attribute in kwargs])}
                 WHERE id=?
             """,
-            (*[kwargs[attribute] for attribute in kwargs], self.id,),
+            (
+                *[kwargs[attribute] for attribute in kwargs],
+                self.id,
+            ),
         )
 
         connection.commit()
@@ -260,10 +263,15 @@ class Program(GObject.Object):
         connection.commit()
 
     @staticmethod
+    def get_count() -> int:
+        """Yield all programs in the database."""
+        return cursor.execute("SELECT COUNT(*) FROM programs").fetchone()[0]
+
+    @staticmethod
     def get_all() -> Generator["Program", None, None]:
         """Yield all programs in the database."""
         for program_row in cursor.execute(
-            "SELECT " + ", ".join(PROGRAM_COLUMNS) + " FROM programs"
+            "SELECT " + ", ".join(PROGRAM_COLUMNS) + " FROM programs ORDER BY id"
         ).fetchall():
             program_dict = {}
             for index, value in enumerate(program_row):
@@ -277,7 +285,7 @@ class Program(GObject.Object):
     ) -> Generator["Program", None, None]:
         """Yield all programs in the database."""
         for program_row in cursor.execute(
-            "SELECT " + ", ".join(PROGRAM_COLUMNS) + " FROM programs"
+            "SELECT " + ", ".join(PROGRAM_COLUMNS) + " FROM programs ORDER BY id"
         ).fetchall():
             program_dict = {}
             for index, value in enumerate(program_row):
@@ -292,15 +300,40 @@ class Program(GObject.Object):
                 yield program
 
     @staticmethod
-    def iter_to_model(program_iter: Iterable["Program"]) -> Gio.ListStore:
+    def get_unfitting(
+        max_left_distance: int, max_right_distance: int
+    ) -> Generator["Program", None, None]:
+        """Yield all programs in the database."""
+        for program_row in cursor.execute(
+            "SELECT " + ", ".join(PROGRAM_COLUMNS) + " FROM programs ORDER BY id"
+        ).fetchall():
+            program_dict = {}
+            for index, value in enumerate(program_row):
+                program_dict[list(PROGRAM_COLUMNS.keys())[index]] = value
+
+            program: Program = Program(program_dict)
+
+            if (
+                program.pusher_left_distance_max > max_left_distance
+                and program.pusher_right_distance_max > max_right_distance
+            ):
+                yield program
+
+    @staticmethod
+    def iter_to_model(
+        program_iter: Iterable["Program"], model: Optional[Gio.ListStore] = None
+    ) -> Gio.ListStore:
         """Convert an iterable of Program objects into a Gio.ListStore.
 
         Args:
-            program_iter (Iterable[Program]): An iterable of programs to convert
+            program_iter (Iterable["Program"]): An iterable of programs to convert
+            model (Optional[Gio.ListStore], optional): A model to extend or None to create a new one
 
-        Returns:
-            Gio.ListStore: The converted model"""
-        model: Gio.ListStore = Gio.ListStore()
+        No Longer Returned:
+            Gio.ListStore: The converted model
+        """
+        if model is None:
+            model = Gio.ListStore()
 
         program_list: List[Program] = list(program_iter)
 

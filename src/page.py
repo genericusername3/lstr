@@ -34,6 +34,7 @@ class Page(abc.ABC):
     """
 
     is_patient_info_page: bool = False
+    is_program_list_page: bool = False
 
     _entries_pressed: Dict[Gtk.Entry, float] = {}
 
