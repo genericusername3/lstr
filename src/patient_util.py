@@ -510,10 +510,13 @@ class Patient(GObject.Object):
             UPDATE treatment_entries
             SET program_id = ?
             WHERE patient_id=?
-            ORDER BY timestamp DESC
-            LIMIT 1
+            AND timestamp=(
+                SELECT MAX(timestamp)
+                FROM treatment_entries
+                WHERE patient_id=?
+            )
             """,
-            (program.id, self.patient_id),
+            (program.id, self.patient_id, self.patient_id),
         )
         connection.commit()
 

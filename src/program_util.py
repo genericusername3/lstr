@@ -315,7 +315,7 @@ class Program(GObject.Object):
 
             if (
                 program.pusher_left_distance_max > max_left_distance
-                and program.pusher_right_distance_max > max_right_distance
+                or program.pusher_right_distance_max > max_right_distance
             ):
                 yield program
 
