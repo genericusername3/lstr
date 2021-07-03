@@ -8,6 +8,8 @@ from typing import Dict, Any, Optional, List, Tuple
 from opcua import Client  # type: ignore
 from opcua.common.node import Node  # type: ignore
 
+from . import env
+
 # you might notice the word
 # "pusher" being spelled each of the following ways:
 #     pusher
@@ -225,6 +227,7 @@ class Connection(metaclass=Singleton):
     def __init__(self):
         """Create a new Connection."""
         self.client = Client("opc.tcp://localhost:4840")
+        self.activate_session(env.opcua_username, env.opcua_password)
         self.connect()
 
         self.node_categories: Dict[str, NodeCategory] = dict()
