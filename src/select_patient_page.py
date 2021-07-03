@@ -10,12 +10,8 @@ from .patient_util import Patient
 from .patient_util import COLUMNS as PATIENT_COLUMNS
 from .patient_row import PatientRow, PatientHeader
 
-import traceback
 
-
-@Gtk.Template(
-    resource_path="/de/linusmathieu/Liegensteuerung/select_patient_page.ui"
-)
+@Gtk.Template(resource_path="/de/linusmathieu/Liegensteuerung/select_patient_page.ui")
 class SelectPatientPage(Gtk.Box, Page, metaclass=PageClass):
     """A page that prompts the user to select a patient.
 
@@ -31,17 +27,13 @@ class SelectPatientPage(Gtk.Box, Page, metaclass=PageClass):
     header_visible: bool = True
     title: str = "Patient auswählen"
 
-    patient_list_box: Union[
-        Gtk.ListBox, Gtk.Template.Child
-    ] = Gtk.Template.Child()
+    patient_list_box: Union[Gtk.ListBox, Gtk.Template.Child] = Gtk.Template.Child()
 
     header_box: Union[Gtk.Box, Gtk.Template.Child] = Gtk.Template.Child()
 
     add_button: Union[Gtk.Button, Gtk.Template.Child] = Gtk.Template.Child()
 
-    patient_search_entry: Union[
-        Gtk.SearchEntry, Gtk.Template.Child
-    ] = Gtk.Template.Child()
+    patient_search_entry: Union[Gtk.SearchEntry, Gtk.Template.Child] = Gtk.Template.Child()
 
     sort_column: int = PATIENT_COLUMNS.index("last_name")
     sort_reverse: bool = False
@@ -56,8 +48,6 @@ class SelectPatientPage(Gtk.Box, Page, metaclass=PageClass):
 
     def prepare(self) -> None:
         """Prepare the page to be shown."""
-        traceback.print_stack()
-
         self.get_toplevel().active_patient = None
 
         self.sort_column = PATIENT_COLUMNS.index("last_name")
@@ -89,30 +79,18 @@ class SelectPatientPage(Gtk.Box, Page, metaclass=PageClass):
         if self.get_parent() is None:
             return
 
-        self.header_box.pack_start(
-            PatientHeader(self), fill=True, expand=True, padding=0
-        )
+        self.header_box.pack_start(PatientHeader(self), fill=True, expand=True, padding=0)
         self.header_box.show_all()
 
         self.patient_list_box.connect("row-selected", self.on_patient_selected)
 
         self.add_button.connect("clicked", self.on_add_clicked)
 
-        self.patient_search_entry.connect(
-            "search-changed", self.on_search_changed
-        )
-        self.patient_search_entry.connect(
-            "focus-in-event", self.on_focus_entry
-        )
-        self.patient_search_entry.connect(
-            "button-press-event", self.on_entry_button_press
-        )
-        self.patient_search_entry.connect(
-            "button-release-event", self.on_entry_button_release
-        )
-        self.patient_search_entry.connect(
-            "focus-out-event", self.on_unfocus_entry
-        )
+        self.patient_search_entry.connect("search-changed", self.on_search_changed)
+        self.patient_search_entry.connect("focus-in-event", self.on_focus_entry)
+        self.patient_search_entry.connect("button-press-event", self.on_entry_button_press)
+        self.patient_search_entry.connect("button-release-event", self.on_entry_button_release)
+        self.patient_search_entry.connect("focus-out-event", self.on_unfocus_entry)
 
     def on_patient_selected(self, list_box: Gtk.ListBox, row: Gtk.ListBoxRow):
         """React to the user selecting a patient.
@@ -142,9 +120,7 @@ class SelectPatientPage(Gtk.Box, Page, metaclass=PageClass):
         if self.patient_search_entry.get_text() == "":
             self.patient_list_box.bind_model(
                 Patient.iter_to_model(
-                    Patient.get_all(
-                        sort_key_func=self.sort_key, reverse=self.sort_reverse
-                    )
+                    Patient.get_all(sort_key_func=self.sort_key, reverse=self.sort_reverse)
                 ),
                 PatientRow,
             )
