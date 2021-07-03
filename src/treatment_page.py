@@ -213,14 +213,18 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
 
                 self.on_opcua_button_pressed(None, None, "main", "reset_button")
 
-                GLib.timeout_add(
-                    500,
-                    self.on_opcua_button_released,
-                    None,
-                    None,
-                    "main",
-                    "reset_button",
-                )
+                def switch():
+                    self.on_opcua_button_released(
+                        None,
+                        None,
+                        "main",
+                        "reset_button",
+                    )
+
+                    self.get_toplevel()._show_page("select_patient", animation_direction=-1)
+                    self.get_toplevel().clear_history()
+
+                GLib.timeout_add(500, switch)
 
         except ConnectionRefusedError:
             self.get_toplevel().show_error(const.CONNECTION_ERROR_TEXT)
@@ -256,9 +260,6 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
             self.if_reset_switch_to_next()
 
         GLib.timeout_add(333, start_reset)
-
-        self.get_toplevel()._show_page("select_patient", animation_direction=-1)
-        self.get_toplevel().clear_history()
 
         if const.DEBUG:
             self.started = False
