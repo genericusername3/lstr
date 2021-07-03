@@ -64,6 +64,7 @@ liegensteuerung_sources = [
   'user_util.py',
 
   'const.py',
+  'env.py',
 ]
 
 install_data(liegensteuerung_sources, install_dir: moduledir)
