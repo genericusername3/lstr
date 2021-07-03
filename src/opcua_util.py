@@ -231,7 +231,13 @@ class Connection(metaclass=Singleton):
         self.client.set_user(env.opcua_username)
         self.client.set_password(env.opcua_password)
 
-        self.connect()
+        client.connect_socket()
+        client.create_session()
+        client.activate_session(
+            username=env.opcua_username, password=env.opcua_password, certificate=None
+        )
+
+        # self.connect()
 
         self.node_categories: Dict[str, NodeCategory] = dict()
 
