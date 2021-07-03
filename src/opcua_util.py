@@ -227,9 +227,10 @@ class Connection(metaclass=Singleton):
     def __init__(self):
         """Create a new Connection."""
         self.client = Client("opc.tcp://localhost:4840")
-        self.client.create_session()
-        self.client.connect_socket()
-        self.client.activate_session(env.opcua_username, env.opcua_password)
+
+        self.client.set_user(env.opcua_username)
+        self.client.set_password(env.opcua_password)
+
         self.connect()
 
         self.node_categories: Dict[str, NodeCategory] = dict()
