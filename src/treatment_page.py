@@ -197,20 +197,16 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
         if const.DEBUG:
             self.started = True
 
-    def if_done_switch_to_next(self):
-        print("IDSTN")
+    def if_reset_switch_to_next(self):
 
         try:
             if opcua_util.Connection()["main"]["reset_axes_button"]:
-                print("resetting axes from treatment")
                 GLib.timeout_add(1000 / 10, self.if_done_switch_to_next)
 
             elif opcua_util.Connection()["main"]["emergency_off_button"]:
                 return
 
             else:
-                print("done resetting axes from treatment")
-
                 self.on_opcua_button_released(None, None, "main", "setup_mode")
                 self.on_opcua_button_released(None, None, "main", "reset_axes_button")
                 self.on_opcua_button_released(None, None, "main", "power_button")
@@ -256,9 +252,8 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
         self.on_opcua_button_pressed(None, None, "main", "setup_mode")
 
         def start_reset():
-            print("STARTRESET")
             self.on_opcua_button_pressed(None, None, "main", "reset_axes_button")
-            print("???", self.if_done_switch_to_next())
+            self.if_reset_switch_to_next()
 
         GLib.timeout_add(333, start_reset)
 
