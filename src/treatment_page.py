@@ -224,6 +224,16 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
                     self.get_toplevel()._show_page("select_patient", animation_direction=-1)
                     self.get_toplevel().clear_history()
 
+                    self.resume_button.set_sensitive(True)
+                    self.pause_button.set_sensitive(True)
+                    self.cancel_button.set_sensitive(True)
+
+                    self.resume_button.hide()
+                    self.pause_button.hide()
+                    self.cancel_revealer.set_reveal_child(False)
+
+                    self.start_button.show()
+
                 GLib.timeout_add(500, switch)
 
         except ConnectionRefusedError:
@@ -244,10 +254,9 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
         Args:
             button (Gtk.Button): The clicked button
         """
-        self.start_button.show()
-        self.resume_button.hide()
-        self.pause_button.hide()
-        self.cancel_revealer.set_reveal_child(False)
+        self.resume_button.set_sensitive(False)
+        self.pause_button.set_sensitive(False)
+        self.cancel_button.set_sensitive(False)
 
         self.visualising = False
 
