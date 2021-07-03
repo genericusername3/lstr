@@ -368,7 +368,7 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
             )
             and (not self.resetting)
             and all(
-                Connection()[f"axis{axis}"]["current_position"] == 0 for axis in {3, 4}
+                Connection()[f"axis{axis}"]["current_position"] == 0 for axis in {4}
             )
         )
         self.move_right_button.set_sensitive(
@@ -378,7 +378,7 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
             )
             and (not self.resetting)
             and all(
-                Connection()[f"axis{axis}"]["current_position"] == 0 for axis in {3, 4}
+                Connection()[f"axis{axis}"]["current_position"] == 0 for axis in {4}
             )
         )
         self.left_right_label.set_text(str(Connection()["axis2"]["current_position"]))
