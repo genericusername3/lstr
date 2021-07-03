@@ -428,7 +428,7 @@ class SetupPage(Gtk.Box, Page, metaclass=PageClass):
 
         self.left_right_locked_info_revealer.set_reveal_child(
             not all(
-                Connection()[f"axis{axis}"]["current_position"] == 0 for axis in {3, 4}
+                Connection()[f"axis{axis}"]["current_position"] == 0 for axis in {4}
             )
         )
 
