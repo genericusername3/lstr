@@ -231,9 +231,9 @@ class Connection(metaclass=Singleton):
         self.client.set_user(env.opcua_username)
         self.client.set_password(env.opcua_password)
 
-        client.connect_socket()
-        client.create_session()
-        client.activate_session(
+        self.client.connect_socket()
+        self.client.create_session()
+        self.client.activate_session(
             username=env.opcua_username, password=env.opcua_password, certificate=None
         )
 
