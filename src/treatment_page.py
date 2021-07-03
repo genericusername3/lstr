@@ -14,9 +14,7 @@ from . import const
 
 
 SVG_CODE: str = (
-    Gio.resources_lookup_data(
-        "/de/linusmathieu/Liegensteuerung/treatment_preview.svg", 0
-    )
+    Gio.resources_lookup_data("/de/linusmathieu/Liegensteuerung/treatment_preview.svg", 0)
     .get_data()
     .decode()
 )
@@ -51,12 +49,8 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
 
     emergency_off_button: Union[Gtk.Button, Gtk.Template.Child] = Gtk.Template.Child()
 
-    visualisation_drawing_area: Union[
-        Gtk.DrawingArea, Gtk.Template.Child
-    ] = Gtk.Template.Child()
-    program_progress_bar: Union[
-        Gtk.ProgressBar, Gtk.Template.Child
-    ] = Gtk.Template.Child()
+    visualisation_drawing_area: Union[Gtk.DrawingArea, Gtk.Template.Child] = Gtk.Template.Child()
+    program_progress_bar: Union[Gtk.ProgressBar, Gtk.Template.Child] = Gtk.Template.Child()
 
     left_right_label: Union[Gtk.Button, Gtk.Template.Child] = Gtk.Template.Child()
     up_down_label: Union[Gtk.Button, Gtk.Template.Child] = Gtk.Template.Child()
@@ -203,6 +197,41 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
         if const.DEBUG:
             self.started = True
 
+    def if_done_switch_to_next(self):
+
+        try:
+            if opcua_util.Connection()["main"]["reset_axes_button"]:
+                GLib.timeout_add(1000 / 10, self.if_done_switch_to_next)
+
+            elif opcua_util.Connection()["main"]["emergency_off_button"]:
+                return
+
+            else:
+                self.on_opcua_button_released(None, None, "main", "setup_mode")
+                self.on_opcua_button_released(None, None, "main", "reset_axes_button")
+                self.on_opcua_button_released(None, None, "main", "power_button")
+
+                self.on_opcua_button_pressed(None, None, "main", "reset_button")
+
+                GLib.timeout_add(
+                    1000,
+                    self.on_opcua_button_released,
+                    None,
+                    None,
+                    "main",
+                    "reset_button",
+                )
+
+        except ConnectionRefusedError:
+            self.get_toplevel().show_error(const.CONNECTION_ERROR_TEXT)
+
+            print("Could not reset")
+
+            if const.DEBUG:
+                print("(DEBUG) DONE")
+                self.get_toplevel().page_history.pop()
+                self.get_toplevel().switch_page(self.next_page)
+
     def on_cancel_clicked(self, button: Gtk.Button) -> None:
         """React to the "Cancel" button being clicked.
 
@@ -219,16 +248,14 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
         self.visualising = False
 
         self.on_opcua_button_released(button, None, "main", "start_button")
-        self.on_opcua_button_released(button, None, "main", "power_button")
-        self.on_opcua_button_pressed(button, None, "main", "reset_button")
-        GLib.timeout_add(
-            500,
-            self.on_opcua_button_released,
-            button,
-            None,
-            "main",
-            "reset_button",
-        )
+
+        self.on_opcua_button_pressed(None, None, "main", "setup_mode")
+
+        def start_reset():
+            self.on_opcua_button_pressed(None, None, "main", "reset_axes_button")
+            self.if_done_switch_to_next()
+
+        GLib.timeout_add(333, start_reset)
 
         self.get_toplevel()._show_page("select_patient", animation_direction=-1)
         self.get_toplevel().clear_history()
@@ -248,9 +275,7 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
 
         try:
             if self.emergency_off:
-                self.on_opcua_button_pressed(
-                    button, None, "main", "emergency_off_button"
-                )
+                self.on_opcua_button_pressed(button, None, "main", "emergency_off_button")
 
                 self.start_button.set_sensitive(False)
                 self.resume_button.set_sensitive(False)
@@ -358,9 +383,7 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
                     self.on_opcua_button_pressed(None, None, "main", "setup_mode")
 
                     def start_reset():
-                        self.on_opcua_button_pressed(
-                            None, None, "main", "reset_axes_button"
-                        )
+                        self.on_opcua_button_pressed(None, None, "main", "reset_axes_button")
 
                         self.if_done_switch_to_next()
 
@@ -379,9 +402,7 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
         self.visualisation_drawing_area.queue_draw()
 
         if self.visualising:
-            GLib.timeout_add(
-                1000 / 10, self.visualisation_loop, priority=GLib.PRIORITY_HIGH
-            )
+            GLib.timeout_add(1000 / 10, self.visualisation_loop, priority=GLib.PRIORITY_HIGH)
 
     def on_draw_visualisation(self, widget: Gtk.Widget, cr: cairo.Context) -> None:
         """React to the visualisation being queried to be drawn. Draw the visualisation.
