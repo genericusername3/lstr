@@ -208,6 +208,8 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
                 return
 
             else:
+                print("done resetting axes from treatment")
+
                 self.on_opcua_button_released(None, None, "main", "setup_mode")
                 self.on_opcua_button_released(None, None, "main", "reset_axes_button")
                 self.on_opcua_button_released(None, None, "main", "power_button")
