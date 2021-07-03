@@ -198,6 +198,7 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
             self.started = True
 
     def if_done_switch_to_next(self):
+        print("IDSTN")
 
         try:
             if opcua_util.Connection()["main"]["reset_axes_button"]:
@@ -255,6 +256,7 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
         self.on_opcua_button_pressed(None, None, "main", "setup_mode")
 
         def start_reset():
+            print("STARTRESET")
             self.on_opcua_button_pressed(None, None, "main", "reset_axes_button")
             self.if_done_switch_to_next()
 
