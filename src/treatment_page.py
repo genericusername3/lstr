@@ -201,14 +201,12 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
 
         try:
             if Connection()["main"]["reset_axes_button"]:
-                print("IRSTN")
-                GLib.timeout_add(1000 / 10, self.if_done_switch_to_next)
+                GLib.timeout_add(1000 / 10, self.if_reset_switch_to_next)
 
             elif Connection()["main"]["emergency_off_button"]:
                 return
 
             else:
-                print("DONE RESETTING")
                 self.on_opcua_button_released(None, None, "main", "setup_mode")
                 self.on_opcua_button_released(None, None, "main", "reset_axes_button")
                 self.on_opcua_button_released(None, None, "main", "power_button")
