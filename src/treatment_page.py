@@ -258,7 +258,7 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
         def start_reset():
             print("STARTRESET")
             self.on_opcua_button_pressed(None, None, "main", "reset_axes_button")
-            self.if_done_switch_to_next()
+            print("???", self.if_done_switch_to_next())
 
         GLib.timeout_add(333, start_reset)
 
