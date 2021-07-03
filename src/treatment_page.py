@@ -200,10 +200,10 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
     def if_reset_switch_to_next(self):
 
         try:
-            if opcua_util.Connection()["main"]["reset_axes_button"]:
+            if Connection()["main"]["reset_axes_button"]:
                 GLib.timeout_add(1000 / 10, self.if_done_switch_to_next)
 
-            elif opcua_util.Connection()["main"]["emergency_off_button"]:
+            elif Connection()["main"]["emergency_off_button"]:
                 return
 
             else:
