@@ -207,6 +207,7 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
                 return
 
             else:
+                print("DONE RESETTING")
                 self.on_opcua_button_released(None, None, "main", "setup_mode")
                 self.on_opcua_button_released(None, None, "main", "reset_axes_button")
                 self.on_opcua_button_released(None, None, "main", "power_button")
@@ -214,7 +215,7 @@ class TreatmentPage(Gtk.Box, Page, metaclass=PageClass):
                 self.on_opcua_button_pressed(None, None, "main", "reset_button")
 
                 GLib.timeout_add(
-                    1000,
+                    500,
                     self.on_opcua_button_released,
                     None,
                     None,
